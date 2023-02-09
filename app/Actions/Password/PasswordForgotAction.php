@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Password;
 
 class PasswordForgotAction {
     public function handle(PasswordForgotRequest $request) {
-        $request->validate(['email' => 'required|email']);
         $status = Password::sendResetLink(
             $request->only('email')
         );

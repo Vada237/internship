@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class UserGetByIdAction {
     public function handle(int $id) {
+
         $user = User::find($id);
-        return new UserResource($user);
+        return $user != null ? new UserResource($user) : response('Пользователь не найден',204);
     }
 }

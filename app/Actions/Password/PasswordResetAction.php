@@ -11,11 +11,6 @@ use Illuminate\Support\Str;
 class PasswordResetAction {
 
     public function handle(PasswordResetAction $request) {
-        $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
 
         $status = Password::reset(
             $request->only('email', 'password' , 'password_confirmation', 'token'),
