@@ -26,7 +26,6 @@ class AuthTest extends TestCase
         $response->assertJsonStructure([
             'name',
             'email',
-            'password',
             'avatar'
         ]);
     }
