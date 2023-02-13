@@ -15,10 +15,10 @@ use Illuminate\Support\Str;
 class PasswordController extends Controller
 {
     public function forgot (PasswordForgotAction $action,PasswordForgotRequest $request) {
-        return $action->handle($request);
+        return $action->handle($request->all());
     }
 
     public function reset (PasswordForgotAction $action,PasswordResetRequest $request) {
-        return $action->handle($request);
+        return $action->handle($request->all());
     }
 }
