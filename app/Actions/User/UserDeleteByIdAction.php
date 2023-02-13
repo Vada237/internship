@@ -2,6 +2,7 @@
 
 namespace App\Actions\User;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +19,6 @@ class UserDeleteByIdAction {
             $user->delete();
             return $user;
         } else
-        return response('Пользователь не найден', 204);
+        return new UserResource($user);
     }
 }

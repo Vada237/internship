@@ -8,6 +8,6 @@ use Illuminate\Http\Request;
 
 class UserGetAllAction {
     public function handle() {
-        return UserResource::collection(User::all());
+        return UserResource::collection(User::paginate(5));
     }
 }
