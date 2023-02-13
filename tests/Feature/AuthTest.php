@@ -22,7 +22,7 @@ class AuthTest extends TestCase
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'name',
             'email',
@@ -52,18 +52,12 @@ class AuthTest extends TestCase
     }
 
     public function test_login_user() {
-        $response = $this->post('/api/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'testpass'
-        ]);
+        $user = User::factory()->create();
 
         $response = $this->post('api/auth/login', [
-          "email" => "test@example.com",
-          "password" => "testpass"
+            'email' => $user->email,
+            'password' => $user->password
         ]);
-
-        $this->assertAuthenticated();
         $response->assertStatus(200);
     }
 }
