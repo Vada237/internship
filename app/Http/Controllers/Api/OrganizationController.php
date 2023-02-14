@@ -10,38 +10,40 @@ use App\Actions\Organization\OrganizationGetByNameAction;
 use App\Actions\Organization\OrganizationUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\OrganizationRequest;
+use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
     public function index(OrganizationGetAllAction $action)
     {
-        return $action->handle();
+        return OrganizationResource::collection($action->handle());
     }
 
     public function store(OrganizationCreateAction $action, OrganizationRequest $request)
     {
-        return $action->handle($request->all());
+        return new OrganizationResource($action->handle($request->all(),Auth::id()));
     }
 
     public function show(OrganizationGetByIdAction $action, int $id)
     {
-        return $action->handle($id);
+        return new OrganizationResource($action->handle($id));
     }
 
     public function getByName(OrganizationGetByNameAction $action, string $name)
     {
-        return $action->handle($name);
+        return new OrganizationResource($action->handle($name));
     }
 
     public function update(OrganizationRequest $request, OrganizationUpdateAction $action, int $organization_id)
     {
-        return $action->handle($request->all(), $organization_id);
+        return new OrganizationResource($action->handle($request->all(), $organization_id));
     }
 
     public function destroy(OrganizationDeleteAction $action, int $id)
     {
-        return $action->handle($id);
+        return new OrganizationResource($action->handle($id, Auth::id()));
     }
 }
