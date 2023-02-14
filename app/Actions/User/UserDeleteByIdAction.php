@@ -19,6 +19,6 @@ class UserDeleteByIdAction {
             $user->delete();
             return $user;
         } else
-        return new UserResource($user);
+        return $user;
     }
 }

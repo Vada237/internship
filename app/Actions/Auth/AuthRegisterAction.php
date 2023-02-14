@@ -18,10 +18,6 @@ class AuthRegisterAction {
         }
         $user->save();
 
-        return [
-            'name' => $user->name,
-            'email' => $user->email,
-            'avatar' => $user->avatar
-        ];
+        return $user;
     }
 }

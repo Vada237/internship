@@ -10,6 +10,6 @@ class UserGetByIdAction {
     public function handle(int $id) {
 
         $user = User::find($id);
-        return $user != null ? new UserResource($user) : response(__('Пользователь не найден'));
+        return $user != null ? $user : response(__('Пользователь не найден'));
     }
 }

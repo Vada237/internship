@@ -14,6 +14,7 @@ class UserUpdateNameAndAvatarAction
     {
         $user = User::find(Auth::id());
         $user->name = $credentials['name'];
+
         if ($user->avatar != null || $credentials['avatar'] == null) {
             Storage::delete($user->avatar);
             $user->avatar = null;
@@ -25,6 +26,6 @@ class UserUpdateNameAndAvatarAction
 
         $user->save();
 
-        return new UserResource($user);
+        return $user;
     }
 }

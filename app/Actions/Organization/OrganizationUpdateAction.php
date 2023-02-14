@@ -16,7 +16,7 @@ class OrganizationUpdateAction {
         if ($user_organization != null) {
             $organization = Organization::find($organization_id);
             $organization->update($credentials);
-            return new OrganizationResource($organization);
+            return $organization;
         } else return __("Организация не найдена");
 
     }
