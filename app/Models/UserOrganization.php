@@ -12,4 +12,12 @@ class UserOrganization extends Model
         'user_id',
         'organization_id'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function organization() {
+        return $this->belongsTo(Organization::class);
+    }
 }
