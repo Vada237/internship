@@ -38,21 +38,14 @@ class OrganizationTest extends TestCase
     public function test_get_organization()
     {
         $user = User::factory()->create();
-        $organizations = [
-            [
-                'id' => 1,
-                'name' => 'Nokia'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Microsoft'
-            ]
-        ];
+        $organizations = Organization::factory()
+            ->has(User::factory()->count(2))
+            ->count(5)->create();
 
-        $responce = $this->actingAs($user)->get('api/organizations');
 
-        $responce->assertStatus(200);
-        $responce->assertJsonStructure([
+        $response = $this->actingAs($user)->get('api/organizations/4/1');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => [
                 '*' => [
                     'id',
@@ -66,42 +59,15 @@ class OrganizationTest extends TestCase
     {
 
         $user = User::factory()->create();
+        $organization = Organization::factory()->create();
 
-        $organization = new Organization([
-            'id' => 1,
-            'name' => 'Nokia'
-        ]);
-
-        $response = $this->actingAs($user)->get("/api/organizations/", ["id" => "1"]);
+        $response = $this->actingAs($user)->get("/api/organizations/{$organization->id}");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                '*' => [
-                    'id',
-                    'name'
-                ]
-            ]
-        ]);
-    }
-
-    public function test_get_organization_by_name() {
-        $user = User::factory()->create();
-
-        $organization = new Organization([
-            'id' => 1,
-            'name' => 'Nokia'
-        ]);
-
-        $response = $this->actingAs($user)->get("/api/organizations/", ["name" => "Nokia"]);
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'data' => [
-                '*' => [
-                    'id',
-                    'name'
-                ]
+                'id',
+                'name'
             ]
         ]);
     }
