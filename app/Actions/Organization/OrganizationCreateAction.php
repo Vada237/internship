@@ -10,7 +10,7 @@ use App\Models\UserOrganization;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationCreateAction {
-    public function handle($credentials,int $userId) {
-        return User::findOrFail($userId)->organizations()->create($credentials);
+    public function handle($credentials,User $user) {
+        return $user->organizations()->create($credentials);
     }
 }

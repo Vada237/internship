@@ -4,18 +4,18 @@ namespace App\Actions\Organization;
 
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
+use App\Models\User;
 use App\Models\UserOrganization;
 use Illuminate\Support\Facades\Auth;
 
-class OrganizationDeleteAction {
-    public function handle(int $organization_id,int $userId) {
+class OrganizationDeleteAction
+{
+    public function handle(int $organization_id, User $user)
+    {
+        $organization = $user->organizations()->find($organization_id);
 
-        $userOrganization = UserOrganization::where('user_id', $userId)->where('organization_id', $organization_id)->firstOrFail();
-
-        if ($userOrganization != null) {
-            $organization = Organization::find($organization_id);
+        if ($organization != null) {
             $organization->delete();
-            return $organization;
         }
     }
 }
