@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Password;
 class PasswordForgotAction {
     public function handle($credentials) {
         $status = Password::sendResetLink(
-            $credentials->only('email')
+            $credentials
         );
 
         if ($status == Password::RESET_LINK_SENT) {
