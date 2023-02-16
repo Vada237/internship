@@ -7,6 +7,6 @@ use App\Models\Organization;
 
 class OrganizationGetByNameAction {
     public function handle(string $name) {
-        return new OrganizationResource(Organization::where('name', $name)->firstOrFail());
+        return Organization::where('name', $name)->firstOrFail();
     }
 }

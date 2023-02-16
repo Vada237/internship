@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Organization;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class OrganizationTest extends TestCase
@@ -14,7 +12,7 @@ class OrganizationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $responce = $this->actingAs($user)->post('api/organization', [
+        $responce = $this->actingAs($user)->post('api/organizations', [
             'name' => 'n'
         ]);
 
@@ -26,31 +24,28 @@ class OrganizationTest extends TestCase
 
         $user = User::factory()->create();
 
-        $responce = $this->actingAs($user)->post('api/organization', [
+        $responce = $this->actingAs($user)->post('api/organizations', [
             'name' => 'Nokia'
         ]);
 
+        $this->assertDatabaseHas('organizations', [
+            'id' => '1',
+            'name' => 'Nokia'
+        ]);
         $responce->assertStatus(201);
     }
 
     public function test_get_organization()
     {
         $user = User::factory()->create();
-        $organizations = [
-            [
-                'id' => 1,
-                'name' => 'Nokia'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Microsoft'
-            ]
-        ];
+        $organizations = Organization::factory()
+            ->has(User::factory()->count(2))
+            ->count(5)->create();
 
-        $responce = $this->actingAs($user)->get('api/organization');
 
-        $responce->assertStatus(200);
-        $responce->assertJsonStructure([
+        $response = $this->actingAs($user)->get('api/organizations/4/1');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => [
                 '*' => [
                     'id',
@@ -60,21 +55,20 @@ class OrganizationTest extends TestCase
         ]);
     }
 
-    /*public function test_get_organization_by_id () {
-        $user = User::factory()->create();
-        $organization = new Organization([
-            'id' => 1,
-            'name' => 'Nokia'
-        ]);
+    public function test_get_organization_by_id()
+    {
 
-        $response = $this->actingAs($user)->get('api/organization/id=', ['id' => 1]);
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+
+        $response = $this->actingAs($user)->get("/api/organizations/{$organization->id}");
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                    'id',
-                    'name'
-                ]
-            ]);
-    }*/
+                'id',
+                'name'
+            ]
+        ]);
+    }
 }

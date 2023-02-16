@@ -22,11 +22,10 @@ class AuthTest extends TestCase
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $response->assertJsonStructure([
             'name',
-            'email',
-            'avatar'
+            'email'
         ]);
     }
 

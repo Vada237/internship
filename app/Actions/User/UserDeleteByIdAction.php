@@ -7,18 +7,19 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class UserDeleteByIdAction {
-    public function handle(int $id) {
-
+class UserDeleteByIdAction
+{
+    public function handle(int $id)
+    {
         $user = User::find($id);
 
         if ($user != null) {
-            if ($user->avatar) {
+            if ($user->avatar != null) {
                 Storage::delete($user->avatar);
             }
             $user->delete();
-            return $user;
+            return __('Пользователь удален');
         } else
-        return new UserResource($user);
+            return __('Пользователь не найден');
     }
 }

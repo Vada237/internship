@@ -10,21 +10,23 @@ use Illuminate\Support\Facades\Storage;
 
 class UserUpdateNameAndAvatarAction
 {
-    public function handle($credentials)
+    public function handle($credentials, User $user)
     {
-        $user = User::find(Auth::id());
         $user->name = $credentials['name'];
-        if ($user->avatar != null || $credentials['avatar'] == null) {
-            Storage::delete($user->avatar);
-            $user->avatar = null;
-        }
 
         if (array_key_exists('avatar', $credentials)) {
-            $user->avatar = $credentials['avatar']->store('public/avatars');
+
+            if ($user->avatar != null) {
+                Storage::delete($user->avatar);
+                $user->avatar = null;
+            }
+
+            if ($credentials['avatar'] != null){
+                $user->avatar = $credentials['avatar']->store('public/avatars');
+            }
         }
 
         $user->save();
-
-        return new UserResource($user);
+        return $user;
     }
 }
