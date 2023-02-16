@@ -1,36 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use App\Actions\User\UserDeleteByIdAction;
+use App\Actions\User\UserGetAllAction;
+use App\Actions\User\UserGetByIdAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(UserGetAllAction $action)
     {
-        return UserResource::collection(User::all());
+        return $action->handle();
     }
 
-    public function show($id)
+    public function show(UserGetByIdAction $action, int $id)
     {
-        $user = User::find($id);
-        return new UserResource($user);
-
+        return $action->handle($id);
     }
 
-    public function destroy($id)
+    public function destroy(UserDeleteByIdAction $action,int $id)
     {
-        $user = User::find($id);
-        if ($user->avatar) {
-            Storage::delete($user->avatar);
-        }
-        $user->delete();
-        return response($user,200);
+        return $action->handle($id);
     }
 }

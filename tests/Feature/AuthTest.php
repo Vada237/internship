@@ -22,11 +22,10 @@ class AuthTest extends TestCase
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
         $response->assertJsonStructure([
             'name',
             'email',
-            'password',
             'avatar'
         ]);
     }
@@ -38,7 +37,7 @@ class AuthTest extends TestCase
             'email' => 'test@example2.com'
         ]);
 
-        $response->assertStatus(302);
+        $response->assertStatus(422);
     }
 
     public function test_new_user_can_register_with_short_email() {
@@ -48,7 +47,7 @@ class AuthTest extends TestCase
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(302);
+        $response->assertStatus(422);
 
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,7 +26,6 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|min:2',
             'email' => 'required|min:6',
-            'password' => 'required|min:6',
             'avatar' => 'image|mimes:jpeg,bmp,png'
         ];
     }
