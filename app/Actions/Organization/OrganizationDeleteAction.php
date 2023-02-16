@@ -16,6 +16,7 @@ class OrganizationDeleteAction
 
         if ($organization != null) {
             $organization->delete();
-        }
+            return __('messages.organizations.delete.success');
+        } else return __('messages.organizations.notfound');
     }
 }

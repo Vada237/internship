@@ -18,8 +18,8 @@ class UserDeleteByIdAction
                 Storage::delete($user->avatar);
             }
             $user->delete();
-            return __('Пользователь удален');
+            return __('messages.user.delete.success');
         } else
-            return __('Пользователь не найден');
+            return __('messages.user.notfound');
     }
 }

@@ -17,7 +17,7 @@ class AuthLoginAction {
             $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
             return [
-                "result" => __('Авторизация прошла успешно'),
+                "result" => __('messages.auth.login.success'),
                 "id" => $user->id,
                 "token" => $user->createtoken('token')->plainTextToken
             ];
