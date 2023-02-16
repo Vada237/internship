@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class OrganizationTest extends TestCase
 {
-    public function test_create_organization_without_validation()
+    public function testCreateOrganizationWithoutValidation()
     {
         $user = User::factory()->create();
 
@@ -19,7 +19,7 @@ class OrganizationTest extends TestCase
         $responce->assertStatus(422);
     }
 
-    public function test_create_organization_with_validation()
+    public function testCreateOrganizationWithValidation()
     {
 
         $user = User::factory()->create();
@@ -35,7 +35,7 @@ class OrganizationTest extends TestCase
         $responce->assertStatus(201);
     }
 
-    public function test_get_organization()
+    public function testGetOrganization()
     {
         $user = User::factory()->create();
         $organizations = Organization::factory()
@@ -55,7 +55,7 @@ class OrganizationTest extends TestCase
         ]);
     }
 
-    public function test_get_organization_by_id()
+    public function testGetOrganizationById()
     {
 
         $user = User::factory()->create();
@@ -70,5 +70,63 @@ class OrganizationTest extends TestCase
                 'name'
             ]
         ]);
+    }
+
+    public function testUpdateOrganizationWithValidation() {
+         $user = User::factory()->hasAttached(
+             Organization::factory()
+         )->create();
+
+         $organization = $user->organizations()->first();
+
+         $response = $this->assertDatabaseHas('organizations',[
+             'id' => $organization->id
+         ]);
+
+
+
+         $response = $this->actingAs($user)->patch("api/organizations/$organization->id",[
+             'name' => 'test'
+         ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'name'
+            ]
+        ]);
+    }
+
+    public function testUpdateOrganizationWithoutValidation() {
+        $user = User::factory()->hasAttached(
+            Organization::factory()
+        )->create();
+
+        $organization = $user->organizations()->first();
+
+        $response = $this->assertDatabaseHas('organizations',[
+            'id' => $organization->id
+        ]);
+
+        $response = $this->actingAs($user)->patch("api/organizations/$organization->id",[
+            'name' => 'n'
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    public function testDeleteOrganization() {
+        $user = User::factory()->hasAttached(
+            Organization::factory()
+        )->create();
+
+        $organization = $user->organizations()->first();
+
+        $response = $this->actingAs($user)->delete("api/organizations/$organization->id",[
+            'name' => 'test'
+        ]);
+
+        $response->assertStatus(200);
     }
 }
