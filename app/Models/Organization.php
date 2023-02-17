@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name'
+    ];
+
+    public function users() {
+        return $this->belongsToMany(User::class, 'user_organizations', 'organization_id', 'user_id')
+            ->withTimestamps();
+    }
 }
