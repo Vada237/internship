@@ -7,6 +7,6 @@ use App\Models\Organization;
 
 class OrganizationGetByIdAction {
     public function handle(int $id) {
-        return Organization::find($id);
+        return Organization::findOrFail($id);
     }
 }

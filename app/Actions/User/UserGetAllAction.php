@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class UserGetAllAction {
     public function handle(int $limit,int $offset) {
-        return DB::table('users')
-            ->offset($offset)
-            ->limit($limit)
-            ->get();
+        return User::offset($offset)->limit($limit)->get();
     }
 }

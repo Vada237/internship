@@ -17,7 +17,7 @@ use App\Models;
 */
 
 Route::controller(Api\UserController::class)->middleware('auth:sanctum')->group(function() {
-    Route::get('users/{limit}/{offset}', [Api\UserController::class, 'index']);
+    Route::get('users/', [Api\UserController::class, 'index']);
     Route::get('users/{id}', [Api\UserController::class, 'show']);
     Route::delete('users/{id}', [Api\UserController::class, 'destroy']);
     Route::patch('users/', [Api\UserController::class, 'update']);
@@ -34,7 +34,7 @@ Route::controller(Api\PasswordController::class)->middleware('guest')->group(fun
 });
 
 Route::controller(Api\OrganizationController::class)->middleware('auth:sanctum')->group(function () {
-   Route::get('organizations/{limit}/{offset}', [Api\OrganizationController::class, 'index']);
+   Route::get('organizations/', [Api\OrganizationController::class, 'index']);
    Route::get('organizations/{id}', [Api\OrganizationController::class, 'show']);
    Route::get('organizations/{name}', [Api\OrganizationController::class, 'getByName']);
    Route::post('organizations', [Api\OrganizationController::class, 'store']);

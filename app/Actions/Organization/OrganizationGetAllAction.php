@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrganizationGetAllAction {
     public function handle(int $limit,int $offset) {
-        return DB::table('organizations')
-            ->limit($limit)
-            ->offset($offset)
-            ->get();
+        return Organization::limit($limit)->offset($offset)->get();
     }
 }

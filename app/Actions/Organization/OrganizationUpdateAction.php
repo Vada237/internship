@@ -12,12 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class OrganizationUpdateAction {
     public function handle($credentials, int $organization_id,User $user) {
 
-        $organization = $user->organizations()->find($organization_id);
-
-        if ($organization != null) {
-            $organization->update($credentials);
-            return $organization;
-        } else return __("Организация не найдена");
-
+        $organization = $user->organizations()->findOrFail($organization_id);
+        return $organization->update($credentials);
     }
 }

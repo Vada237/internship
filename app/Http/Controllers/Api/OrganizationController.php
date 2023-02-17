@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
-    public function index(OrganizationGetAllAction $action,int $limit,int $offset)
+    public function index(OrganizationGetAllAction $action, Request $request)
     {
-        return OrganizationResource::collection($action->handle($limit,$offset));
+        return OrganizationResource::collection($action->handle($request->query('limit'),$request->query('offset')));
     }
 
     public function store(OrganizationCreateAction $action, OrganizationRequest $request)

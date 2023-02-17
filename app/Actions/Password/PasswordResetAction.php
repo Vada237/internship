@@ -26,7 +26,7 @@ class PasswordResetAction {
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return __('Пароль успешно сброшен');
+            return __('passwords.reset');
         }
     }
 }
