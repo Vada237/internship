@@ -21,6 +21,23 @@ class UserSeeder extends Seeder
             'password' => 'denis123'
         ]);
 
-        User::factory()->count(4)->create();
+        User::create(
+        [
+            'name' => "ivan",
+            'email' => 'ivan@mail.ru',
+            'password' => 'ivan123'
+        ]);
+
+        User::create([
+            'name' => "sergey",
+            'email' => 'sergey@mail.ru',
+            'password' => 'sergey123'
+        ]);
+
+        User::create([
+            'name' => "noRoleUser",
+            'email' => 'norole@mail.ru',
+            'password' => 'norole123'
+        ]);
     }
 }
