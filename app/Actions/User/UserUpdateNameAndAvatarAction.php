@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Storage;
 
 class UserUpdateNameAndAvatarAction
 {
-    public function handle($credentials, User $user)
+    public function handle($credentials, int $id)
     {
+        $user = User::find($id);
         $user->name = $credentials['name'];
 
         if (array_key_exists('avatar', $credentials)) {

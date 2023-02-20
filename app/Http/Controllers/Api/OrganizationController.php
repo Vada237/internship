@@ -32,18 +32,15 @@ class OrganizationController extends Controller
         return new OrganizationResource($action->handle($id));
     }
 
-    public function getByName(OrganizationGetByNameAction $action,string $name)
+    public function update(OrganizationRequest $request, OrganizationUpdateAction $action,int $id)
     {
-        return new OrganizationResource($action->handle($name));
-    }
-
-    public function update(OrganizationRequest $request, OrganizationUpdateAction $action,int $organization_id)
-    {
-        return new OrganizationResource($action->handle($request->validated(), $organization_id,Auth::user()));
+        $this->authorize('view',Organization::find($id));
+        return new OrganizationResource($action->handle($request->validated(), $id,Auth::user()));
     }
 
     public function destroy(OrganizationDeleteAction $action,int $id)
     {
+        $this->authorize('view',Organization::find($id));
         return $action->handle($id, Auth::user());
     }
 }

@@ -8,6 +8,7 @@ use App\Actions\User\UserUpdateNameAndAvatarAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +25,13 @@ class UserController extends Controller
         return new UserResource($action->handle($id));
     }
 
-    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request) {
-        return new UserResource($action->handle($request->validated(),Auth::user()));
+    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request,int $id) {
+        $this->authorize('update', User::find($id));
+        return new UserResource($action->handle($request->validated(),$id));
     }
     public function destroy(UserDeleteByIdAction $action,int $id)
     {
+        $this->authorize('delete', User::find($id));
         return $action->handle($id);
     }
 }
