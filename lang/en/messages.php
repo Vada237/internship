@@ -25,5 +25,11 @@ return [
             'success' => 'Organization name has been updated'
         ],
         'notfound' => 'Organization not found'
+    ],
+    'roles' => [
+        'delete' => [
+            'success' => 'Role has been deleted'
+        ],
+        'notfound' => 'Role not found'
     ]
 ];
