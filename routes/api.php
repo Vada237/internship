@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
@@ -16,11 +17,11 @@ use App\Models;
 |
 */
 
-Route::controller(Api\UserController::class)->middleware('auth:sanctum')->group(function() {
-    Route::get('users/', [Api\UserController::class, 'index']);
-    Route::get('users/{id}', [Api\UserController::class, 'show']);
+Route::controller(Api\UserController::class)->middleware(['auth:sanctum'])->group(function() {
+    Route::get('users/', [Api\UserController::class, 'index'])->can('viewAny',User::class);
+    Route::get('users/{id}', [Api\UserController::class, 'show'])->can('view',User::class);
+    Route::patch('users/{id}', [Api\UserController::class, 'update']);
     Route::delete('users/{id}', [Api\UserController::class, 'destroy']);
-    Route::patch('users/', [Api\UserController::class, 'update']);
 });
 
 Route::controller(Api\AuthController::class)->group(function() {
@@ -34,10 +35,9 @@ Route::controller(Api\PasswordController::class)->middleware('guest')->group(fun
 });
 
 Route::controller(Api\OrganizationController::class)->middleware('auth:sanctum')->group(function () {
-   Route::get('organizations/', [Api\OrganizationController::class, 'index']);
-   Route::get('organizations/{id}', [Api\OrganizationController::class, 'show']);
-   Route::get('organizations/{name}', [Api\OrganizationController::class, 'getByName']);
-   Route::post('organizations', [Api\OrganizationController::class, 'store']);
+   Route::get('organizations/', [Api\OrganizationController::class, 'index'])->can('viewAny',User::class);
+   Route::get('organizations/{id}', [Api\OrganizationController::class, 'show'])->can('view',User::class);
+   Route::post('organizations', [Api\OrganizationController::class, 'store'])->can('create',User::class);
    Route::patch('organizations/{id}', [Api\OrganizationController::class, 'update']);
    Route::delete('organizations/{id}', [Api\OrganizationController::class, 'destroy']);
 });
