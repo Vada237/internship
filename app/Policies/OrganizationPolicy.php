@@ -11,23 +11,20 @@ class OrganizationPolicy
     use HandlesAuthorization;
     public function viewAny(User $user)
     {
-        return $user->hasAnyRole('admin', 'user', 'organization-supervisor');
     }
     public function view(User $user)
     {
-        return $user->hasAnyRole('admin', 'user', 'organization-supervisor');
     }
     public function create(User $user)
     {
-        return $user->hasAnyRole('admin', 'user', 'organization-supervisor');
     }
     public function update(User $user, Organization $organization)
     {
-        return ($user->hasAnyRole('admin', 'organization-supervisor'));
+        return (($user->hasAnyRole('organization-supervisor') && $user->organizations()->get()->contains($organization)) || $user->hasAnyRole('admin'));
     }
     public function delete(User $user, Organization $organization)
     {
-        return $user->hasAnyRole('admin', 'organization-supervisor');
+        return ($user->hasAnyRole('organization-supervisor') && $user->organizations()->get()->contains($organization) || $user->hasAnyRole('admin'));
     }
     public function restore(User $user, Organization $organization)
     {

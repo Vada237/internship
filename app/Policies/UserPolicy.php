@@ -14,21 +14,19 @@ class UserPolicy
 
     public function viewAny(User $user)
     {
-        return $user->hasAnyRole('admin', 'user', 'organization-supervisor');
     }
 
     public function view(User $user)
     {
-        return $user->hasAnyRole('admin', 'user', 'organization-supervisor');
     }
 
     public function update(User $user, User $editedUser)
     {
-        return ($user->hasAnyRole('admin', 'user', 'organization-supervisor') && $user->id == $editedUser->id) || $user->hasRole('admin');
+        return ($user->id == $editedUser->id || $user->hasRole('admin'));
     }
 
     public function delete(User $user, User $deletedUser)
     {
-        return ($user->hasAnyRole('admin', 'user', 'organization-supervisor') && $user->id == $deletedUser->id) || $user->hasRole('admin');
+        return ($user->id == $deletedUser->id || $user->hasRole('admin'));
     }
 }
