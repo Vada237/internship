@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\UserSeeder;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -20,7 +24,7 @@ class UserTest extends TestCase
 
         $response = $this->actingAs($users[0])->get('api/users?limit=3&offset=0');
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJsonStructure([
             "data" => [
                 "*" => [
@@ -50,12 +54,12 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function testUpdateUserNameWithValidation()
+    public function testUpdateYourselfNameWithValidation()
     {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->patch("api/users", ["name" => "denis"]);
-        $response->assertStatus(200);
+        $this->seed();
+        $user = User::first();
+        $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "denis"]);
+        $response->assertOk();
         $response->assertJsonStructure([
             "data" => [
                 "id",
@@ -66,27 +70,29 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function testUpdateUserNameWithoutValidation()
+
+    public function testUpdateYourselfNameWithoutValidation()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->patch("api/users", ["name" => "d"]);
-        $response->assertStatus(422);
+        $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "d"]);
+        $response->assertUnprocessable();
     }
 
-    public function testUpdateAvatarWithValidation() {
+
+    public function testUpdateYourselfAvatarWithValidation() {
 
         Storage::fake('avatars');
 
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('avatar.jpg');
 
-        $response = $this->actingAs($user)->json('PATCH', '/api/users', [
+        $response = $this->actingAs($user)->json('PATCH', "/api/users/$user->id", [
             'name' => $user->name,
             'avatar' => $file
         ]);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertJsonStructure([
             "data" => [
                 "id",
@@ -97,7 +103,7 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function testUpdateAvatarWithoutValidation()
+    public function testUpdateYourselfAvatarWithoutValidation()
     {
 
         Storage::fake('avatars');
@@ -105,22 +111,22 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $file = UploadedFile::fake()->create('avatar.pdf');
 
-        $response = $this->actingAs($user)->json('PATCH', '/api/users', [
+        $response = $this->actingAs($user)->json('PATCH', "/api/users/$user->id", [
             'name' => $user->name,
             'avatar' => $file
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
     }
-    public function testDeleteUserAvatarWithValidation()
+    public function testDeleteYourselfAvatarWithValidation()
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->patch("api/users", ["name" => "denis","avatar" => null]);
-        $response->assertStatus(200);
+        $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "denis","avatar" => null]);
+        $response->assertOk();
     }
 
-    public function  testDeleteUser() {
+    public function  testDeleteYourself() {
         $user = User::factory()->create();
 
         $this->assertDatabaseHas('users', [
@@ -133,4 +139,25 @@ class UserTest extends TestCase
             'id' => $user->id
         ]);
     }
+
+    public function testDeleteUserWithoutPermission() {
+        $this->seed();
+        $user = User::factory()->create();
+        $deleted_user = User::skip(1)->first();
+        $response = $this->actingAs($user)->delete("api/users/$deleted_user->id");
+        $response->assertForbidden();
+    }
+
+    public function testUpdateUserWithoutPermission() {
+
+        $this->seed();
+        $user = User::factory()->create();
+        $deleted_user = User::skip(1)->first();
+
+        $response = $this->actingAs($user)->patch("api/users/$deleted_user->id", [
+            'name' => 'crushed'
+        ]);
+        $response->assertForbidden();
+    }
+
 }

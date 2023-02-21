@@ -16,16 +16,21 @@ class AuthTest extends TestCase
      */
     public function testNewUserCanRegister()
     {
+
         $response = $this->post('/api/auth/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(201);
+        $response->assertCreated();
         $response->assertJsonStructure([
             'name',
             'email'
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Test User',
+            'email' => 'test@example.com'
         ]);
     }
 
@@ -36,27 +41,29 @@ class AuthTest extends TestCase
             'email' => 'test@example2.com'
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
     }
 
-    public function testNewUserCanRegisterWithShortEmail() {
+    public function testNewUserCanRegisterWithShortEmail()
+    {
         $response = $this->post('api/auth/register', [
             'name' => 'Test user',
             'email' => 't@m.r',
             'password' => 'testpass'
         ]);
 
-        $response->assertStatus(422);
+        $response->assertUnprocessable();
 
     }
 
-    public function testLoginUser() {
+    public function testLoginUser()
+    {
         $user = User::factory()->create();
 
         $response = $this->post('api/auth/login', [
             'email' => $user->email,
             'password' => $user->password
         ]);
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }
