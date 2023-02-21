@@ -34,13 +34,13 @@ class OrganizationController extends Controller
 
     public function update(OrganizationRequest $request, OrganizationUpdateAction $action,int $id)
     {
-        $this->authorize('view',Organization::find($id));
+        $this->authorize('update', Organization::find($id));
         return new OrganizationResource($action->handle($request->validated(), $id,Auth::user()));
     }
 
     public function destroy(OrganizationDeleteAction $action,int $id)
     {
-        $this->authorize('view',Organization::find($id));
-        return $action->handle($id, Auth::user());
+        $this->authorize('delete',Organization::find($id));
+        return $action->handle($id);
     }
 }
