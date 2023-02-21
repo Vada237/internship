@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationDeleteAction
 {
-    public function handle(int $organization_id, User $user)
+    public function handle(int $organization_id)
     {
-        $organization = $user->organizations()->find($organization_id);
+
+        $organization = Organization::find($organization_id);
 
         if ($organization != null) {
             $organization->delete();

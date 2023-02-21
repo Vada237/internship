@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationUpdateAction {
     public function handle($credentials, int $organization_id,User $user) {
-
         $organization = $user->organizations()->findOrFail($organization_id);
-        return $organization->update($credentials);
+        $organization->update($credentials);
+        return $organization;
     }
 }
