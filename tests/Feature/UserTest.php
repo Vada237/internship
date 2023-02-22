@@ -22,16 +22,22 @@ class UserTest extends TestCase
     {
         $users = User::factory()->count(5)->create();
 
-        $response = $this->actingAs($users[0])->get('api/users?limit=3&offset=0');
+        $response = $this->actingAs($users[0])->get('api/users?limit=2&offset=0');
 
         $response->assertOk();
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             "data" => [
-                "*" => [
-                    "id",
-                    "name",
-                    "email",
-                    "avatar"
+                [
+                    "id" => User::first()->id,
+                    "name" => User::first()->name,
+                    "email" => User::first()->email,
+                    "avatar" => User::first()->avatar
+                ],
+                [
+                    "id" => User::offset(1)->first()->id,
+                    "name" => User::offset(1)->first()->name,
+                    "email" => User::offset(1)->first()->email,
+                    "avatar" => User::offset(1)->first()->avatar
                 ]
             ]
         ]);
@@ -44,12 +50,12 @@ class UserTest extends TestCase
 
         $response = $this->actingAs($user)->get("api/users/$user->id");
         $response->assertStatus(200);
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             "data" => [
-                "id",
-                "name",
-                "email",
-                "avatar"
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email,
+                "avatar" => $user->avatar
             ]
         ]);
     }
@@ -60,12 +66,12 @@ class UserTest extends TestCase
         $user = User::first();
         $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "denis"]);
         $response->assertOk();
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             "data" => [
-                "id",
-                "name",
-                "email",
-                "avatar"
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email,
+                "avatar" => $user->avatar
             ]
         ]);
     }
@@ -87,18 +93,20 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $file = UploadedFile::fake()->image('avatar.jpg');
 
-        $response = $this->actingAs($user)->json('PATCH', "/api/users/$user->id", [
+        $response = $this->actingAs($user)->patch("/api/users/$user->id", [
             'name' => $user->name,
             'avatar' => $file
         ]);
 
+        $user = User::where('id', $user->id)->first();
+
         $response->assertOk();
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             "data" => [
-                "id",
-                "name",
-                "email",
-                "avatar"
+                "id" => $user->id,
+                "name" => $user->name,
+                "email" => $user->email,
+                "avatar" => $user->avatar
             ]
         ]);
     }

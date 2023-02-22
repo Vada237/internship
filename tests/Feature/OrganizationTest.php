@@ -29,11 +29,9 @@ class OrganizationTest extends TestCase
             'name' => 'Nokia'
         ]);
 
-        $organization = $user->organizations()->where('name', 'Nokia')->first();
-
         $this->assertDatabaseHas('organizations', [
-            'id' => $organization->id,
-            'name' => $organization->name
+            'id' => $user->organizations()->where('name', 'Nokia')->first()->id,
+            'name' => $user->organizations()->where('name', 'Nokia')->first()->name
         ]);
 
         $response->assertCreated();
@@ -69,10 +67,10 @@ class OrganizationTest extends TestCase
         $response = $this->actingAs(User::first())->get("/api/organizations/{$organization->id}");
 
         $response->assertOk();
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             'data' => [
-                'id',
-                'name'
+                'id' => $organization->id,
+                'name' => $organization->name
             ]
         ]);
     }
@@ -81,18 +79,16 @@ class OrganizationTest extends TestCase
 
          $this->seed();
          $user = User::first();
-
          $organization = $user->organizations()->first();
 
          $response = $this->actingAs($user)->patch("api/organizations/$organization->id",[
              'name' => 'test'
          ]);
 
-        $response->assertOk();
-        $response->assertJsonStructure([
+        $response->assertExactJson([
             'data' => [
-                'id',
-                'name'
+                'id' => $organization->id,
+                'name' => 'test'
             ]
         ]);
     }
