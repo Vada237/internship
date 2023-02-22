@@ -29,5 +29,10 @@ class RoleSeeder extends Seeder
             'name' => 'Organization supervisor',
             'slug' => 'organization-supervisor'
         ]);
+
+        Role::create([
+            'name' => 'Employee',
+            'slug' => 'employee'
+        ]);
     }
 }
