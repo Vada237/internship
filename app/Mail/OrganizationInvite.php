@@ -2,6 +2,9 @@
 
 namespace App\Mail;
 
+use App\Models\Invite;
+use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,9 +21,11 @@ class OrganizationInvite extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Invite $invite, string $organization, string $sender)
     {
-        //
+        $this->invite = $invite;
+        $this->organization = $organization;
+        $this->sender = $sender;
     }
 
     /**
@@ -31,8 +36,17 @@ class OrganizationInvite extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Organization Invite',
+            subject: 'Приглашение в организацию',
         );
+    }
+
+    public function build()
+    {
+        return $this->from('denis.le2001@mail.ru')->view('invite.send')->with([
+            'invite' => $this->invite,
+            'organization' => $this->organization,
+            'sender' => $this->sender
+        ]);
     }
 
     /**
@@ -43,7 +57,7 @@ class OrganizationInvite extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'invite.send',
         );
     }
 
