@@ -42,3 +42,8 @@ Route::controller(Api\OrganizationController::class)->middleware('auth:sanctum')
    Route::patch('organizations/{id}', [Api\OrganizationController::class, 'update']);
    Route::delete('organizations/{id}', [Api\OrganizationController::class, 'destroy']);
 });
+
+Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->group(function () {
+   Route::post('invites/send', [Api\InviteController::class, 'send']);
+   Route::get('invites/accept/{token}', [Api\InviteController::class, 'accept'])->name('accept');
+});
