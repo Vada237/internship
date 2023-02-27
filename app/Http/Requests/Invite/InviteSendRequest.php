@@ -4,7 +4,7 @@ namespace App\Http\Requests\Invite;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InviteRequest extends FormRequest
+class InviteSendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
