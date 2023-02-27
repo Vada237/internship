@@ -7,7 +7,7 @@ use App\Models\User;
 class AuthRegisterAction {
     public function handle($credentials) {
 
-        $user = new User([
+        $user = User::Create([
             'name' => $credentials['name'],
             'email' => $credentials['email'],
             'password' => $credentials['password'],
@@ -16,7 +16,6 @@ class AuthRegisterAction {
         if (array_key_exists('avatar', $credentials)) {
             $user->avatar = $credentials['avatar']->store('public/avatars');
         }
-        $user->save();
 
         return $user;
     }

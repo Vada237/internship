@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class InviteSendAction {
-    public function handle($credentials,User $sender){
+    public function handle($credentials,User $sender) {
 
         $token = Str::random(60);
 
-        $invite = new Invite([
+        $invite = Invite::Create([
             'email' => $credentials['email'],
             'organization_id' => $credentials['organizationId'],
             'token' => $token
         ]);
-        $invite->save();
+
         $organization = Organization::find($credentials['organizationId']);
         Mail::to($credentials['email'])->send(new OrganizationInvite($invite,$organization->name,$sender->name));
 

@@ -20,9 +20,9 @@ class UserTest extends TestCase
 {
     public function testGetAllUsers()
     {
-        $users = User::factory()->count(5)->create();
+        $this->seed();
 
-        $response = $this->actingAs($users[0])->get('api/users?limit=2&offset=0');
+        $response = $this->actingAs(User::first())->get('api/users?limit=2&offset=0');
 
         $response->assertOk();
         $response->assertExactJson([
@@ -81,7 +81,7 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "d"]);
+        $response = $this->actingAs($user)->patchJson("api/users/$user->id", ["name" => "d"]);
         $response->assertUnprocessable();
     }
 
