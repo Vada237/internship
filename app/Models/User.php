@@ -39,4 +39,7 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function scopeByEmail($query,string $email) {
+        return $query->where('email',$email);
+    }
 }
