@@ -30,5 +30,17 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'Employee'
         ]);
+
+        Role::create([
+            'name' => 'ProjectSupervisor'
+        ]);
+
+        Role::create([
+            'name' => 'ProjectExecutor'
+        ]);
+
+        Role::create([
+            'name' => 'ProjectParticipant'
+        ]);
     }
 }
