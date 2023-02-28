@@ -11,11 +11,11 @@ use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    public function register (AuthRegisterAction $action,AuthRegisterRequest $request) {
+    public function register (AuthRegisterAction $action, AuthRegisterRequest $request) {
         return $action->handle($request->validated());
     }
 
-    public function login(AuthLoginAction $action,AuthLoginRequest $request) {
+    public function login(AuthLoginAction $action, AuthLoginRequest $request) {
         return $action->handle($request->validated());
     }
 }

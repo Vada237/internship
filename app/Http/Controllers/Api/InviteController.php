@@ -19,7 +19,7 @@ class InviteController extends Controller
         return $action->handle($request->validated(),Auth::user());
     }
 
-    public function accept(InviteAcceptAction $action,string $token) {
+    public function accept(InviteAcceptAction $action, string $token) {
         $this->authorize('accept', Invite::where('token', $token)->first());
         return $action->handle($token);
     }
