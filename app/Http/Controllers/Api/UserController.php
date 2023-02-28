@@ -17,21 +17,22 @@ class UserController extends Controller
 {
     public function index(UserGetAllAction $action, Request $request)
     {
+        $this->authorize('viewAny', User::class);
         return UserResource::collection($action->handle($request->query('limit'),$request->query('offset')));
     }
 
-    public function show(UserGetByIdAction $action,int $id)
+    public function show(UserGetByIdAction $action,User $user)
     {
-        return new UserResource($action->handle($id));
+        return new UserResource($action->handle($user));
     }
 
-    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request,int $id) {
-        $this->authorize('update', User::find($id));
-        return new UserResource($action->handle($request->validated(),$id));
+    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request,User $user) {
+        $this->authorize('update', $user);
+        return new UserResource($action->handle($request->validated(),$user));
     }
-    public function destroy(UserDeleteByIdAction $action,int $id)
+    public function destroy(UserDeleteByIdAction $action,User $user)
     {
-        $this->authorize('update', User::find($id));
-        return $action->handle($id);
+        $this->authorize('update', $user);
+        return $action->handle($user);
     }
 }

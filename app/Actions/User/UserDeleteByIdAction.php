@@ -9,17 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class UserDeleteByIdAction
 {
-    public function handle(int $id)
+    public function handle(User $user)
     {
-        $user = User::find($id);
-
-        if ($user != null) {
-            if ($user->avatar != null) {
-                Storage::delete($user->avatar);
-            }
-            $user->delete();
-            return __('messages.user.delete.success');
-        } else
-            return __('messages.user.notfound');
+        if ($user->avatar != null) {
+            Storage::delete($user->avatar);
+        }
+        $user->delete();
+        return __('messages.user.delete.success');
     }
 }

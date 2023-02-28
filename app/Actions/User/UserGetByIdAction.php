@@ -7,8 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserGetByIdAction {
-    public function handle(int $id) {
-
-        return User::findOrFail($id);
+    public function handle(User $user) {
+        return $user;
     }
 }

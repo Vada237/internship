@@ -36,7 +36,7 @@ class AuthTest extends TestCase
 
     public function testNewUserCanRegisterWithoutPassword()
     {
-        $response = $this->post('api/auth/register', [
+        $response = $this->postjson('api/auth/register', [
             'name' => 'Test user',
             'email' => 'test@example2.com'
         ]);
@@ -46,7 +46,7 @@ class AuthTest extends TestCase
 
     public function testNewUserCanRegisterWithShortEmail()
     {
-        $response = $this->post('api/auth/register', [
+        $response = $this->postJson('api/auth/register', [
             'name' => 'Test user',
             'email' => 't@m.r',
             'password' => 'testpass'
@@ -60,7 +60,7 @@ class AuthTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post('api/auth/login', [
+        $response = $this->postJson('api/auth/login', [
             'email' => $user->email,
             'password' => $user->password
         ]);

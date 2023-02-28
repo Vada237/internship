@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'name' => "noRoleUser",
-            'email' => 'norole@mail.ru',
+            'email' => 'd61173897@gmail.com',
             'password' => 'norole123'
         ]);
     }

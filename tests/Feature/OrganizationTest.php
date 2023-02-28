@@ -14,7 +14,7 @@ class OrganizationTest extends TestCase
     {
         $this->seed();
 
-        $responce = $this->actingAs(User::first())->post('api/organizations', [
+        $responce = $this->actingAs(User::first())->postJson('api/organizations', [
             'name' => 'n'
         ]);
 
@@ -99,11 +99,11 @@ class OrganizationTest extends TestCase
         $user = User::first();
         $organization = $user->organizations()->first();
 
-        $response = $this->assertDatabaseHas('organizations',[
+        $this->assertDatabaseHas('organizations',[
             'id' => $organization->id
         ]);
 
-        $response = $this->actingAs($user)->patch("api/organizations/$organization->id",[
+        $response = $this->actingAs($user)->patchJson("api/organizations/$organization->id",[
             'name' => 'n'
         ]);
 
@@ -123,13 +123,12 @@ class OrganizationTest extends TestCase
         $response->assertOk();
     }
 
-    public function testDeleteWithoutPermission()
+    public function testDeleteOrganizationWithoutPermission()
     {
         $user = User::factory()->create();
+        $organization = Organization::factory()->create();
 
-        $response = $this->actingAs($user)->delete("api/organizations/1000000", [
-            'name' => 'test'
-        ]);
+        $response = $this->actingAs($user)->deleteJson("api/organizations/$organization->id");
 
         $response->assertForbidden();
     }
