@@ -48,3 +48,11 @@ Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->grou
     Route::post('invites/send', [Api\InviteController::class, 'send']);
     Route::get('invites/accept/{token}', [Api\InviteController::class, 'accept'])->name('accept');
 });
+
+Route::controller(Api\ProjectController::class)->middleware('auth:sanctum')->group(function () {
+    Route::get('projects/{organization}', [Api\ProjectController::class, 'index']);
+    Route::get('projects/{project}', [Api\ProjectController::class, 'show']);
+    Route::post('projects', [Api\ProjectController::class, 'store']);
+    Route::patch('projects/{project}', [Api\ProjectController::class, 'update']);
+    Route::delete('projects/{project}', [Api\ProjectController::class, 'destroy']);
+});
