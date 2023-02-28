@@ -18,17 +18,17 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        $admin = Role::where('slug', 'admin')->first();
-        $user = Role::where('slug', 'user')->first();
-        $organizationSupervisor = Role::where('slug', 'organization-supervisor')->first();
+        $admin = Role::where('name', 'Admin')->first();
+        $user = Role::where('name', 'User')->first();
+        $organizationSupervisor = Role::where('name', 'OrganizationSupervisor')->first();
 
-        $findUser = Permission::where('slug', 'find-users')->first();
-        $editUser = Permission::where('slug', 'edit-user')->first();
-        $deleteUser = Permission::where('slug', 'delete-user')->first();
-        $findCompany = Permission::where('slug', 'find-company')->first();
-        $createCompany = Permission::where('slug', 'create-company')->first();
-        $editCompany = Permission::where('slug', 'edit-company')->first();
-        $deleteCompany = Permission::where('slug', 'delete-company')->first();
+        $findUser = Permission::where('name', 'FindUsers')->first();
+        $editUser = Permission::where('name', 'EditUser')->first();
+        $deleteUser = Permission::where('name', 'DeleteUser')->first();
+        $findCompany = Permission::where('name', 'FindCompany')->first();
+        $createCompany = Permission::where('name', 'CreateCompany')->first();
+        $editCompany = Permission::where('name', 'EditCompany')->first();
+        $deleteCompany = Permission::where('name', 'DeleteCompany')->first();
 
         $admin->permissions()->saveMany(Permission::all());
 

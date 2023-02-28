@@ -16,7 +16,7 @@ trait HasRoles
 
     public function hasAnyRole(... $roles ) {
         foreach ($roles as $role) {
-            if ($this->roles->contains('slug', $role)) {
+            if ($this->roles->contains('name', $role)) {
                 return true;
             }
         }
@@ -24,7 +24,7 @@ trait HasRoles
     }
 
     public function hasRole(string $role) {
-        if ($this->roles()->where('slug', $role)->first()) {
+        if ($this->roles()->where('name', $role)->first()) {
             return true;
         }
         return false;
@@ -32,7 +32,7 @@ trait HasRoles
 
     public function getRole(string $role)
     {
-        return Role::where('slug', $role)->first();
+        return Role::where('name', $role)->first();
     }
 
     public function giveRole(string $role, int $organization_id)

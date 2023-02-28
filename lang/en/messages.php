@@ -24,6 +24,9 @@ return [
         'update' => [
             'success' => 'Organization name has been updated'
         ],
+        'join' => [
+            'success' => 'You joined an organization'
+        ],
         'notfound' => 'Organization not found'
     ],
     'roles' => [
@@ -31,5 +34,10 @@ return [
             'success' => 'Role has been deleted'
         ],
         'notfound' => 'Role not found'
-    ]
+    ],
+    'mail' => [
+        'send' => [
+            'success' => 'Mail has been sended'
+        ]
+    ],
 ];

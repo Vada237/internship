@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class OrganizationGetAllAction {
-    public function handle(int $limit,int $offset) {
-        return Organization::limit($limit)->offset($offset)->get();
+    public function handle($params) {
+        return Organization::limit($params['limit'])->offset($params['offset'])->get();
     }
 }

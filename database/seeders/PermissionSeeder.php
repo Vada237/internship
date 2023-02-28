@@ -17,38 +17,31 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         Permission::create([
-            'name' => 'Find users',
-            'slug' => 'find-users'
+            'name' => 'FindUsers'
         ]);
 
         Permission::create([
-            'name' => 'Edit user',
-            'slug' => 'edit-user'
+            'name' => 'EditUser'
         ]);
 
         Permission::create([
-            'name' => 'Delete user',
-            'slug' => 'delete-user'
+            'name' => 'DeleteUser'
         ]);
 
         Permission::create([
-            'name' => 'Find company',
-            'slug' => 'find-company'
+            'name' => 'FindCompany'
         ]);
 
         Permission::create([
-            'name' => 'Create company',
-            'slug' => 'create-company'
+            'name' => 'CreateCompany'
         ]);
 
         Permission::create([
-            'name' => 'Edit company',
-            'slug' => 'edit-company'
+            'name' => 'EditCompany'
         ]);
 
         Permission::create([
-            'name' => 'Delete company',
-            'slug' => 'delete-company'
+            'name' => 'DeleteCompany'
         ]);
     }
 }

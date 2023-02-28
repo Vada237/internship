@@ -10,14 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationDeleteAction
 {
-    public function handle(int $organization_id)
-    {
-
-        $organization = Organization::find($organization_id);
-
-        if ($organization != null) {
-            $organization->delete();
-            return __('messages.organizations.delete.success');
-        } else return __('messages.organizations.notfound');
+    public function handle(Organization $organization){
+        $organization->delete();
+        return __('messages.organizations.delete.success');
     }
 }

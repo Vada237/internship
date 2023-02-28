@@ -32,9 +32,4 @@ class AuthRegisterRequest extends FormRequest
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png'
         ];
     }
-
-        public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
-    }
 }

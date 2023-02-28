@@ -10,11 +10,11 @@ use App\Http\Requests\Password\PasswordResetRequest;
 
 class PasswordController extends Controller
 {
-    public function forgot (PasswordForgotAction $action,PasswordForgotRequest $request) {
+    public function forgot(PasswordForgotAction $action, PasswordForgotRequest $request) {
         return $action->handle($request->validated());
     }
 
-    public function reset (PasswordResetAction $action,PasswordResetRequest $request) {
+    public function reset(PasswordResetAction $action, PasswordResetRequest $request) {
         return $action->handle($request->validated());
     }
 }

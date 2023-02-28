@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_boards', function (Blueprint $table) {
+            $table->id();
             $table->integer('user_id');
             $table->integer('board_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('board_id')->references('id')->on('boards');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');;
+            $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');;
 
-            $table->primary(['user_id','board_id']);
+            $table->unique(['user_id','board_id']);
         });
     }
 
