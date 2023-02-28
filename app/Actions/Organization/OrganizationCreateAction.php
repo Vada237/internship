@@ -11,9 +11,9 @@ use App\Models\UserOrganization;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationCreateAction {
-    public function handle($params,User $user) {
-        $organization = Organization::create($params);        
-        $user->organizations()->attach($organization->id,['role_id' => Role::where('slug', 'organization-supervisor')->first()->id]);
+    public function handle($params, User $user) {
+        $organization = Organization::create($params);
+        $user->organizations()->attach($organization->id,['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
         return $organization;
     }
 }

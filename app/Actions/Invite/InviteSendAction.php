@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class InviteSendAction {
-    public function handle($credentials,User $sender) {
+    public function handle($params, User $sender) {
 
         $token = Str::random(60);
 
         $invite = Invite::Create([
-            'email' => $credentials['email'],
-            'organization_id' => $credentials['organizationId'],
+            'email' => $params['email'],
+            'organization_id' => $params['organizationId'],
             'token' => $token
         ]);
 
-        $organization = Organization::find($credentials['organizationId']);
-        Mail::to($credentials['email'])->send(new OrganizationInvite($invite,$organization->name,$sender->name));
+        $organization = Organization::find($params['organizationId']);
+        Mail::to($params['email'])->send(new OrganizationInvite($invite, $organization->name, $sender->name));
 
         return __('messages.mail.send.success');
     }
