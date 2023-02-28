@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -85,7 +86,7 @@ class InviteTest extends TestCase
         $this->assertDatabaseHas('user_organization_roles', [
             'user_id' => $invitedUser->id,
             'organization_id' => $invite->organization_id,
-            'role_id' => Role::where('slug', 'employee')->first()->id
+            'role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id
         ]);
         $response->assertOk();
     }

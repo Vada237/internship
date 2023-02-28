@@ -20,12 +20,12 @@ class OrganizationTest extends TestCase
 
         $responce->assertUnprocessable();
     }
-
     public function testCreateOrganizationWithValidation()
     {
         $this->seed();
         $user = User::first();
-        $response = $this->actingAs($user)->post('api/organizations', [
+
+        $response = $this->actingAs($user)->postJson('api/organizations', [
             'name' => 'Nokia'
         ]);
 
@@ -36,14 +36,13 @@ class OrganizationTest extends TestCase
 
         $response->assertCreated();
     }
-
     public function testGetOrganization()
     {
         $this->seed();
 
-        $response = $this->actingAs(User::first())->get('api/organizations?limit=2&offset=0');
-        $response->assertOk();
+        $response = $this->actingAs(User::first())->getJson('api/organizations?limit=2&offset=0');
 
+        $response->assertOk();
         $response->assertExactJson([
             "data" => [
                 [
@@ -57,14 +56,21 @@ class OrganizationTest extends TestCase
             ]
         ]);
     }
+    public function testGetAnotherOrganizationById()
+    {
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
 
+        $response = $this->actingAs($user)->getJson("/api/organizations/{$organization->id}");
+
+        $response->assertForbidden();
+    }
     public function testGetOrganizationById()
     {
         $this->seed();
-
         $organization = Organization::first();
 
-        $response = $this->actingAs(User::first())->get("/api/organizations/{$organization->id}");
+        $response = $this->actingAs(User::first())->getJson("/api/organizations/{$organization->id}");
 
         $response->assertOk();
         $response->assertExactJson([
