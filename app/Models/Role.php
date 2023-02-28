@@ -13,7 +13,10 @@ class Role extends Model
         'ADMIN' => 'Admin',
         'USER' => 'User',
         'ORGANIZATION_SUPERVISOR' => 'OrganizationSupervisor',
-        'EMPLOYEE' => 'Employee'
+        'EMPLOYEE' => 'Employee',
+        'PROJECT_SUPERVISOR' => 'ProjectSupervisor',
+        'PROJECT_EXECUTOR' => 'ProjectExecutor',
+        'PROJECT_PARTICIPANT' => 'ProjectParticipant'
     ];
 
     public function organizations() {
@@ -24,6 +27,10 @@ class Role extends Model
     public function users() {
         return $this->belongsToMany(User::class, 'user_organization_roles', 'role_id', 'user_id')
             ->withTimestamps();
+    }
+
+    public function projects() {
+        return $this->belongsToMany(Project::class, 'user_project_roles', 'role_id', 'project_id');
     }
 
     public function permissions() {

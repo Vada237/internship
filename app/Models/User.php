@@ -39,6 +39,10 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function projects() {
+        return $this->belongsToMany(Project::class, 'user_project_roles', 'user_id', 'project_id');
+    }
+
     public function scopeByEmail($query,string $email) {
         return $query->where('email',$email);
     }
