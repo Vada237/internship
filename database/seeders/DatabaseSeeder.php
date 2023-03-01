@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
            RolePermissionSeeder::class,
            UserSeeder::class,
            OrganizationSeeder::class,
-           UserOrganizationRoleSeeder::class
+           UserOrganizationRoleSeeder::class,
+           ProjectSeeder::class,
+           UserProjectRoleSeeder::class
        ]);
     }
 }
