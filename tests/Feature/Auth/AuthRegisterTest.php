@@ -1,22 +1,15 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class AuthRegisterTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testNewUserCanRegister()
+    public function testNewUserCanRegisterSuccess()
     {
-
         $response = $this->post('/api/auth/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -28,6 +21,7 @@ class AuthTest extends TestCase
             'name',
             'email'
         ]);
+
         $this->assertDatabaseHas('users', [
             'name' => 'Test User',
             'email' => 'test@example.com'
@@ -53,17 +47,5 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-
-    }
-
-    public function testLoginUser()
-    {
-        $user = User::factory()->create();
-
-        $response = $this->postJson('api/auth/login', [
-            'email' => $user->email,
-            'password' => $user->password
-        ]);
-        $response->assertOk();
     }
 }
