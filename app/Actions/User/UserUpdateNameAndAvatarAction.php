@@ -21,7 +21,7 @@ class UserUpdateNameAndAvatarAction
                 $user->avatar = null;
             }
 
-            if ($params['avatar'] != null){
+            if ($params['avatar'] != null) {
                 $user->avatar = $params['avatar']->store('public/avatars');
             }
         }
