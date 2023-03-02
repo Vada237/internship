@@ -14,7 +14,14 @@ trait HasRoles
             ->withTimestamps();
     }
 
-    public function hasAnyRole(... $roles ) {
+    public function projectRoles()
+    {
+        return $this->belongsToMany(Role::class, 'user_project_roles', 'user_id', 'role_id')
+            ->withTimestamps();
+    }
+
+    public function hasAnyRole(...$roles)
+    {
         foreach ($roles as $role) {
             if ($this->roles->contains('name', $role)) {
                 return true;
@@ -23,13 +30,31 @@ trait HasRoles
         return false;
     }
 
-    public function hasRole(string $role) {
+    public function hasRole(string $role)
+    {
         if ($this->roles()->where('name', $role)->first()) {
             return true;
         }
         return false;
     }
 
+    public function hasProjectRole(string $role)
+    {
+        if ($this->projectRoles()->where('name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function hasAnyProjectRole(... $projectRoles)
+    {
+        foreach ($projectRoles as $role) {
+            if ($this->projectRoles->contains('name', $role)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public function getRole(string $role)
     {
         return Role::where('name', $role)->first();
