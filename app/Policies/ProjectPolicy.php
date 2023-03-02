@@ -20,31 +20,33 @@ class ProjectPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasRole(Role::list['ADMIN']);
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param \App\Models\User $user
-     * @param \App\Models\Project $project
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Project $project
+     * @return bool
      */
-    public function view(User $user, Project $project)
+    public function view(User $user, Project $project): bool
     {
-        //
+        return ($user->hasRole(Role::list['ADMIN']) || $user->organizations()->find($project->organization_id));
+    }
+
+    public function viewByOrganization(User $user, Organization $organization): bool
+    {
+        return ($user->hasRole(Role::list['ADMIN']) || $user->organizations()->find($organization));
     }
 
     /**
-     * Determine whether the user can create models.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     * @param User $user
+     * @param Organization $organization
+     * @return bool
      */
-    public function create(User $user, Organization $organization)
+    public function create(User $user, Organization $organization): bool
     {
         return ($user->hasRole(Role::list['ADMIN']) ||
-            ($user->hasAnyRole(Role::list['ORGANIZATION_SUPERVISOR'], Role::list['EMPLOYEE']) && $user->organizations()->find($organization->id) != null));
+            ($user->hasAnyRole(Role::list['ORGANIZATION_SUPERVISOR'], Role::list['EMPLOYEE']) && $user->organizations()->find($organization->id)));
     }
 
     /**
@@ -56,7 +58,10 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        //
+
+        return ($user->hasRole(Role::list['ADMIN']) ||
+            ($user->hasAnyProjectRole(Role::list['PROJECT_SUPERVISOR'], Role::list['PROJECT_EXECUTOR']) &&
+            $user->projects()->find($project->id)));
     }
 
     /**
