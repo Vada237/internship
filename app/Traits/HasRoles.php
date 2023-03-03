@@ -4,26 +4,31 @@ namespace App\Traits;
 
 use App\Models\Organization;
 use App\Models\Permission;
+use App\Models\Project;
 use App\Models\Role;
 
 trait HasRoles
 {
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_organization_roles', 'user_id', 'role_id')
+        return $this->belongsToMany(Role::class, 'user_organization_roles', 'user_id', 'role_id',)
+            ->withPivot('organization_id')
             ->withTimestamps();
     }
 
     public function projectRoles()
     {
         return $this->belongsToMany(Role::class, 'user_project_roles', 'user_id', 'role_id')
+            ->withPivot('project_id')
             ->withTimestamps();
     }
 
-    public function hasAnyRole(...$roles)
+    public function hasAnyOrganizationRole(Organization $organization, ...$roles)
     {
         foreach ($roles as $role) {
-            if ($this->roles->contains('name', $role)) {
+            if ($this->roles()
+                    ->where('organization_id', $organization->id)->first()
+                    ->pivot->role_id == Role::byName($role)->first()->id) {
                 return true;
             }
         }
@@ -46,15 +51,18 @@ trait HasRoles
         return false;
     }
 
-    public function hasAnyProjectRole(... $projectRoles)
+    public function hasAnyProjectRole(Project $project, ...$projectRoles)
     {
         foreach ($projectRoles as $role) {
-            if ($this->projectRoles->contains('name', $role)) {
+            if ($this->projectRoles()
+                    ->where('project_id', $project->id)->first()
+                    ->pivot->role_id == Role::byName($role)->first()->id) {
                 return true;
             }
         }
         return false;
     }
+
     public function getRole(string $role)
     {
         return Role::where('name', $role)->first();

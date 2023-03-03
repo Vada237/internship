@@ -9,8 +9,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class InviteSendAction {
-    public function handle($params, User $sender) {
+class InviteSendAction
+{
+    public function handle($params, User $sender)
+    {
 
         $token = Str::random(60);
 

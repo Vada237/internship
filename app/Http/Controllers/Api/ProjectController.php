@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\Project\ProjectCreateAction;
+use App\Actions\Project\ProjectDeleteAction;
 use App\Actions\Project\ProjectGetAllAction;
 use App\Actions\Project\ProjectGetByIdAction;
 use App\Actions\Project\ProjectGetByOrganizationAction;
@@ -52,8 +53,9 @@ class ProjectController extends Controller
         return new ProjectResource($action->handle($request->validated(), $project));
     }
 
-    public function destroy(Project $project)
+    public function destroy(ProjectDeleteAction $action, Project $project)
     {
-        //
+        $this->authorize('delete', [Project::class, $project]);
+        return $action->handle($project);
     }
 }

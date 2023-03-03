@@ -16,12 +16,14 @@ class Project extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'users', 'user_id', 'project_id');
+        return $this->belongsToMany(User::class, 'users', 'user_id', 'project_id')
+            ->withTimestamps();
     }
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'roles', 'role_id', 'project_id');
+        return $this->belongsToMany(Role::class, 'roles', 'role_id', 'project_id')
+            ->withTimestamps();
     }
 
     public function organization()

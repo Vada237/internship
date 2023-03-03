@@ -4,8 +4,10 @@ namespace App\Actions\Auth;
 
 use App\Models\User;
 
-class AuthRegisterAction {
-    public function handle($credentials) {
+class AuthRegisterAction
+{
+    public function handle($credentials)
+    {
 
         $user = User::Create([
             'name' => $credentials['name'],

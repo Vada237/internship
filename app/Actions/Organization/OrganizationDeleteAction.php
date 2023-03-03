@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationDeleteAction
 {
-    public function handle(Organization $organization){
+    public function handle(Organization $organization)
+    {
         $organization->delete();
         return __('messages.organizations.delete.success');
     }

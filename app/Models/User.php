@@ -36,11 +36,14 @@ class User extends Authenticatable
 
     public function organizations() {
         return $this->belongsToMany(Organization::class, 'user_organization_roles', 'user_id', 'organization_id')
+            ->withPivot('role_id')
             ->withTimestamps();
     }
 
     public function projects() {
-        return $this->belongsToMany(Project::class, 'user_project_roles', 'user_id', 'project_id');
+        return $this->belongsToMany(Project::class, 'user_project_roles', 'user_id', 'project_id')
+            ->withPivot('role_id')
+            ->withTimestamps();
     }
 
     public function scopeByEmail($query,string $email) {

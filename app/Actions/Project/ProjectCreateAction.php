@@ -9,16 +9,14 @@ use App\Models\User;
 
 class ProjectCreateAction
 {
-
     public function handle($params, User $user)
     {
-
         $project = Project::create([
             'name' => $params['name'],
             'organization_id' => $params['organizationId']
         ]);
 
-        $user->projects()->attach($project->id,['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+        $user->projects()->attach($project->id, ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
 
         return $project;
     }
