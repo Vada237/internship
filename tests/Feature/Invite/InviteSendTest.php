@@ -3,6 +3,8 @@
 namespace Tests\Feature\Invite;
 
 use App\Mail\OrganizationInvite;
+use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -51,15 +53,18 @@ class InviteSendTest extends TestCase
     public function testSendInviteWithoutPermission()
     {
         $this->seed();
+
         Mail::fake();
 
-        $supervisor = User::first();
+        $organization = Organization::factory()->create();
         $fakeSupervisor = User::factory()->create();
         $invitedUser = User::offset(1)->first();
 
+        $fakeSupervisor->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+
         $response = $this->actingAs($fakeSupervisor)->postJson('api/invites/send', [
             'email' => $invitedUser->email,
-            'organizationId' => $supervisor->organizations()->first()->id
+            'organizationId' => $fakeSupervisor->organizations()->first()->id
         ]);
 
         Mail::assertNotSent(OrganizationInvite::class);

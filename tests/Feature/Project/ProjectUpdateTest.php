@@ -62,7 +62,7 @@ class ProjectUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
 
         $user->projects()->attach($project->id,
             ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);

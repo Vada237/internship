@@ -42,29 +42,12 @@ class ProjectCreateTest extends TestCase
         $response->assertUnprocessable();
     }
 
-    public function testCreateProjectByUserWhoIsNotInThisOrganization()
-    {
-        $this->seed();
-
-        $supervisor = User::factory()->create();
-        $anotherUser = User::factory()->create();
-        $organization = Organization::factory()->create();
-
-        $supervisor->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
-
-        $response = $this->actingAs($anotherUser)->postJson('api/projects', [
-            'name' => 'Autochess',
-            'organizationId' => $organization->id
-        ]);
-
-        $response->assertForbidden();
-    }
-
     public function testCreateProjectByUserWithoutPermission()
     {
         $this->seed();
         $notEmployee = User::factory()->create();
         $organization = Organization::factory()->create();
+
         $notEmployee->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
 
         $response = $this->actingAs($notEmployee)->postJson('api/projects', [

@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\Organization;
 
+use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -42,5 +44,24 @@ class OrganizationUpdateTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
+    }
+
+    public function testUpdateAnotherOrganizationWithoutPermissionForbidden()
+    {
+        $this->seed();
+        $user = User::offset(1)->first();
+        $organizations = Organization::factory()->count(2)->create();
+
+        $user->organizations()->attach($organizations[0]->id,
+            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+
+        $user->organizations()->attach($organizations[1]->id,
+            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+
+        $responce = $this->actingAs($user)->patchJson("api/organizations/{$organizations[1]->id}", [
+            'name' => 'updated organization'
+        ]);
+
+        $responce->assertForbidden();
     }
 }
