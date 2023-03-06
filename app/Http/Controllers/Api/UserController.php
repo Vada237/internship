@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Actions\User\UserDeleteByIdAction;
 use App\Actions\User\UserGetAllAction;
 use App\Actions\User\UserGetByIdAction;
@@ -27,11 +28,13 @@ class UserController extends Controller
         return new UserResource($action->handle($user));
     }
 
-    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request, User $user) {
-        $this->authorize('update', $user);
+    public function update(UserUpdateNameAndAvatarAction $action, UserUpdateRequest $request, User $user)
+    {
+        $this->authorize('update', [User::class, $user]);
         return new UserResource($action->handle($request->validated(), $user));
     }
-    public function destroy(UserDeleteByIdAction $action,User $user)
+
+    public function destroy(UserDeleteByIdAction $action, User $user)
     {
         $this->authorize('update', $user);
         return $action->handle($user);

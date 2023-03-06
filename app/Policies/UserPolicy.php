@@ -21,6 +21,7 @@ class UserPolicy
 
     public function view(User $user)
     {
+
     }
 
     public function update(User $user, User $editedUser)

@@ -18,10 +18,10 @@ class UserOrganizationRoleSeeder extends Seeder
     public function run()
     {
         $users = User::all();
-        $users[0]->organizations()->attach(Organization::first()->id,[ 'role_id' => Role::where('name', 'Admin')->first()->id]);
-        $users[1]->organizations()->attach(Organization::first()->id,[ 'role_id' => Role::where('name', 'User')->first()->id]);
-        $users[2]->organizations()->attach(Organization::first()->id,[ 'role_id' => Role::where('name', 'User')->first()->id]);
-        $users[2]->organizations()->attach(Organization::first()->id,[ 'role_id' => Role::where('name', 'OrganizationSupervisor')->first()->id]);
-        $users[3]->organizations()->attach(Organization::skip(1)->first()->id,[ 'role_id' => Role::where('name', 'OrganizationSupervisor')->first()->id]);
+        $users[0]->organizations()->attach(Organization::first()->id, ['role_id' => Role::where('name', 'Admin')->first()->id]);
+        $users[1]->organizations()->attach(Organization::first()->id, ['role_id' => Role::where('name', 'User')->first()->id]);
+        $users[2]->organizations()->attach(Organization::first()->id, ['role_id' => Role::where('name', 'User')->first()->id]);
+        $users[2]->organizations()->attach(Organization::first()->id, ['role_id' => Role::where('name', 'OrganizationSupervisor')->first()->id]);
+        $users[3]->organizations()->attach(Organization::skip(1)->first()->id, ['role_id' => Role::where('name', 'OrganizationSupervisor')->first()->id]);
     }
 }

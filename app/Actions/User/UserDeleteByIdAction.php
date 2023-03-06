@@ -11,7 +11,8 @@ class UserDeleteByIdAction
 {
     public function handle(User $user)
     {
-        if ($user->avatar != null) {
+        if (isset($user->avatar))
+        {
             Storage::delete($user->avatar);
         }
         $user->delete();

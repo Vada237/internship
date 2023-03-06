@@ -18,18 +18,21 @@ class OrganizationPolicy
         return false;
     }
 
-    public function view(User $user,Organization $organization) {
+    public function view(User $user, Organization $organization)
+    {
         if ($user->organizations()->find($organization->id) != null || $user->hasRole(Role::list['ADMIN'])) return true;
         return false;
     }
+
     public function update(User $user, Organization $organization)
     {
-        return (($user->hasAnyRole(Role::list['ORGANIZATION_SUPERVISOR']) && $user->organizations()->get()->contains($organization))
-            || $user->hasAnyRole(Role::list['ADMIN']));
+        return (($user->hasAnyOrganizationRole($organization, Role::list['ORGANIZATION_SUPERVISOR'])
+            || $user->hasRole(Role::list['ADMIN'])));
     }
+
     public function delete(User $user, Organization $organization)
     {
-        return ($user->hasAnyRole(Role::list['ORGANIZATION_SUPERVISOR']) && $user->organizations()->get()->contains($organization)
-            || $user->hasAnyRole(Role::list['ADMIN']));
+        return ($user->hasAnyOrganizationRole($organization, Role::list['ORGANIZATION_SUPERVISOR'])
+            || $user->hasRole(Role::list['ADMIN']));
     }
 }
