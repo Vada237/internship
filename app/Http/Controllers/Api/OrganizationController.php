@@ -20,7 +20,7 @@ class OrganizationController extends Controller
 {
     public function index(OrganizationGetAllAction $action, LimitOffsetRequest $request)
     {
-        $this->authorize('viewAny',Organization::class);
+        $this->authorize('viewAny', Organization::class);
         return OrganizationResource::collection($action->handle($request->validated()));
     }
 
@@ -43,7 +43,7 @@ class OrganizationController extends Controller
 
     public function destroy(OrganizationDeleteAction $action, Organization $organization)
     {
-        $this->authorize('delete',$organization);
+        $this->authorize('delete', $organization);
         return $action->handle($organization);
     }
 }

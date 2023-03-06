@@ -19,26 +19,31 @@ class Role extends Model
         'PROJECT_PARTICIPANT' => 'ProjectParticipant'
     ];
 
-    public function organizations() {
+    public function organizations()
+    {
         return $this->belongsToMany(Organization::class, 'user_organization_roles', 'role_id', 'organization_id')
             ->withTimestamps();
     }
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'user_organization_roles', 'role_id', 'user_id')
             ->withTimestamps();
     }
 
-    public function projects() {
+    public function projects()
+    {
         return $this->belongsToMany(Project::class, 'user_project_roles', 'role_id', 'project_id');
     }
 
-    public function permissions() {
+    public function permissions()
+    {
         return $this->belongsToMany(Permission::class, 'role_permissions', 'role_id', 'permission_id')
             ->withTimestamps();
     }
 
-    public function scopeByName($query, $name) {
+    public function scopeByName($query, $name)
+    {
         return $query->where('name', $name);
     }
 }

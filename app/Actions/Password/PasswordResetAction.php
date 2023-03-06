@@ -10,10 +10,8 @@ use Illuminate\Support\Str;
 
 class PasswordResetAction
 {
-
     public function handle($credentials)
     {
-
         $status = Password::reset(
             $credentials,
             function ($user, $password) {

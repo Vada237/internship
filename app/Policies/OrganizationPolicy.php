@@ -27,7 +27,7 @@ class OrganizationPolicy
     public function update(User $user, Organization $organization)
     {
         return (($user->hasAnyOrganizationRole($organization, Role::list['ORGANIZATION_SUPERVISOR'])
-                || $user->hasRole(Role::list['ADMIN'])));
+            || $user->hasRole(Role::list['ADMIN'])));
     }
 
     public function delete(User $user, Organization $organization)

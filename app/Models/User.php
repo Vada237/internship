@@ -30,23 +30,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function setPasswordAttribute($password) {
+    public function setPasswordAttribute($password)
+    {
         $this->attributes['password'] = bcrypt($password);
     }
 
-    public function organizations() {
+    public function organizations()
+    {
         return $this->belongsToMany(Organization::class, 'user_organization_roles', 'user_id', 'organization_id')
             ->withPivot('role_id')
             ->withTimestamps();
     }
 
-    public function projects() {
+    public function projects()
+    {
         return $this->belongsToMany(Project::class, 'user_project_roles', 'user_id', 'project_id')
             ->withPivot('role_id')
             ->withTimestamps();
     }
 
-    public function scopeByEmail($query,string $email) {
-        return $query->where('email',$email);
+    public function scopeByEmail($query, string $email)
+    {
+        return $query->where('email', $email);
     }
 }

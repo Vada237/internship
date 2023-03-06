@@ -13,7 +13,6 @@ class InviteSendAction
 {
     public function handle($params, User $sender)
     {
-
         $token = Str::random(60);
 
         $invite = Invite::Create([

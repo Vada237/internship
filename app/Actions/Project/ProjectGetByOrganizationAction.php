@@ -7,7 +7,8 @@ use App\Models\Project;
 
 class ProjectGetByOrganizationAction
 {
-    public function handle(Organization $organization) {
+    public function handle(Organization $organization)
+    {
         return $organization->projects()->get();
     }
 }

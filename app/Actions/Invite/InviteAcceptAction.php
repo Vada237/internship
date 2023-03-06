@@ -15,7 +15,9 @@ class InviteAcceptAction
     {
         $invite = Invite::where('token', $token)->firstOrFail();
         $user = User::byEmail($invite->email)->firstOrFail();
+
         $user->organizations()->attach($invite->organization_id, ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+
         $invite->delete();
         return __('messages.organizations.join.success');
     }

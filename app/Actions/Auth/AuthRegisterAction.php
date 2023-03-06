@@ -8,7 +8,6 @@ class AuthRegisterAction
 {
     public function handle($credentials)
     {
-
         $user = User::Create([
             'name' => $credentials['name'],
             'email' => $credentials['email'],

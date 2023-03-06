@@ -11,7 +11,6 @@ class AuthLoginAction
 {
     public function handle($credentials)
     {
-
         if (!Auth::validate($credentials)) {
             return new AuthenticationException();
         }
