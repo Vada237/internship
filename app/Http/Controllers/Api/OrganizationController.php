@@ -19,28 +19,28 @@ class OrganizationController extends Controller
 {
     public function index(OrganizationGetAllAction $action, Request $request)
     {
-        return OrganizationResource::collection($action->handle($request->query('limit'),$request->query('offset')));
+        return OrganizationResource::collection($action->handle($request->query('limit'), $request->query('offset')));
     }
 
     public function store(OrganizationCreateAction $action, OrganizationRequest $request)
     {
-        return new OrganizationResource($action->handle($request->validated(),Auth::user()));
+        return new OrganizationResource($action->handle($request->validated(), Auth::user()));
     }
 
-    public function show(OrganizationGetByIdAction $action,int $id)
+    public function show(OrganizationGetByIdAction $action, int $id)
     {
         return new OrganizationResource($action->handle($id));
     }
 
-    public function update(OrganizationRequest $request, OrganizationUpdateAction $action,int $id)
+    public function update(OrganizationRequest $request, OrganizationUpdateAction $action, int $id)
     {
         $this->authorize('update', Organization::find($id));
-        return new OrganizationResource($action->handle($request->validated(), $id,Auth::user()));
+        return new OrganizationResource($action->handle($request->validated(), $id, Auth::user()));
     }
 
-    public function destroy(OrganizationDeleteAction $action,int $id)
+    public function destroy(OrganizationDeleteAction $action, int $id)
     {
-        $this->authorize('delete',Organization::find($id));
+        $this->authorize('delete', Organization::find($id));
         return $action->handle($id);
     }
 }
