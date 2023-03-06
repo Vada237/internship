@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Password;
+namespace App\Http\Requests\Invite;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PasswordForgotRequest extends FormRequest
+class InviteSendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +24,8 @@ class PasswordForgotRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => "required|min:6|email"
+            'email' => 'required|email',
+            'organizationId' => 'required'
         ];
     }
 }

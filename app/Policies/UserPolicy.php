@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class UserPolicy
 {
@@ -14,6 +15,8 @@ class UserPolicy
 
     public function viewAny(User $user)
     {
+        if ($user->hasRole(Role::list['ADMIN'])) return true;
+        return false;
     }
 
     public function view(User $user)
@@ -22,11 +25,11 @@ class UserPolicy
 
     public function update(User $user, User $editedUser)
     {
-        return ($user->id == $editedUser->id || $user->hasRole('admin'));
+        return ($user->id == $editedUser->id || $user->hasRole(Role::list['ADMIN']));
     }
 
     public function delete(User $user, User $deletedUser)
     {
-        return ($user->id == $deletedUser->id || $user->hasRole('admin'));
+        return ($user->id == $deletedUser->id || $user->hasRole(Role::list['ADMIN']));
     }
 }

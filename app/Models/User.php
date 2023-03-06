@@ -31,7 +31,7 @@ class User extends Authenticatable
     ];
 
     public function setPasswordAttribute($password) {
-        $this->attributes['password'] = password_hash($password,PASSWORD_BCRYPT);
+        $this->attributes['password'] = bcrypt($password);
     }
 
     public function organizations() {
@@ -39,4 +39,7 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function scopeByEmail($query,string $email) {
+        return $query->where('email',$email);
+    }
 }
