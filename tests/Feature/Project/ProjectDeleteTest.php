@@ -53,7 +53,10 @@ class ProjectDeleteTest extends TestCase
 
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
-        $project = Project::factory()->create();
+        $project = Project::create([
+            'name' => 'proj',
+            'organization_id' => $organization->id
+        ]);
 
         $user->organizations()->attach($organization->id,
             ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
