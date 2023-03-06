@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Auth;
 
 class InviteController extends Controller
 {
-    public function send (InviteSendAction $action, InviteSendRequest $request) {
-        $this->authorize('send', [Invite::class , Organization::find($request->organizationId)]);
-        return $action->handle($request->validated(),Auth::user());
+    public function send(InviteSendAction $action, InviteSendRequest $request)
+    {
+        $this->authorize('send', [Invite::class, Organization::find($request->organizationId)]);
+        return $action->handle($request->validated(), Auth::user());
     }
 
-    public function accept(InviteAcceptAction $action, string $token) {
+    public function accept(InviteAcceptAction $action, string $token)
+    {
         $this->authorize('accept', Invite::where('token', $token)->first());
         return $action->handle($token);
     }

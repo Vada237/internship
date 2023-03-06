@@ -16,12 +16,12 @@ class UserUpdateNameAndAvatarAction
 
         if (array_key_exists('avatar', $params)) {
 
-            if ($user->avatar != null) {
+            if (isset($user->avatar)) {
                 Storage::delete($user->avatar);
                 $user->avatar = null;
             }
 
-            if ($params['avatar'] != null){
+            if (isset($params['avatar'])) {
                 $user->avatar = $params['avatar']->store('public/avatars');
             }
         }

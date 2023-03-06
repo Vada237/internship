@@ -40,4 +40,9 @@ return [
             'success' => 'Mail has been sended'
         ]
     ],
+    'projects' => [
+        'delete' => [
+            'success' => 'Project has been deleted'
+        ]
+    ]
 ];

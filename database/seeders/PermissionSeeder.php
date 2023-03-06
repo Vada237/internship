@@ -43,5 +43,21 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'name' => 'DeleteCompany'
         ]);
+
+        Permission::create([
+            'name' => 'CreateProject'
+        ]);
+
+        Permission::create([
+            'name' => 'EditProject'
+        ]);
+
+        Permission::create([
+            'name' => 'FindProject'
+        ]);
+
+        Permission::create([
+            'name' => 'DeleteProject'
+        ]);
     }
 }

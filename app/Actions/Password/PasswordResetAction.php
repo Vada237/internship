@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
-class PasswordResetAction {
-
-    public function handle($credentials) {
-
+class PasswordResetAction
+{
+    public function handle($credentials)
+    {
         $status = Password::reset(
             $credentials,
             function ($user, $password) {

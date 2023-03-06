@@ -15,7 +15,7 @@ class InvitePolicy
 
     public function send(User $user, Organization $organization)
     {
-        return ($user->hasAnyRole(
+        return ($user->hasAnyOrganizationRole($organization,
                 Role::list['EMPLOYEE'],
                 Role::list['ORGANIZATION_SUPERVISOR'],
                 Role::list['ADMIN']
