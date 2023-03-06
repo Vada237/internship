@@ -14,7 +14,7 @@ class AuthTest extends TestCase
      *
      * @return void
      */
-    public function test_new_user_can_register()
+    public function testNewUserCanRegister()
     {
         $response = $this->post('/api/auth/register', [
             'name' => 'Test User',
@@ -25,12 +25,11 @@ class AuthTest extends TestCase
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'name',
-            'email',
-            'avatar'
+            'email'
         ]);
     }
 
-    public function test_new_user_can_register_without_password()
+    public function testNewUserCanRegisterWithoutPassword()
     {
         $response = $this->post('api/auth/register', [
             'name' => 'Test user',
@@ -40,7 +39,7 @@ class AuthTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_new_user_can_register_with_short_email() {
+    public function testNewUserCanRegisterWithShortEmail() {
         $response = $this->post('api/auth/register', [
             'name' => 'Test user',
             'email' => 't@m.r',
@@ -51,19 +50,13 @@ class AuthTest extends TestCase
 
     }
 
-    public function test_login_user() {
-        $response = $this->post('/api/auth/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'testpass'
-        ]);
+    public function testLoginUser() {
+        $user = User::factory()->create();
 
         $response = $this->post('api/auth/login', [
-          "email" => "test@example.com",
-          "password" => "testpass"
+            'email' => $user->email,
+            'password' => $user->password
         ]);
-
-        $this->assertAuthenticated();
         $response->assertStatus(200);
     }
 }

@@ -6,13 +6,25 @@ servers:
   - url: http:/127.0.0.1:8000/api/documentation
 paths:
   
-  /api/user:
+  /api/users/{limit}/{offset}:
     get: 
-      security: 
-        - bearerAuth: []
-          
-      summary: Получение всех пользователей
+      summary: Получение пользователей
       operationId: GetAllUsers
+      parameters:
+        - name: limit
+          in: path
+          required: true
+          description: Количество пользователей
+          schema:
+            type: integer
+            
+        - name: offset
+          in: path
+          required: true
+          description: Игнорирование пользователей
+          schema:
+            type: integer
+            
       tags: 
         - Users
       responses:
@@ -23,17 +35,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/Users"
                 
-  /api/user/{user_id}:
+  /api/users/{id}:
     get: 
-      security: 
-        - bearerAuth: []
-        
       summary: Получение пользователя по id
       tags:
         - Users
       operationId: GetUserById
       parameters:
-        - name: user_id
+        - name: id
           in: path
           required: true
           description: id пользователя
@@ -56,15 +65,12 @@ paths:
                 $ref: "#/components/schemas/NotFound"
   
     delete:
-      security: 
-        - bearerAuth: []
-        
       summary: Удаление пользователя по id
       tags:
         - Users
       operationId: DeleteUserById
       parameters:
-        - name: user_id
+        - name: id
           in: path
           required: true
           description: id пользователя
@@ -86,11 +92,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/NotFound"
   
-  /api/user/update:
+  /api/users:
     patch:
-      security: 
-        - bearerAuth: []
-        
       summary: Обновление имени и\или аватара пользователя
       tags:
         - Users
@@ -193,15 +196,28 @@ paths:
         '422':
           description: Некорректные данные
           
-  /api/organization:
+  /api/organizations/{limit}/{offset}:
     get:
-      security: 
-        - bearerAuth: []
-          
-      summary: Получение всех организаций
+      summary: Получение организаций
       operationId: GetAllOrganizations
       tags: 
         - Organizations
+        
+      parameters:
+        - name: limit
+          in: path
+          required: true
+          description: Количество пользователей
+          schema:
+            type: integer
+            
+        - name: offset
+          in: path
+          required: true
+          description: Игнорирование пользователей
+          schema:
+            type: integer
+            
       responses:
         '200':
           description: Успешный вывод всех организаций
@@ -210,11 +226,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organizations"
   
-  /api/organization/id={organization_id}:
+  /api/organizations/{id}:
     get:
-      security: 
-        - bearerAuth: []
-          
       summary: Поиск организации по id
       tags: 
         - Organizations
@@ -222,7 +235,7 @@ paths:
       operationId: GetOrganizationbyId
       
       parameters:
-        - name: organization_id
+        - name: id
           in: path
           required: true
           description: id организации
@@ -250,19 +263,95 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Authorize"
+    
+    patch:
+      summary: Изменение названия организации
+      tags:
+        - Organizations
+      operationId: UpdateNameOrganization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Organization"
+      
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id организации
+          schema:
+            type: integer
+            
+      responses:
+        '201':
+          description: Название организации изменено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+        
+        '403':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Authorize"
                 
-  /api/organization/name={organization_name}:
+        '422':
+          description: Некорректное название
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnprocessableEntity"
+    
+    delete:
+      summary: Удаление организации по id
+      tags: 
+        - Organizations
+      
+      operationId: DeleteOrganizationbyId
+      
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id организации
+          schema:
+            type: integer
+            
+      responses:
+        '200':
+          description: Организация удалена
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+                
+        '404':
+          description: Организация не найдена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+                
+        '403':
+          description: Пользователь не авторизован
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Authorize"               
+                
+  /api/organizations/{name}:
     get:
-      security: 
-        - bearerAuth: []
-          
       summary: Поиск организации по названию
       operationId: GetOrganizationbyName
       tags: 
         - Organizations
       
       parameters:
-        - name: organization_name
+        - name: name
           in: path
           required: true
           description: Название организации
@@ -277,11 +366,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organization"
   
-  /api/organization/create:
+  /api/organizations:
     post:
-      security: 
-        - bearerAuth: []
-      
       summary: Создание организации
       tags:
         - Organizations
@@ -314,102 +400,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UnprocessableEntity"
-    
-  /api/organization/{organization_id}:
-    patch:
-      security: 
-        - bearerAuth: []
-      
-      summary: Изменение названия организации
-      tags:
-        - Organizations
-      operationId: UpdateNameOrganization
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Organization"
-      
-      parameters:
-        - name: organization_id
-          in: path
-          required: true
-          description: id организации
-          schema:
-            type: integer
-            
-      responses:
-        '201':
-          description: Название организации изменено
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organization"
-        
-        '403':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
                 
-        '422':
-          description: Некорректное название
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
-                
-  /api/organization/delete/{organization_id}:
-    delete:
-      security: 
-        - bearerAuth: []
-          
-      summary: Удаление организации по id
-      tags: 
-        - Organizations
-      
-      operationId: DeleteOrganizationbyId
-      
-      parameters:
-        - name: organization_id
-          in: path
-          required: true
-          description: id организации
-          schema:
-            type: integer
-            
-      responses:
-        '200':
-          description: Организация удалена
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organization"
-                
-        '404':
-          description: Организация не найдена
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '403':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"              
+  
   
 components: 
-  securitySchemes:
-
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      
   schemas:
     User:
       type: object

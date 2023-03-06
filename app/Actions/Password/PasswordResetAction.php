@@ -10,13 +10,13 @@ use Illuminate\Support\Str;
 
 class PasswordResetAction {
 
-    public function handle(PasswordResetAction $request) {
+    public function handle($credentials) {
 
         $status = Password::reset(
-            $request->only('email', 'password' , 'password_confirmation', 'token'),
+            $credentials,
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => $password
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
@@ -26,7 +26,7 @@ class PasswordResetAction {
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return 'Пароль успешно сброшен';
+            return __('Пароль успешно сброшен');
         }
     }
 }

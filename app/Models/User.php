@@ -28,4 +28,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setPasswordAttribute($password) {
+        $this->attributes['password'] = password_hash($password,PASSWORD_BCRYPT);
+    }
+
+    public function organizations() {
+        return $this->belongsToMany(Organization::class, 'user_organizations', 'user_id', 'organization_id')
+            ->withTimestamps();
+    }
 }
