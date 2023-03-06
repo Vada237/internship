@@ -42,18 +42,8 @@ class ProjectPolicy
 
     public function delete(User $user, Project $project)
     {
-        return ($user->hasRole(Role::list['ADMIN']) ||
-            $user->hasRole(Role::list['ORGANIZATION_SUPERVISOR']) ||
-            $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR']));
-    }
-
-    public function restore(User $user, Project $project)
-    {
-        //
-    }
-
-    public function forceDelete(User $user, Project $project)
-    {
-        //
+        return ($user->hasAnyOrganizationRole(Organization::find($project->organization_id),
+                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR'])
+            || $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR']));
     }
 }
