@@ -16,7 +16,8 @@ class ProjectCreateTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+        $user->organizations()->attach($organization->id,
+            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/projects', [
             'name' => 'Manhattan',
