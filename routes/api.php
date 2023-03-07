@@ -57,3 +57,13 @@ Route::controller(Api\ProjectController::class)->middleware('auth:sanctum')->gro
     Route::patch('projects/{project}', [Api\ProjectController::class, 'update']);
     Route::delete('projects/{project}', [Api\ProjectController::class, 'destroy']);
 });
+
+Route::controller(Api\ProjectInviteController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('invites/send/project', [Api\ProjectInviteController::class, 'send']);
+    Route::get('invites/accept/project/{token}', [Api\ProjectInviteController::class, 'accept'])->name('project.accept');
+});
+
+Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->group(function () {
+    Route::post('invites/send/organization', [Api\InviteController::class, 'send']);
+    Route::get('invites/accept/organization/{token}', [Api\InviteController::class, 'accept'])->name('organization.accept');
+});
