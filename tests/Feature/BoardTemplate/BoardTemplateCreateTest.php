@@ -1,0 +1,41 @@
+<?php
+
+namespace Tests\Feature\BoardTemplate;
+
+use App\Models\BoardTemplate;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+
+class BoardTemplateCreateTest extends TestCase
+{
+    public function testCreateBoardTemplateSuccess()
+    {
+        $this->seed();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('api/board_templates', [
+            'name' => 'first board template'
+        ]);
+
+        $this->assertDatabaseHas('board_templates', [
+            'id' => BoardTemplate::where('name', 'first board template')->first()->id,
+            'name' => BoardTemplate::where('name', 'first board template')->first()->name
+        ]);
+
+        $response->assertCreated();
+    }
+
+    public function testCreateBoardTemplateUnauthorize()
+    {
+        $this->seed();
+
+        $response = $this->postJson('api/board_templates', [
+            'name' => 'first board template'
+        ]);
+
+        $response->assertUnauthorized();
+    }
+}
