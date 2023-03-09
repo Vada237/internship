@@ -47,5 +47,12 @@ return [
         'join' => [
             'success' => 'You joined an project'
         ]
+    ],
+    'board' => [
+        'templates' => [
+            'delete' => [
+                'success' => 'Board template has been deleted'
+            ]
+        ]
     ]
 ];
