@@ -16,13 +16,15 @@ class Organization extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_organization_roles', 'organization_id', 'user_id')
+        return $this->belongsToMany(User::class, 'user_organization_roles',
+            'organization_id', 'user_id')
             ->withTimestamps();
     }
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'user_organization_roles', 'organization_id', 'role_id')
+        return $this->belongsToMany(Role::class, 'user_organization_roles',
+            'organization_id', 'role_id')
             ->withTimestamps();
     }
 
@@ -33,6 +35,6 @@ class Organization extends Model
 
     public function invites(): MorphMany
     {
-        return $this->morphMany(Invite::class,'invitable');
+        return $this->morphMany(Invite::class, 'invitable');
     }
 }

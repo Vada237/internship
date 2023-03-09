@@ -21,7 +21,8 @@ class Role extends Model
 
     public function organizations()
     {
-        return $this->belongsToMany(Organization::class, 'user_organization_roles', 'role_id', 'organization_id')
+        return $this->belongsToMany(Organization::class, 'user_organization_roles',
+            'role_id', 'organization_id')
             ->withTimestamps();
     }
 
