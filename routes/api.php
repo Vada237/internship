@@ -64,3 +64,20 @@ Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->grou
     Route::post('invites/send/project', [Api\InviteController::class, 'sendProject']);
     Route::get('invites/accept/project/{token}', [Api\InviteController::class, 'acceptProject'])->name('project.accept');
 });
+
+Route::controller(Api\BoardTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
+    Route::post('board_templates', [Api\BoardTemplateController::class, 'store']);
+    Route::get('board_templates', [Api\BoardTemplateController::class, 'index']);
+    Route::get('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
+    Route::put('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
+    Route::delete('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
+});
+
+Route::controller(Api\TaskTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
+   Route::post('task_templates', [Api\TaskTemplateController::class, 'store']);
+   Route::post('task_templates/{attribute}', [Api\TaskTemplateController::class, 'addAttribute']);
+   Route::get('task_templates', [Api\TaskTemplateController::class, 'index']);
+   Route::get('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
+   Route::put('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
+    Route::delete('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
+});
