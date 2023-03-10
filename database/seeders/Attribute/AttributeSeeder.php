@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Seeders\Task;
+namespace Database\Seeders\Attribute;
 
-use App\Models\TaskAttribute;
+use App\Models\Attribute;
 use Illuminate\Database\Seeder;
 
-class TaskAttributeSeeder extends Seeder
+class AttributeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,19 +14,19 @@ class TaskAttributeSeeder extends Seeder
      */
     public function run()
     {
-        TaskAttribute::create([
+        Attribute::create([
             'name' => 'Name'
         ]);
 
-        TaskAttribute::create([
+        Attribute::create([
             'name' => 'Description'
         ]);
 
-        TaskAttribute::create([
+        Attribute::create([
             'name' => 'Deadline'
         ]);
 
-        TaskAttribute::create([
+        Attribute::create([
            'name' => 'Image'
         ]);
     }
