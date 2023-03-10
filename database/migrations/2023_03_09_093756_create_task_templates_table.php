@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('task_templates', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->integer('board_template_id');
             $table->timestamps();
 
