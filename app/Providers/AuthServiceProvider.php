@@ -12,6 +12,7 @@ use App\Policies\BoardTemplatePolicy;
 use App\Policies\InvitePolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\ProjectPolicy;
+use App\Policies\TemplatePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -28,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Organization::class => OrganizationPolicy::class,
         Invite::class => InvitePolicy::class,
         Project::class => ProjectPolicy::class,
-        BoardTemplate::class => BoardTemplatePolicy::class
+        BoardTemplate::class => TemplatePolicy::class
     ];
 
     /**
