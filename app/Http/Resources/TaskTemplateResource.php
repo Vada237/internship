@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BoardTemplateResource extends JsonResource
+class TaskTemplateResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,7 @@ class BoardTemplateResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'creater' => $this->user()->first()->name
+            'board_template_id' => $this->board_template_id
         ];
     }
 }
