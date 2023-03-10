@@ -23,7 +23,8 @@ class BoardTemplateGetByIdTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 'id' => $boardTemplate->id,
-                'name' => $boardTemplate->name
+                'name' => $boardTemplate->name,
+                'creater' => $boardTemplate->user()->first()->name
             ]
         ]);
     }

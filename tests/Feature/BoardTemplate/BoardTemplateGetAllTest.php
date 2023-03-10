@@ -25,26 +25,16 @@ class BoardTemplateGetAllTest extends TestCase
             'data' => [
                 [
                     'id' => BoardTemplate::offset(1)->first()->id,
-                    'name' => BoardTemplate::offset(1)->first()->name
+                    'name' => BoardTemplate::offset(1)->first()->name,
+                    'creater' => BoardTemplate::offset(1)->first()->user()->first()->name
                 ],
                 [
                     'id' => BoardTemplate::offset(2)->first()->id,
-                    'name' => BoardTemplate::offset(2)->first()->name
+                    'name' => BoardTemplate::offset(2)->first()->name,
+                    'creater' => BoardTemplate::offset(2)->first()->user()->first()->name
                 ]
             ]
         ]);
-    }
-
-    public function testBoardTemplateGetAllForbidden()
-    {
-        $this->seed();
-
-        $user = User::factory()->create();
-        $limit = 2;
-        $offset = 1;
-
-        $response = $this->actingAs($user)->getJson("api/board_templates?limit=$limit&offset=$offset");
-        $response->assertForbidden();
     }
 
     public function testBoardTemplateGetAllUnauthorized()

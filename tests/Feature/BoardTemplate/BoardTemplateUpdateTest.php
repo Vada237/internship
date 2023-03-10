@@ -17,7 +17,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->actingAs($user)->putJson("api/board_templates/$boardTemplate->id", [
+        $response = $this->actingAs($user)->patchJson("api/board_templates/$boardTemplate->id", [
             'name' => 'renamed board'
         ]);
 
@@ -26,7 +26,8 @@ class BoardTemplateUpdateTest extends TestCase
         $response->assertExactJson([
             'data' => [
                 'id' => BoardTemplate::where('name', 'renamed board')->first()->id,
-                'name' => BoardTemplate::where('name', 'renamed board')->first()->name
+                'name' => BoardTemplate::where('name', 'renamed board')->first()->name,
+                'creater' => BoardTemplate::where('name', 'renamed board')->first()->user()->first()->name
             ]
         ]);
     }
@@ -38,7 +39,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->putJson("api/board_templates/$notExistBoardTemplateId", [
+        $response = $this->actingAs($user)->patchJson("api/board_templates/$notExistBoardTemplateId", [
             'name' => 'renamed board'
         ]);
 
@@ -51,7 +52,7 @@ class BoardTemplateUpdateTest extends TestCase
 
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->putJson("api/board_templates/$boardTemplate->id", [
+        $response = $this->patchJson("api/board_templates/$boardTemplate->id", [
             'name' => 'renamed board'
         ]);
 
@@ -65,7 +66,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->actingAs($user)->putJson("api/board_templates/$boardTemplate->id");
+        $response = $this->actingAs($user)->patchJson("api/board_templates/$boardTemplate->id");
 
         $response->assertUnprocessable();
     }
