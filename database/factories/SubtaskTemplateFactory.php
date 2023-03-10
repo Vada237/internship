@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\BoardTemplate;
+use App\Models\TaskTemplate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TaskTemplate>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SubtaskTemplate>
  */
-class TaskTemplateFactory extends Factory
+class SubtaskTemplateFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,7 @@ class TaskTemplateFactory extends Factory
     {
         return [
             'name' => fake()->word,
-            'board_template_id' => BoardTemplate::inRandomOrder()->first()
+            'task_template_id' => TaskTemplate::inRandomOrder()->first()
         ];
     }
 }
