@@ -1,13 +1,13 @@
 openapi: 3.0.0
-info: 
+info:
   title: Стажировка
   version: 1.0.0
 servers:
   - url: http:/127.0.0.1:8000/api/documentation
 paths:
-  
+
   /api/users:
-    get: 
+    get:
       summary: Получение пользователей
       operationId: GetAllUsers
       parameters:
@@ -18,7 +18,7 @@ paths:
           schema:
             type: integer
             example: 1
-            
+
         - name: offset
           in: query
           required: true
@@ -26,24 +26,33 @@ paths:
           schema:
             type: integer
             example: 1
-            
-      tags: 
+
+      tags:
         - Users
       responses:
         '200':
           description: Успешный вывод всех пользователей
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Users"
-                
-    
+
     patch:
       summary: Обновление имени и\или аватара пользователя
       tags:
         - Users
       operationId: UpdateUserAvatarAndNameById
-      
+      requestBody:
+        required: false
+        description: Имя пользователя и\или аватар
+        content:
+          application/json:
+            schema:
+              type: string
+            example:
+              name: denis
+              avatar: zgskmYPxeL5CE0SF9d3AxNkOPjy2KW3lMyJqBENy.png
+              
       responses:
         '200':
           description: Имя и\или аватар изменен
@@ -51,7 +60,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-                  
+
         '401':
           description: Пользователь не авторизован
           content:
@@ -60,12 +69,12 @@ paths:
                 $ref: "#/components/schemas/Authorize"
         '403':
           description: Недостаточно прав
-          
+
         '422':
-          description: Некорректные данные 
-            
+          description: Некорректные данные
+
   /api/users/{user}:
-    get: 
+    get:
       summary: Получение пользователя по id
       tags:
         - Users
@@ -77,7 +86,7 @@ paths:
           description: id пользователя
           schema:
             type: integer
-          
+
       responses:
         '200':
           description: Пользователь найден
@@ -85,14 +94,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-                
+
         '404':
           description: Пользователь не найден
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-  
+
     delete:
       summary: Удаление пользователя по id
       tags:
@@ -105,24 +114,20 @@ paths:
           description: id пользователя
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Пользователь удален
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-                  
+
         '404':
           description: Пользователь не найден
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-  
+
   /api/auth/register:
-    post: 
+    post:
       summary: Регистрация пользователя
       tags:
         - Auth
@@ -133,7 +138,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/User"
-              
+
       responses:
         '201':
           description: Пользователь создан
@@ -141,20 +146,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        
+
         '422':
           description: Некорректный email/password или пользователь с таким email существует
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UnprocessableEntity"
-  
+
   /api/auth/login:
-    post: 
+    post:
       summary: Авторизация пользователя
       tags:
         - Auth
       operationId: LoginUser
+      requestBody:
+        required: true
+        description: Email и пароль
+        content:
+          application/json:
+            schema:
+              type: string
+            example:
+              email: user@example.com
+              password: password123
       responses:
         '201':
           description: Пользователь успешно авторизован
@@ -162,27 +177,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccessLogin"
-        
+
         '422':
           description: Некорректный email/password
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UnprocessableEntity"
-  
+
   /api/password/forgot:
     post:
       summary: Восстановление пароля пользователя
       tags:
         - Password
       operationId: ForgotPassword
+      requestBody:
+        required: true
+        description: Email пользователя
+        content:
+          application/json:
+            schema:
+              type: string
+            example:
+              email: user@example.com
       responses:
         '200':
           description: Ссылка для сброса пароля отправлена на почту
-        
+
         '422':
           description: Некорректный email
-  
+
   /api/password/reset:
     post:
       summary: Сброс пароля пользователя
@@ -200,14 +224,14 @@ paths:
           description: Пароль успешно сброшен
         '422':
           description: Некорректные данные
-          
+
   /api/organizations:
     get:
       summary: Получение организаций
       operationId: GetAllOrganizations
-      tags: 
+      tags:
         - Organizations
-        
+
       parameters:
         - name: limit
           in: query
@@ -216,7 +240,7 @@ paths:
           schema:
             type: integer
             example: 1
-            
+
         - name: offset
           in: query
           required: true
@@ -224,11 +248,11 @@ paths:
           schema:
             type: integer
             example: 1
-            
+
       responses:
         '200':
           description: Успешный вывод всех организаций
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organizations"
@@ -238,7 +262,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-          
+
     post:
       summary: Создание организации
       tags:
@@ -250,7 +274,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Organization"
-    
+
       responses:
         '201':
           description: Организация создана
@@ -258,29 +282,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-        
+
         '403':
-          description: Пользователь не авторизован
+          description: Недостаточно прав
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Authorize"
-                
+                $ref: "#/components/schemas/Forbidden"
+
         '422':
           description: Некорректное название
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UnprocessableEntity"
-                  
+
   /api/organizations/{organization}:
     get:
       summary: Поиск организации по id
-      tags: 
+      tags:
         - Organizations
-      
+
       operationId: GetOrganizationbyId
-      
+
       parameters:
         - name: organization
           in: path
@@ -288,22 +312,22 @@ paths:
           description: id организации
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Получение организации
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-                
+
         '404':
           description: Организация не найдена
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '401':
           description: Пользователь не авторизован
           content:
@@ -327,7 +351,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Organization"
-      
+
       parameters:
         - name: organization
           in: path
@@ -335,7 +359,7 @@ paths:
           description: id организации
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Название организации изменено
@@ -343,28 +367,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-        
+
         '403':
           description: Пользователь не авторизован
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Authorize"
-                
+
         '422':
           description: Некорректное название
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UnprocessableEntity"
-    
+
     delete:
       summary: Удаление организации по id
-      tags: 
+      tags:
         - Organizations
-      
+
       operationId: DeleteOrganizationbyId
-      
+
       parameters:
         - name: organization
           in: path
@@ -372,22 +396,22 @@ paths:
           description: id организации
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Организация удалена
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-                
+
         '404':
           description: Организация не найдена
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '403':
           description: Пользователь не имеет конкретных ролей
           content:
@@ -400,8 +424,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Authorize"
-                
-  /api/invites/send/organization: 
+
+  /api/invites/send/organization:
     post:
       summary: Отправить приглашение в организацию
       tags:
@@ -413,7 +437,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Invite"
-      
+
       responses:
         '200':
           description: Приглашение отправлено
@@ -421,9 +445,9 @@ paths:
           description: Ошибка валидации
         '403':
           description: Недостаточно прав
-          
+
   /api/invites/accept/organization/{token}:
-    get:  
+    get:
       summary: Принять приглашение в организацию
       tags:
       - Invites
@@ -440,9 +464,9 @@ paths:
           description: Пользователь вступил в организацию
         '403':
           description: Недостаточно прав
-  
+
   /api/projects:
-    get: 
+    get:
       summary: Получение проектов
       operationId: GetAllProjects
       parameters:
@@ -453,7 +477,7 @@ paths:
           schema:
             type: integer
             example: 1
-            
+
         - name: offset
           in: query
           required: true
@@ -461,38 +485,38 @@ paths:
           schema:
             type: integer
             example: 1
-            
-      tags: 
+
+      tags:
         - Projects
       responses:
         '200':
           description: Успешный вывод всех проектов
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Projects"
-                
+
     post:
       summary: Создание проекта
       operationId: CreateProject
-      
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/Project"
-    
-      tags: 
+
+      tags:
         - Projects
       responses:
         '201':
           description: Проект создан
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Project"
-        
+
         '422':
           description: Некорректное название или попытка сменить организацию
           content:
@@ -505,22 +529,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Authorize"
-                
+
         '403':
           description: Пользователь не имеет конкретных ролей
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-                
-  /api/projects/findByOrganization/{organization}:
+
+  /api/projects/find_by_organization/{organization}:
     get:
       summary: Поиск проекта по id организации
-      tags: 
+      tags:
         - Projects
-      
+
       operationId: GetProjectsbyOrganizationId
-      
+
       parameters:
         - name: organization
           in: path
@@ -528,42 +552,42 @@ paths:
           description: id организации
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Получение проектов
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-                
+
         '404':
           description: Проекты не найдены
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '401':
           description: Пользователь не авторизован
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Authorize"
-                
+
         '403':
           description: Пользователь не имеет конкретных ролей или смотрит проекты чужой организации
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-  
+
   /api/projects/{project}:
     get:
       summary: Поиск проекта по id
-      tags: 
+      tags:
         - Projects
-      
+
       operationId: GetProjectbyId
       
       parameters:
@@ -573,22 +597,22 @@ paths:
           description: id проекта
           schema:
             type: integer
-            
+      
       responses:
         '200':
           description: Получение проекта
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Project"
-                
+
         '404':
           description: Проект не найден
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '401':
           description: Пользователь не авторизован
           content:
@@ -601,14 +625,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-                
+
     patch:
       summary: Изменение названия проекта
-      tags: 
+      tags:
         - Projects
-      
+
       operationId: UpdateProjectbyId
-      
+
       parameters:
         - name: project
           in: path
@@ -616,22 +640,32 @@ paths:
           description: id проекта
           schema:
             type: integer
-            
+      
+      requestBody:
+        required: false
+        description: Название проекта
+        content:
+          application/json:
+            schema:
+              type: string
+            example:
+              name: first project
+              
       responses:
         '200':
           description: Проект изменен
-          content: 
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Project"
-                
+
         '404':
           description: Проект не найден
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '401':
           description: Пользователь не авторизован
           content:
@@ -644,14 +678,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-    
-    delete: 
+
+    delete:
       summary: Удаление проекта
-      tags: 
+      tags:
         - Projects
-      
+
       operationId: DeleteProjectbyId
-      
+
       parameters:
         - name: project
           in: path
@@ -659,18 +693,18 @@ paths:
           description: id проекта
           schema:
             type: integer
-            
+
       responses:
         '200':
           description: Проект удален
-                
+
         '404':
           description: Проект не найден
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/NotFound"
-                
+
         '401':
           description: Пользователь не авторизован
           content:
@@ -683,8 +717,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Forbidden"
-                
-  /api/invites/send/project: 
+
+  /api/invites/send/project:
     post:
       summary: Отправить приглашение в проект
       tags:
@@ -696,7 +730,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/InviteProject"
-      
+
       responses:
         '200':
           description: Приглашение отправлено
@@ -704,9 +738,9 @@ paths:
           description: Ошибка валидации
         '403':
           description: Недостаточно прав
-          
+
   /api/invites/accept/project/{token}:
-    get:  
+    get:
       summary: Принять приглашение в проект
       tags:
       - Invites
@@ -723,15 +757,15 @@ paths:
           description: Пользователь вступил в проект
         '403':
           description: Недостаточно прав
-     
-components: 
+
+components:
   schemas:
     User:
       type: object
       required:
         - name
         - email
-        
+
       properties:
         id:
           type: integer
@@ -745,7 +779,7 @@ components:
         avatar:
           type: string
           example: public/avatars/zgskmYPxeL5CE0SF9d3AxNkOPjy2KW3lMyJqBENy.png
-          
+
     Users:
       type: array
       items:
@@ -755,22 +789,22 @@ components:
           name: denis
           email: denis123@mail.ru
           avatar: public/avatars/zgskmYPxeL5CE0SF9d3AxNkOPjy2KW3lMyJqBENy.png
-          
+
         - id: 2
           name: sergey
           email: sergey123@gmail.com
           avatar: null
-        
+
         - id: 3
           name: alina
           email: alina123@yandex.ru
           avatar: null
-       
+
     Organization:
       type: object
       required:
         - id
-        
+
       properties:
         id:
           type: integer
@@ -778,7 +812,7 @@ components:
         name:
           type: string
           example: Nokia
-       
+
     Organizations:
       type: array
       items:
@@ -786,16 +820,16 @@ components:
       example:
         - id: 1
           name: Nokia
-        
+
         - id: 2
           name: Microsoft
-    
+
     Project:
       type: object
       required:
         - id
         - organization_id
-        
+
       properties:
         id:
           type: integer
@@ -806,7 +840,7 @@ components:
         organization_id:
           type: integer
           example: 1
-    
+
     Projects:
       type: array
       items:
@@ -815,54 +849,54 @@ components:
         - id: 1
           name: first project
           organization_id: 1
-        
+
         - id: 2
           name: second project
           organization_id: 2
-      
+
     Invite:
       type: object
       required:
         - email
         - organizationId
-      
+
       properties:
-        
+
         email:
           type: string
           example: invitedUser@example.com
         organizationId:
           type: integer
           example: 4
-    
+
     InviteProject:
       type: object
       required:
         - email
         - projectId
-      
+
       properties:
-        
+
         email:
           type: string
           example: invitedUser@example.com
         projectId:
           type: integer
           example: 4
-          
-    NotFound:    
+
+    NotFound:
       type: object
-      
+
       properties:
-        message: 
+        message:
           type: string
           example: Не найдено
-      
+
     UnprocessableEntity:
       type: object
-      
+
       properties:
-        message: 
+        message:
           type: array
           items:
             type: array
@@ -870,21 +904,21 @@ components:
               type: string
           example:
           - name: [The name field is required, The name must be at least 2 characters]
-    
+
     AccessLogin:
       type: object
-      
+
       properties:
         message:
           type: string
           example: Пользователь успешно авторизован
-        id: 
+        id:
           type: integer
           example: 7
         token:
           type: string
           example: 1|1gdsEDmjcD6n6FH9vMV7aVhDDtn8nGFJKk8qjQJI
-        
+
     ResetPassword:
       type: object
       required:
@@ -905,58 +939,57 @@ components:
         confirm_password:
           type: string
           example: hard_pass
-    
+
     Authorize:
       properties:
         message:
           type: string
           example: Пользователь не авторизован
-          
+
     Forbidden:
       properties:
         message:
           type: string
           example: Недостаточно прав
-          
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
