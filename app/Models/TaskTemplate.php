@@ -16,14 +16,18 @@ class TaskTemplate extends Model
         'IMAGE' => 'Image'
     ];
 
+    protected $fillable = [
+        'name',
+        'board_template_id'
+    ];
+
     public function boardTemplate()
     {
         return $this->belongsTo(BoardTemplate::class);
     }
 
-    public function taskAttributes()
+    public function subtasks()
     {
-        return $this->belongsToMany(TaskAttribute::class, 'task_template_attributes',
-            'task_template_id', 'task_attribute_id');
+        return $this->belongsToMany(SubtaskTemplate::class, 'subtasks');
     }
 }
