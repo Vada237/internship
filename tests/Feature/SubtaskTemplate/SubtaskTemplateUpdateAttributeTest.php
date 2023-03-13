@@ -42,7 +42,7 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-            ->putJson("api/subtask_templates/$subtaskTemplate->id/attributes/$attribute->id", [
+            ->putJson("api/subtask-templates/$subtaskTemplate->id/attributes/$attribute->id", [
                 'attribute_id' => $attribute->id,
                 'value' => 'second subtask description'
             ]);
@@ -85,7 +85,7 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
         ]);
 
         $response = $this->actingAs($anotherUser)
-            ->putJson("api/subtask_templates/$subtaskTemplate->id/attributes/$attribute->id", [
+            ->putJson("api/subtask-templates/$subtaskTemplate->id/attributes/$attribute->id", [
                 'attribute_id' => $attribute->id,
                 'value' => 'second subtask description'
             ]);
@@ -117,7 +117,7 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
         $attribute = Attribute::where('name', 'Description')->first();
 
         $response = $this->actingAs($user)
-            ->putJson("api/subtask_templates/$subtaskTemplate->id/attributes/$attribute->id", [
+            ->putJson("api/subtask-templates/$subtaskTemplate->id/attributes/$attribute->id", [
                 'attribute_id' => $attribute->id
             ]);
         $response->assertUnprocessable();

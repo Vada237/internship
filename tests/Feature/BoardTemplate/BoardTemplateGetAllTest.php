@@ -18,7 +18,7 @@ class BoardTemplateGetAllTest extends TestCase
         $limit = 2;
         $offset = 1;
 
-        $response = $this->actingAs($user)->getJson("api/board_templates?limit=$limit&offset=$offset");
+        $response = $this->actingAs($user)->getJson("api/board-templates?limit=$limit&offset=$offset");
 
         $response->assertOk();
         $response->assertExactJson([
@@ -44,7 +44,7 @@ class BoardTemplateGetAllTest extends TestCase
         $limit = 2;
         $offset = 1;
 
-        $response = $this->getJson("api/board_templates?limit=$limit&offset=$offset");
+        $response = $this->getJson("api/board-templates?limit=$limit&offset=$offset");
 
         $response->assertUnauthorized();
     }

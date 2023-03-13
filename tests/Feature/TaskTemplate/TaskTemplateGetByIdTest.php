@@ -21,7 +21,7 @@ class TaskTemplateGetByIdTest extends TestCase
         ]);
         TaskTemplate::factory()->count(5)->create();
 
-        $response = $this->actingAs($user)->getJson('api/task_templates/' . TaskTemplate::first()->id);
+        $response = $this->actingAs($user)->getJson('api/task-templates/' . TaskTemplate::first()->id);
 
         $response->assertOk();
         $response->assertExactJson([
@@ -43,7 +43,7 @@ class TaskTemplateGetByIdTest extends TestCase
         ]);
         TaskTemplate::factory()->create();
 
-        $response = $this->actingAs($user)->getJson('api/task_templates/' . TaskTemplate::first()->id + 1);
+        $response = $this->actingAs($user)->getJson('api/task-templates/' . TaskTemplate::first()->id + 1);
 
         $response->assertNotFound();
     }
@@ -58,7 +58,7 @@ class TaskTemplateGetByIdTest extends TestCase
         ]);
         TaskTemplate::factory()->count(5)->create();
 
-        $response = $this->getJson('api/task_templates/' . TaskTemplate::first()->id + 1);
+        $response = $this->getJson('api/task-templates/' . TaskTemplate::first()->id + 1);
 
         $response->assertUnauthorized();
     }

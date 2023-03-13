@@ -37,7 +37,7 @@ class SubtaskTemplateAddAttributeTest extends TestCase
 
         $deadline = new DateTime();
 
-        $response = $this->actingAs($user)->postJson("api/subtask_templates/$subtaskTemplate->id/attributes", [
+        $response = $this->actingAs($user)->postJson("api/subtask-templates/$subtaskTemplate->id/attributes", [
             'attribute_id' => Attribute::where('name', 'Deadline')->first()->id,
             'value' => $deadline->format('Y-m-d H:i:s')
         ]);
@@ -75,7 +75,7 @@ class SubtaskTemplateAddAttributeTest extends TestCase
 
         $deadline = new DateTime();
 
-        $response = $this->actingAs($anotherUser)->postJson("api/subtask_templates/$subtaskTemplate->id/attributes", [
+        $response = $this->actingAs($anotherUser)->postJson("api/subtask-templates/$subtaskTemplate->id/attributes", [
             'attribute_id' => Attribute::where('name', 'Deadline')->first()->id,
             'value' => $deadline->format('Y-m-d H:i:s')
         ]);
@@ -104,7 +104,7 @@ class SubtaskTemplateAddAttributeTest extends TestCase
             'task_template_id' => $taskTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->postJson("api/subtask_templates/$subtaskTemplate->id/attributes", [
+        $response = $this->actingAs($user)->postJson("api/subtask-templates/$subtaskTemplate->id/attributes", [
             'attribute_id' => Attribute::where('name', 'Deadline')->first()->id
         ]);
         $response->assertUnprocessable();

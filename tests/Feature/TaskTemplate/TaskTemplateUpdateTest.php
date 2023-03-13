@@ -25,7 +25,7 @@ class TaskTemplateUpdateTest extends TestCase
             'board_template_id' => $boardTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->patchJson('api/task_templates/'.$taskTemplate->id, [
+        $response = $this->actingAs($user)->patchJson('api/task-templates/'.$taskTemplate->id, [
             'name' => 'updated title task template'
         ]);
 
@@ -46,7 +46,7 @@ class TaskTemplateUpdateTest extends TestCase
         $anotherUser = User::factory()->create();
         $taskTemplate = TaskTemplate::factory()->create();
 
-        $response = $this->actingAs($anotherUser)->patchJson('api/task_templates/'.$taskTemplate->id, [
+        $response = $this->actingAs($anotherUser)->patchJson('api/task-templates/'.$taskTemplate->id, [
             'name' => 'updated title task template'
         ]);
 
@@ -59,7 +59,7 @@ class TaskTemplateUpdateTest extends TestCase
 
         $taskTemplate = TaskTemplate::factory()->create();
 
-        $response = $this->patchJson('api/task_templates/'.$taskTemplate->id, [
+        $response = $this->patchJson('api/task-templates/'.$taskTemplate->id, [
             'name' => 'updated title task template'
         ]);
 

@@ -17,7 +17,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->actingAs($user)->patchJson("api/board_templates/$boardTemplate->id", [
+        $response = $this->actingAs($user)->patchJson("api/board-templates/$boardTemplate->id", [
             'name' => 'renamed board'
         ]);
 
@@ -39,7 +39,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->patchJson("api/board_templates/$notExistBoardTemplateId", [
+        $response = $this->actingAs($user)->patchJson("api/board-templates/$notExistBoardTemplateId", [
             'name' => 'renamed board'
         ]);
 
@@ -52,7 +52,7 @@ class BoardTemplateUpdateTest extends TestCase
 
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->patchJson("api/board_templates/$boardTemplate->id", [
+        $response = $this->patchJson("api/board-templates/$boardTemplate->id", [
             'name' => 'renamed board'
         ]);
 
@@ -66,7 +66,7 @@ class BoardTemplateUpdateTest extends TestCase
         $user = User::first();
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->actingAs($user)->patchJson("api/board_templates/$boardTemplate->id");
+        $response = $this->actingAs($user)->patchJson("api/board-templates/$boardTemplate->id");
 
         $response->assertUnprocessable();
     }

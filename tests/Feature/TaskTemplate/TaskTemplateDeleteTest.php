@@ -27,7 +27,7 @@ class TaskTemplateDeleteTest extends TestCase
             'board_template_id' => $boardTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->deleteJson("api/task_templates/$taskTemplate->id");
+        $response = $this->actingAs($user)->deleteJson("api/task-templates/$taskTemplate->id");
 
         $this->assertDatabaseMissing('task_templates', [
             'id' => $taskTemplate->id,
@@ -55,7 +55,7 @@ class TaskTemplateDeleteTest extends TestCase
             'board_template_id' => $boardTemplate->id
         ]);
 
-        $response = $this->actingAs($anotherUser)->deleteJson("api/task_templates/$taskTemplate->id");
+        $response = $this->actingAs($anotherUser)->deleteJson("api/task-templates/$taskTemplate->id");
 
         $response->assertForbidden();
     }
@@ -66,7 +66,7 @@ class TaskTemplateDeleteTest extends TestCase
 
         $taskTemplate = TaskTemplate::factory()->create();
 
-        $response = $this->deleteJson("api/task_templates/$taskTemplate->id");
+        $response = $this->deleteJson("api/task-templates/$taskTemplate->id");
 
         $response->assertUnauthorized();
     }

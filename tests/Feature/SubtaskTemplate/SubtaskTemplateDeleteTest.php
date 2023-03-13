@@ -33,7 +33,7 @@ class SubtaskTemplateDeleteTest extends TestCase
             'task_template_id' => $taskTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->deleteJson('api/subtask_templates/' . $subtaskTemplate->id);
+        $response = $this->actingAs($user)->deleteJson('api/subtask-templates/' . $subtaskTemplate->id);
 
         $this->assertDatabaseMissing('subtask_templates', [
             'id' => $subtaskTemplate->id,
@@ -66,7 +66,7 @@ class SubtaskTemplateDeleteTest extends TestCase
             'task_template_id' => $taskTemplate->id
         ]);
 
-        $response = $this->actingAs($anotherUser)->deleteJson('api/subtask_templates/' . $subtaskTemplate->id);
+        $response = $this->actingAs($anotherUser)->deleteJson('api/subtask-templates/' . $subtaskTemplate->id);
         $response->assertForbidden();
     }
 
@@ -76,7 +76,7 @@ class SubtaskTemplateDeleteTest extends TestCase
 
         $subtaskTemplate = SubtaskTemplate::factory()->create();
 
-        $response = $this->deleteJson('api/subtask_templates/' . $subtaskTemplate->id);
+        $response = $this->deleteJson('api/subtask-templates/' . $subtaskTemplate->id);
 
         $response->assertUnauthorized();
     }

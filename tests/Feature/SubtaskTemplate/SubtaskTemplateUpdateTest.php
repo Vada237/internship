@@ -38,7 +38,7 @@ class SubtaskTemplateUpdateTest extends TestCase
             'task_template_id' => $firstTaskTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->putJson('api/subtask_templates/' . $subtaskTemplate->id, [
+        $response = $this->actingAs($user)->putJson('api/subtask-templates/' . $subtaskTemplate->id, [
             'name' => 'edited first subtask',
             'task_template_id' => $secondTaskTemplate->id
         ]);
@@ -79,7 +79,7 @@ class SubtaskTemplateUpdateTest extends TestCase
             'task_template_id' => $firstTaskTemplate->id
         ]);
 
-        $response = $this->actingAs($anotherUser)->putJson('api/subtask_templates/' . $subtaskTemplate->id, [
+        $response = $this->actingAs($anotherUser)->putJson('api/subtask-templates/' . $subtaskTemplate->id, [
             'name' => 'edited first subtask',
             'task_template_id' => $secondTaskTemplate->id
         ]);
@@ -94,7 +94,7 @@ class SubtaskTemplateUpdateTest extends TestCase
         $TaskTemplate = TaskTemplate::factory()->create();
         $subtaskTemplate = SubtaskTemplate::factory()->create();
 
-        $response = $this->putJson('api/subtask_templates/' . $subtaskTemplate->id, [
+        $response = $this->putJson('api/subtask-templates/' . $subtaskTemplate->id, [
             'name' => 'edited first subtask',
             'task_template_id' => $TaskTemplate->id
         ]);

@@ -16,7 +16,7 @@ class TaskTemplateCreateTest extends TestCase
         $user = User::factory()->create();
         $board = BoardTemplate::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('api/task_templates', [
+        $response = $this->actingAs($user)->postJson('api/task-templates', [
             'name' => 'first task template',
             'board_template_id' => $board->id
         ]);
@@ -37,7 +37,7 @@ class TaskTemplateCreateTest extends TestCase
 
         $board = BoardTemplate::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('api/task_templates', [
+        $response = $this->actingAs($user)->postJson('api/task-templates', [
             'name' => 'first task template'
         ]);
 
@@ -50,7 +50,7 @@ class TaskTemplateCreateTest extends TestCase
 
         $board = BoardTemplate::factory()->create();
 
-        $response = $this->postJson('api/task_templates', [
+        $response = $this->postJson('api/task-templates', [
             'name' => 'first task template',
             'board_template_id' => $board->id
         ]);

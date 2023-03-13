@@ -16,7 +16,7 @@ class BoardTemplateCreateTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->postJson('api/board_templates', [
+        $response = $this->actingAs($user)->postJson('api/board-templates', [
             'name' => 'first board template'
         ]);
 
@@ -32,7 +32,7 @@ class BoardTemplateCreateTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->postJson('api/board_templates', [
+        $response = $this->postJson('api/board-templates', [
             'name' => 'first board template'
         ]);
 

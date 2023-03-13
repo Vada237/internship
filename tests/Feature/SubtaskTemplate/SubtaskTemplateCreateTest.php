@@ -28,7 +28,7 @@ class SubtaskTemplateCreateTest extends TestCase
             'board_template_id' => $boardTemplate->id
         ]);
 
-        $response = $this->actingAs($user)->postJson('api/subtask_templates', [
+        $response = $this->actingAs($user)->postJson('api/subtask-templates', [
             'name' => 'first subtask',
             'task_template_id' => $taskTemplate->id
         ]);
@@ -60,7 +60,7 @@ class SubtaskTemplateCreateTest extends TestCase
         ]);
 
 
-        $response = $this->actingAs($anotherUser)->postJson('api/subtask_templates', [
+        $response = $this->actingAs($anotherUser)->postJson('api/subtask-templates', [
             'name' => 'first subtask',
             'task_template_id' => $taskTemplate->id
         ]);
@@ -79,7 +79,7 @@ class SubtaskTemplateCreateTest extends TestCase
             'board_template_id' => $boardTemplate->id
         ]);
 
-        $response = $this->postJson('api/subtask_templates', [
+        $response = $this->postJson('api/subtask-templates', [
             'name' => 'first subtask',
             'task_template_id' => $taskTemplate->id
         ]);

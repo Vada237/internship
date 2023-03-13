@@ -17,7 +17,7 @@ class BoardTemplateGetByIdTest extends TestCase
         $user = User::factory()->create();
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->actingAs($user)->getJson("api/board_templates/$boardTemplate->id");
+        $response = $this->actingAs($user)->getJson("api/board-templates/$boardTemplate->id");
 
         $response->assertOk();
         $response->assertExactJson([
@@ -36,7 +36,7 @@ class BoardTemplateGetByIdTest extends TestCase
         $user = User::factory()->create();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->getJson("api/board_templates/$notExistBoardTemplateId");
+        $response = $this->actingAs($user)->getJson("api/board-templates/$notExistBoardTemplateId");
 
         $response->assertNotFound();
     }
@@ -47,7 +47,7 @@ class BoardTemplateGetByIdTest extends TestCase
 
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->getJson("api/board_templates/$boardTemplate->id");
+        $response = $this->getJson("api/board-templates/$boardTemplate->id");
 
         $response->assertUnauthorized();
     }

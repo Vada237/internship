@@ -15,7 +15,7 @@ class SubtaskTemplateGetTest extends TestCase
     public function testSubtaskTemplateGetTestSuccess()
     {
         $this->seed();
-        $response = $this->actingAs(User::first())->getJson('api/subtask_templates/' . SubtaskTemplate::first()->id);
+        $response = $this->actingAs(User::first())->getJson('api/subtask-templates/' . SubtaskTemplate::first()->id);
 
         $response->assertExactJson([
             'data' => [
@@ -32,7 +32,7 @@ class SubtaskTemplateGetTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->getJson('api/subtask_templates/' . SubtaskTemplate::first()->id);
+        $response = $this->getJson('api/subtask-templates/' . SubtaskTemplate::first()->id);
 
         $response->assertUnauthorized();
     }

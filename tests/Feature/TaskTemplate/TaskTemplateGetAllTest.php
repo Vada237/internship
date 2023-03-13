@@ -28,7 +28,7 @@ class TaskTemplateGetAllTest extends TestCase
         $limit = 2;
         $offset = 1;
 
-        $response = $this->actingAs($user)->getJson("api/task_templates?limit=$limit&offset=$offset");
+        $response = $this->actingAs($user)->getJson("api/task-templates?limit=$limit&offset=$offset");
 
         $response->assertOk();
         $response->assertExactJson([
@@ -54,14 +54,14 @@ class TaskTemplateGetAllTest extends TestCase
             'name' => 'board',
             'user_id' => User::first()->id
         ]);
-        
+
         TaskTemplate::factory()->count(5)->create();
 
 
         $limit = 2;
         $offset = 1;
 
-        $response = $this->getJson("api/task_templates?limit=$limit&offset=$offset");
+        $response = $this->getJson("api/task-templates?limit=$limit&offset=$offset");
 
         $response->assertUnauthorized();
     }

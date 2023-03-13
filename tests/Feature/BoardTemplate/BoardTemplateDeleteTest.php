@@ -22,7 +22,7 @@ class BoardTemplateDeleteTest extends TestCase
             'name' => $boardTemplate->name
         ]);
 
-        $response = $this->actingAs(User::first())->deleteJson("api/board_templates/$boardTemplate->id");
+        $response = $this->actingAs(User::first())->deleteJson("api/board-templates/$boardTemplate->id");
 
 
         $this->assertDatabaseMissing('board_templates', [
@@ -39,7 +39,7 @@ class BoardTemplateDeleteTest extends TestCase
         $user = User::first();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->deleteJson("api/board_templates/$notExistBoardTemplateId");
+        $response = $this->actingAs($user)->deleteJson("api/board-templates/$notExistBoardTemplateId");
 
         $response->assertNotFound();
     }
@@ -50,7 +50,7 @@ class BoardTemplateDeleteTest extends TestCase
 
         $boardTemplate = BoardTemplate::first();
 
-        $response = $this->deleteJson("api/board_templates/$boardTemplate");
+        $response = $this->deleteJson("api/board-templates/$boardTemplate");
 
         $response->assertUnauthorized();
     }
