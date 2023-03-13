@@ -31,7 +31,7 @@ class ProjectGetByOrganizationTest extends TestCase
             'organization_id' => $organization->id
         ]);
 
-        $response = $this->actingAs($user)->getJson("api/projects/findByOrganization/$organization->id");
+        $response = $this->actingAs($user)->getJson("api/projects/find-by-organization/$organization->id");
 
         $response->assertOk();
         $response->assertExactJson([
@@ -57,7 +57,7 @@ class ProjectGetByOrganizationTest extends TestCase
         $user = User::first();
         $notExistOrganizationId = Organization::OrderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->getJson("api/projects/findByOrganization/$notExistOrganizationId");
+        $response = $this->actingAs($user)->getJson("api/projects/find-by-organization/$notExistOrganizationId");
 
         $response->assertNotFound();
     }
@@ -72,7 +72,7 @@ class ProjectGetByOrganizationTest extends TestCase
         $users[0]->organizations()->attach($organizations[0]->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
         $users[1]->organizations()->attach($organizations[1]->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
-        $response = $this->actingAs($users[0])->getJson("api/projects/findByOrganization/{$organizations[1]->id}");
+        $response = $this->actingAs($users[0])->getJson("api/projects/find-by-organization/{$organizations[1]->id}");
 
         $response->assertForbidden();
     }
@@ -87,7 +87,7 @@ class ProjectGetByOrganizationTest extends TestCase
             'organization_id' => $organization->id
         ]);
 
-        $response = $this->getJson("api/projects/findByOrganization/$organization->id");
+        $response = $this->getJson("api/projects/find-by-organization/$organization->id");
 
         $response->assertUnauthorized();
     }

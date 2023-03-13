@@ -51,7 +51,7 @@ Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->grou
 
 Route::controller(Api\ProjectController::class)->middleware('auth:sanctum')->group(function () {
     Route::get('projects', [Api\ProjectController::class, 'index']);
-    Route::get('projects/findByOrganization/{organization}', [Api\ProjectController::class, 'getByOrganization']);
+    Route::get('projects/find-by-organization/{organization}', [Api\ProjectController::class, 'getByOrganization']);
     Route::get('projects/{project}', [Api\ProjectController::class, 'show']);
     Route::post('projects', [Api\ProjectController::class, 'store']);
     Route::patch('projects/{project}', [Api\ProjectController::class, 'update']);
