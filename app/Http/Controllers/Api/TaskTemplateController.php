@@ -40,7 +40,7 @@ class TaskTemplateController extends Controller
 
     public function destroy(TaskTemplateDeleteAction $action, TaskTemplate $taskTemplate)
     {
-        $this->authorize('update', [BoardTemplate::class, BoardTemplate::find($taskTemplate->board_template_id)]);
+        $this->authorize('delete', [BoardTemplate::class, BoardTemplate::find($taskTemplate->board_template_id)]);
         return $action->handle($taskTemplate);
     }
 }

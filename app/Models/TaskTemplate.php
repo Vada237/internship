@@ -10,7 +10,6 @@ class TaskTemplate extends Model
     use HasFactory;
 
     const ATTRIBUTES = [
-        'TITLE' => 'Title',
         'DESCRIPTION' => 'Description',
         'DEADLINE' => 'Deadline',
         'IMAGE' => 'Image'
