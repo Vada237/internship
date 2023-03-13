@@ -13,8 +13,20 @@ class Organization extends Model
         'name'
     ];
 
-    public function users() {
-        return $this->belongsToMany(User::class, 'user_organizations', 'organization_id', 'user_id')
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_organization_roles', 'organization_id', 'user_id')
             ->withTimestamps();
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_organization_roles', 'organization_id', 'role_id')
+            ->withTimestamps();
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 }

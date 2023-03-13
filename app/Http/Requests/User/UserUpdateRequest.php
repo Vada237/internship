@@ -30,9 +30,4 @@ class UserUpdateRequest extends FormRequest
             'avatar' => 'nullable|image|mimes:bmp,png,jpeg'
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
-    }
 }

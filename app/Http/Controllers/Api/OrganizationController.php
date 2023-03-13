@@ -9,6 +9,7 @@ use App\Actions\Organization\OrganizationGetByIdAction;
 use App\Actions\Organization\OrganizationGetByNameAction;
 use App\Actions\Organization\OrganizationUpdateAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LimitOffsetRequest;
 use App\Http\Requests\Organization\OrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
@@ -17,33 +18,32 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
-    public function index(OrganizationGetAllAction $action,int $limit,int $offset)
+    public function index(OrganizationGetAllAction $action, LimitOffsetRequest $request)
     {
-        return OrganizationResource::collection($action->handle($limit,$offset));
+        $this->authorize('viewAny', Organization::class);
+        return OrganizationResource::collection($action->handle($request->validated()));
     }
 
     public function store(OrganizationCreateAction $action, OrganizationRequest $request)
     {
-        return new OrganizationResource($action->handle($request->validated(),Auth::user()));
+        return new OrganizationResource($action->handle($request->validated(), Auth::user()));
     }
 
-    public function show(OrganizationGetByIdAction $action,int $id)
+    public function show(OrganizationGetByIdAction $action, Organization $organization)
     {
-        return new OrganizationResource($action->handle($id));
+        $this->authorize('view', $organization);
+        return new OrganizationResource($action->handle($organization));
     }
 
-    public function getByName(OrganizationGetByNameAction $action,string $name)
+    public function update(OrganizationRequest $request, OrganizationUpdateAction $action, Organization $organization)
     {
-        return new OrganizationResource($action->handle($name));
+        $this->authorize('update', $organization);
+        return new OrganizationResource($action->handle($request->validated(), $organization));
     }
 
-    public function update(OrganizationRequest $request, OrganizationUpdateAction $action,int $organization_id)
+    public function destroy(OrganizationDeleteAction $action, Organization $organization)
     {
-        return new OrganizationResource($action->handle($request->validated(), $organization_id,Auth::user()));
-    }
-
-    public function destroy(OrganizationDeleteAction $action,int $id)
-    {
-        return $action->handle($id, Auth::user());
+        $this->authorize('delete', $organization);
+        return $action->handle($organization);
     }
 }

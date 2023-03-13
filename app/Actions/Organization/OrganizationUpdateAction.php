@@ -9,15 +9,11 @@ use App\Models\User;
 use App\Models\UserOrganization;
 use Illuminate\Support\Facades\Auth;
 
-class OrganizationUpdateAction {
-    public function handle($credentials, int $organization_id,User $user) {
-
-        $organization = $user->organizations()->find($organization_id);
-
-        if ($organization != null) {
-            $organization->update($credentials);
-            return $organization;
-        } else return __("Организация не найдена");
-
+class OrganizationUpdateAction
+{
+    public function handle($params, Organization $organization)
+    {
+        $organization->update($params);
+        return $organization;
     }
 }

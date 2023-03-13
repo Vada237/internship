@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('role_permissions', function (Blueprint $table) {
+            $table->id();
             $table->integer('role_id');
             $table->integer('permission_id');
             $table->timestamps();
 
-            $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('permission_id')->references('id')->on('permissions');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');;
 
-            $table->primary(['role_id','permission_id']);
+            $table->unique(['role_id','permission_id']);
         });
     }
 

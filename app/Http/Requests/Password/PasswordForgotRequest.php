@@ -29,9 +29,4 @@ class PasswordForgotRequest extends FormRequest
             "email" => "required|min:6|email"
         ];
     }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json($validator->errors(), 422));
-    }
 }
