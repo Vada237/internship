@@ -9,6 +9,16 @@ class SubtaskTemplate extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'task_template_id'
+    ];
+
+    public function taskTemplate()
+    {
+        return $this->belongsTo(TaskTemplate::class);
+    }
+
     public function attributes()
     {
         return $this->belongsToMany(Attribute::class, 'subtask_template_attributes',
