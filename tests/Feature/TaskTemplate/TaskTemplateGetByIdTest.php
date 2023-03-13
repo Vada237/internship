@@ -13,10 +13,13 @@ class TaskTemplateGetByIdTest extends TestCase
 {
     public function testTaskTemplateGetByIdSuccess()
     {
-        BoardTemplate::factory()->create();
-        TaskTemplate::factory()->create();
-
         $user = User::factory()->create();
+
+        BoardTemplate::create([
+            'name' => 'board',
+            'user_id' => $user->id
+        ]);
+        TaskTemplate::factory()->count(5)->create();
 
         $response = $this->actingAs($user)->getJson('api/task_templates/' . TaskTemplate::first()->id);
 
@@ -32,10 +35,13 @@ class TaskTemplateGetByIdTest extends TestCase
 
     public function testTaskTemplateGetByIdNotFound()
     {
-        BoardTemplate::factory()->create();
-        TaskTemplate::factory()->create();
-
         $user = User::factory()->create();
+
+        BoardTemplate::create([
+            'name' => 'board',
+            'user_id' => $user->id
+        ]);
+        TaskTemplate::factory()->create();
 
         $response = $this->actingAs($user)->getJson('api/task_templates/' . TaskTemplate::first()->id + 1);
 
@@ -44,8 +50,13 @@ class TaskTemplateGetByIdTest extends TestCase
 
     public function testTaskTemplateGetByIdUnauthorized()
     {
-        BoardTemplate::factory()->create();
-        TaskTemplate::factory()->create();
+        User::factory()->create();
+
+        BoardTemplate::create([
+            'name' => 'board',
+            'user_id' => User::first()->id
+        ]);
+        TaskTemplate::factory()->count(5)->create();
 
         $response = $this->getJson('api/task_templates/' . TaskTemplate::first()->id + 1);
 

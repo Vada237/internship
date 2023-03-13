@@ -22,6 +22,7 @@ class TaskTemplateCreateTest extends TestCase
         ]);
 
         $response->assertCreated();
+
         $this->assertDatabaseHas('task_templates', [
             'id' => TaskTemplate::where('name', 'first task template')->first()->id,
             'name' => TaskTemplate::where('name', 'first task template')->first()->name,

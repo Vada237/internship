@@ -15,9 +15,15 @@ class TaskTemplateGetAllTest extends TestCase
 {
     public function testTaskTemplateGetAllSuccess()
     {
-        BoardTemplate::factory()->create();
-        TaskTemplate::factory()->count(5)->create();
+        $this->seed();
+
         $user = User::factory()->create();
+
+        BoardTemplate::create([
+            'name' => 'board',
+            'user_id' => $user->id
+        ]);
+        TaskTemplate::factory()->count(5)->create();
 
         $limit = 2;
         $offset = 1;
@@ -43,8 +49,14 @@ class TaskTemplateGetAllTest extends TestCase
 
     public function testTaskTemplateGetAllUnauthorized()
     {
-        BoardTemplate::factory()->create();
+        User::factory()->create();
+        BoardTemplate::create([
+            'name' => 'board',
+            'user_id' => User::first()->id
+        ]);
+        
         TaskTemplate::factory()->count(5)->create();
+
 
         $limit = 2;
         $offset = 1;
