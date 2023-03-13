@@ -537,7 +537,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Forbidden"
 
-  /api/projects/find_by_organization/{organization}:
+  /api/projects/find-by-organization/{organization}:
     get:
       summary: Поиск проекта по id организации
       tags:
@@ -757,9 +757,567 @@ paths:
           description: Пользователь вступил в проект
         '403':
           description: Недостаточно прав
+  
+  /api/board-templates:
+    get:
+      summary: Получение шаблонов доски
+      operationId: GetAllBoardTemplates
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: Количество шаблонов досок
+          schema:
+            type: integer
+            example: 1
 
+        - name: offset
+          in: query
+          required: true
+          description: Игнорирование шаблонов досок
+          schema:
+            type: integer
+            example: 1
+
+      tags:
+        - BoardTemplates
+      responses:
+        '200':
+          description: Успешный вывод всех шаблонов досок
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplates"
+
+    post:
+      summary: Создание шаблона доски
+      operationId: CreateBoardTemplate
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoardTemplate"
+
+      tags:
+        - BoardTemplates
+      responses:
+        '201':
+          description: Шаблон доски создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+
+        '422':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+  
+  /api/board-templates/{boardTemplate}:
+    get:
+      summary: Поиск шаблона доски по id
+      tags:
+        - BoardTemplates
+
+      operationId: GetBoardTemplatebyId
+      
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: id шаблона доски
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: Получение шаблона доски
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+        
+
+    put:
+      summary: Изменение названия шаблона доски
+      tags:
+        - BoardTemplates
+
+      operationId: UpdateBoardTemplatebyId
+
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: id шаблона доски
+          schema:
+            type: integer
+      
+      requestBody:
+        required: false
+        description: Название шаблона доски
+        content:
+          application/json:
+            schema:
+              type: string
+            example:
+              name: first board template
+              
+      responses:
+        '200':
+          description: Шаблон доски изменен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+
+    delete:
+      summary: Удаление шаблона доски
+      tags:
+        - BoardTemplates
+      operationId: DeleteBoardTemplatebyId
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: id шаблона доски
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Шаблон доски удален
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+  
+  /api/task-templates/:
+    get:
+      summary: Получение шаблонов задач
+      operationId: GetAllTaskTemplates
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: Количество шаблонов задач
+          schema:
+            type: integer
+            example: 1
+
+        - name: offset
+          in: query
+          required: true
+          description: Игнорирование шаблонов задач
+          schema:
+            type: integer
+            example: 1
+
+      tags:
+        - TaskTemplates
+      responses:
+        '200':
+          description: Успешный вывод всех шаблонов задач
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplates"
+        
+    post:
+      summary: Создание шаблона задач
+      operationId: CreateTaskTemplate
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskTemplate"
+
+      tags:
+        - TaskTemplates
+      responses:
+        '201':
+          description: Шаблон задачи создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+
+        '422':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+  
+  /api/task-templates/{taskTemplate}:
+    get:
+      summary: Поиск шаблона задачи по id
+      tags:
+        - TaskTemplates
+
+      operationId: GetTaskTemplatebyId
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: id шаблона задачи
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: Получение шаблона задачи
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+        
+
+    put:
+      summary: Изменение шаблона задачи
+      tags:
+        - TaskTemplates
+
+      operationId: UpdateTaskTemplatebyId
+
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: id шаблона задачи
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        description: Название шаблона задачи
+        content:
+          application/json:
+            schema:
+              properties:
+                name: 
+                  type: string
+                  example: first task template
+              
+      responses:
+        '200':
+          description: Шаблон задачи изменен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+
+    delete:
+      summary: Удаление шаблона задачи
+      tags:
+        - TaskTemplates
+      operationId: DeleteTaskTemplatebyId
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: id шаблона задачи
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: Шаблон задачи удален
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+  
+  /api/subtask-templates:
+    post:
+      summary: Создание шаблона подзадач
+      operationId: CreateSubtaskTemplate
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubtaskTemplate"
+
+      tags:
+        - SubtaskTemplates
+      responses:
+        '201':
+          description: Шаблон задачи создан
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+
+        '422':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+  
+  /api/subtask-templates/{subtaskTemplate}:
+    get:
+      summary: Поиск шаблона подзадачи по id
+      tags:
+        - SubtaskTemplates
+
+      operationId: GetSubtaskTemplatebyId
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: Получение шаблона подзадачи
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+        
+
+    put:
+      summary: Изменение шаблона подзадачи
+      tags:
+        - SubtaskTemplates
+
+      operationId: UpdateSubtaskTemplatebyId
+
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+      
+      requestBody:
+        required: false
+        description: Название шаблона подзадачи
+        content:
+          application/json:
+            schema:
+              properties:
+                name: 
+                  type: string
+                  example: first subtask template
+                task_template_id: 
+                  type: integer
+                  example: 1
+              
+      responses:
+        '200':
+          description: Шаблон подзадачи изменен
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+
+    delete:
+      summary: Удаление шаблона задачи
+      tags:
+        - SubtaskTemplates
+        
+      operationId: DeleteSubtaskTemplatebyId
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: Шаблон подзадачи удален
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+  
+  /api/subtask-templates/{subtaskTemplate}/attribute:
+    post:
+      summary: Добавление свойства в подзадачу
+      operationId: AddAttributeSubtask
+      
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_template_id:
+                  type: integer
+                  example: 1
+                attribute_id:
+                  type: integer
+                  example: 1
+                value:
+                  type: string
+                  example: 2023-13-01 18:00:00
+
+      tags:
+        - SubtaskTemplates
+      responses:
+        '201':
+          description: Свойство добавлено в подзадачу
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskAttributeTemplate"
+
+        '422':
+          description: Ошибка валидации
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+  
+  /api/subtask-templates/{subtaskTemplate}/attribute/{attribute}:
+    put:
+      summary: Изменение значения свойства подзадачи
+      tags:
+        - SubtaskTemplates
+
+      operationId: UpdateSubtaskAttributeTemplatebyIds
+
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+        - name: attribute
+          in: path
+          required: true
+          description: id свойства
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_template_id:
+                  type: integer
+                  example: 1
+                attribute_id:
+                  type: integer
+                  example: 1
+                value:
+                  type: string
+                  example: 2023-13-01 18:00:00
+              
+      responses:
+        '200':
+          description: Свойство подзадачи изменено
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskAttributeTemplate"
+                
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав
+
+    delete:
+      summary: Удаление свойства из подзадачи
+      tags:
+        - SubtaskTemplates
+        
+      operationId: DeleteSubtaskAttributeTemplatebyId
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: id шаблона подзадачи
+          schema:
+            type: integer
+        - name: attribute
+          in: path
+          required: true
+          description: id свойства
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: свойство удалено
+
+        '401':
+          description: Пользователь не авторизован
+          
+        '403':
+          description: Недостаточно прав
+  
+  
 components:
   schemas:
+  
     User:
       type: object
       required:
@@ -883,7 +1441,102 @@ components:
         projectId:
           type: integer
           example: 4
+    
+    BoardTemplate:
+      type: object
+      required:
+        - name
 
+      properties:
+        
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: some board
+          
+    BoardTemplates:
+      type: array
+      items:
+        $ref: "#/components/schemas/BoardTemplate"
+      example:
+        - id: 1
+          name: first board template
+
+        - id: 2
+          name: second board template
+    
+    TaskTemplate:
+      type: object
+      required:
+        - name
+        - board_template_id
+        
+      properties:
+        
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: some task
+        board_template_id:
+          type: integer
+          example: 1
+          
+    TaskTemplates:
+      type: array
+      items:
+        $ref: "#/components/schemas/BoardTemplate"
+      example:
+        - id: 1
+          name: first task template
+          board_template_id: 1
+          
+        - id: 2
+          name: second task template
+          board_template_id: 1
+    
+    SubtaskTemplate:
+      type: object
+      required:
+        - name
+        - task_template_id
+        
+      properties:
+        
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: some subtask
+        task_template_id:
+          type: integer
+          example: 1
+    
+    SubtaskAttributeTemplate:
+      type: object
+      required:
+        - task_template_id
+        - attribute_template_id
+        - value
+        
+      properties:
+        id:
+          type: integer
+          example: 1
+        task_template_id:
+          type: integer
+          example: 1
+        attribute_id:
+          type: integer
+          example: 1
+        value:
+          type: string
+          example: 2023-13-01 18:00:00
+     
     NotFound:
       type: object
 
@@ -951,7 +1604,7 @@ components:
         message:
           type: string
           example: Недостаточно прав
-
+    
 
 
 
