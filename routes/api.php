@@ -66,27 +66,27 @@ Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->grou
 });
 
 Route::controller(Api\BoardTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-    Route::post('board_templates', [Api\BoardTemplateController::class, 'store']);
-    Route::get('board_templates', [Api\BoardTemplateController::class, 'index']);
-    Route::get('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
-    Route::patch('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
-    Route::delete('board_templates/{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
+    Route::post('board-templates', [Api\BoardTemplateController::class, 'store']);
+    Route::get('board-templates', [Api\BoardTemplateController::class, 'index']);
+    Route::get('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
+    Route::patch('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
+    Route::delete('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
 });
 
 Route::controller(Api\TaskTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-   Route::post('task_templates', [Api\TaskTemplateController::class, 'store']);
-   Route::get('task_templates', [Api\TaskTemplateController::class, 'index']);
-   Route::get('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
-   Route::patch('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
-   Route::delete('task_templates/{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
+   Route::post('task-templates', [Api\TaskTemplateController::class, 'store']);
+   Route::get('task-templates', [Api\TaskTemplateController::class, 'index']);
+   Route::get('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
+   Route::patch('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
+   Route::delete('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
 });
 
 Route::controller(Api\SubtaskTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-   Route::post('subtask_templates', [Api\SubtaskTemplateController::class, 'store']);
-   Route::put('subtask_templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'update']);
-   Route::get('subtask_templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'show']);
-   Route::delete('subtask_templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'destroy']);
-   Route::post('subtask_templates/{subtaskTemplate}/attributes', [Api\SubtaskTemplateController::class, 'addAttribute']);
-   Route::put('subtask_templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
-   Route::delete('subtask_templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
+   Route::post('subtask-templates', [Api\SubtaskTemplateController::class, 'store']);
+   Route::put('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'update']);
+   Route::get('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'show']);
+   Route::delete('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'destroy']);
+   Route::post('subtask-templates/{subtaskTemplate}/attributes', [Api\SubtaskTemplateController::class, 'addAttribute']);
+   Route::put('subtask-templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
+   Route::delete('subtask-templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
 });
