@@ -14,9 +14,6 @@ class AttributeSeeder extends Seeder
      */
     public function run()
     {
-        Attribute::create([
-            'name' => 'Name'
-        ]);
 
         Attribute::create([
             'name' => 'Description'

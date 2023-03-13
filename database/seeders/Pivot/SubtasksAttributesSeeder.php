@@ -22,9 +22,8 @@ class SubtasksAttributesSeeder extends Seeder
         $attributes = Attribute::all();
 
         foreach ($subtasks as $subtask) {
-            $subtask->attributes()->attach($attributes[0]->id, ['value' => fake()->word]);
-            $subtask->attributes()->attach($attributes[1]->id, ['value' => implode(fake()->words)]);
-            $subtask->attributes()->attach($attributes[2]->id, ['value' => (new DateTime())->modify('5 day')]);
+            $subtask->attributes()->attach($attributes[0]->id, ['value' => implode(fake()->words)]);
+            $subtask->attributes()->attach($attributes[1]->id, ['value' => (new DateTime())->modify('5 day')]);
         }
     }
 }
