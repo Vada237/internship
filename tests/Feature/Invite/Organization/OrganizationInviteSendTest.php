@@ -1,17 +1,16 @@
 <?php
 
-namespace Tests\Feature\Invite;
+namespace Tests\Feature\Invite\Organization;
 
 use App\Mail\OrganizationInvite;
+use App\Models\Invite;
 use App\Models\Organization;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
-class InviteSendTest extends TestCase
+class OrganizationInviteSendTest extends TestCase
 {
     public function testSendInvite()
     {
@@ -21,14 +20,15 @@ class InviteSendTest extends TestCase
         $user = User::first();
         $invitedUser = User::offset(1)->first();
 
-        $response = $this->actingAs($user)->post('api/invites/send', [
+        $response = $this->actingAs($user)->post('api/invites/send/organization', [
             'email' => $invitedUser->email,
             'organizationId' => $user->organizations()->first()->id
         ]);
 
         $this->assertDatabaseHas('invites', [
             'email' => $invitedUser->email,
-            'organization_id' => $user->organizations()->first()->id
+            'invitable_type' => 'organization',
+            'invitable_id' => $user->organizations()->first()->id
         ]);
 
         Mail::assertSent(OrganizationInvite::class);
@@ -42,7 +42,7 @@ class InviteSendTest extends TestCase
         $user = User::first();
         $invitedUser = User::offset(1)->first();
 
-        $response = $this->actingAs($user)->postJson('api/invites/send', [
+        $response = $this->actingAs($user)->postJson('api/invites/send/organization', [
             'email' => $invitedUser->email
         ]);
 
@@ -62,7 +62,7 @@ class InviteSendTest extends TestCase
 
         $fakeSupervisor->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
 
-        $response = $this->actingAs($fakeSupervisor)->postJson('api/invites/send', [
+        $response = $this->actingAs($fakeSupervisor)->postJson('api/invites/send/organization', [
             'email' => $invitedUser->email,
             'organizationId' => $fakeSupervisor->organizations()->first()->id
         ]);

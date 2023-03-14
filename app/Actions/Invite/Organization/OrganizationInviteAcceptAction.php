@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Actions\Invite;
+namespace App\Actions\Invite\Organization;
 
 use App\Models\Invite;
-use App\Models\Organization;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Facades\Config;
 
 
-class InviteAcceptAction
+class OrganizationInviteAcceptAction
 {
     public function handle(string $token)
     {
         $invite = Invite::where('token', $token)->firstOrFail();
         $user = User::byEmail($invite->email)->firstOrFail();
 
-        $user->organizations()->attach($invite->organization_id, ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+        $user->organizations()->attach($invite->invitable_id,
+            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
 
         $invite->delete();
         return __('messages.organizations.join.success');

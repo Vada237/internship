@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Organization extends Model
 {
@@ -28,5 +29,10 @@ class Organization extends Model
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function invites(): MorphMany
+    {
+        return $this->morphMany(Invite::class,'invitable');
     }
 }
