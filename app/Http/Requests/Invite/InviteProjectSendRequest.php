@@ -24,8 +24,8 @@ class InviteProjectSendRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'projectId' => 'required|integer'
+            'user_id' => 'required|integer|exists:users,id',
+            'project_id' => 'required|integer|exists:projects,id'
         ];
     }
 }

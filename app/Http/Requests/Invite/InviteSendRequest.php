@@ -24,8 +24,8 @@ class InviteSendRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'organizationId' => 'required'
+            'user_id' => 'required|exists:users,id',
+            'organization_id' => 'required|exists:organizations,id'
         ];
     }
 }
