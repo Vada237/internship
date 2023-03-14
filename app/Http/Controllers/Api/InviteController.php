@@ -19,24 +19,25 @@ class InviteController extends Controller
 {
     public function send(OrganizationInviteSendAction $action, InviteSendRequest $request)
     {
-        $this->authorize('send', [Invite::class, Organization::find($request->organizationId)]);
+        $this->authorize('send', [Invite::class, Organization::find($request->validated('organization_id'))]);
         return $action->handle($request->validated(), Auth::user());
     }
 
     public function accept(OrganizationInviteAcceptAction $action, string $token)
     {
-        $this->authorize('accept', Invite::where('token', $token)->first());
+        $this->authorize('accept', Invite::where('token', $token)->firstOrFail());
         return $action->handle($token);
     }
 
     public function sendProject(ProjectInviteSendAction $action, InviteProjectSendRequest $request)
     {
-        $this->authorize('sendProject', [Invite::class, Project::find($request->projectId)]);
-        return $action->handle($request->validated(),Auth::user());
+        $this->authorize('sendProject', [Invite::class, Project::find($request->validated('project_id'))]);
+        return $action->handle($request->validated(), Auth::user());
     }
 
-    public function acceptProject(ProjectInviteAcceptAction $action, string $token) {
-        $this->authorize('accept', [Invite::class, Invite::where('token', $token)->first()]);
+    public function acceptProject(ProjectInviteAcceptAction $action, string $token)
+    {
+        $this->authorize('accept', [Invite::class, Invite::where('token', $token)->firstOrFail()]);
         return $action->handle($token);
     }
 }
