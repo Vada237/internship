@@ -33,6 +33,6 @@ class Organization extends Model
 
     public function invites(): MorphMany
     {
-        return $this->morphMany(Invite::class,'invitable');
+        return $this->morphMany(Invite::class, 'invitable');
     }
 }
