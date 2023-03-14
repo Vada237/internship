@@ -1,286 +1,337 @@
 openapi: 3.0.0
-info: 
+info:
   title: Стажировка
   version: 1.0.0
 servers:
   - url: http:/127.0.0.1:8000/api/documentation
 paths:
-  
+
   /api/users:
-    get: 
-      summary: Получение пользователей
-      operationId: GetAllUsers
+    get:
+      tags:
+        - Users
+      summary: Get users
       parameters:
         - name: limit
           in: query
           required: true
-          description: Количество пользователей
+          description: limit
           schema:
             type: integer
             example: 1
-            
+
         - name: offset
           in: query
           required: true
-          description: Игнорирование пользователей
+          description: offset
           schema:
             type: integer
             example: 1
-            
-      tags: 
-        - Users
+
       responses:
         '200':
-          description: Успешный вывод всех пользователей
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Users"
-                
-    
-    patch:
-      summary: Обновление имени и\или аватара пользователя
-      tags:
-        - Users
-      operationId: UpdateUserAvatarAndNameById
-      
-      responses:
-        '200':
-          description: Имя и\или аватар изменен
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-                  
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/Users"
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
+          description: Unauthorized
         '403':
-          description: Недостаточно прав
-          
+          description: Forbidden
+
+    patch:
+      summary: Update username and\or avatar
+      tags:
+        - Users
+      requestBody:
+        required: false
+        description: Username and\or avatar
+        
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                avatar: 
+                  format: binary
+                  type: string
+              
+      responses:
+        '200':
+          description: Updated user name and\or avatar
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '422':
-          description: Некорректные данные 
-            
+          description: Unprocessable entity
+
   /api/users/{user}:
-    get: 
-      summary: Получение пользователя по id
+    get:
+      summary: Get user by id
       tags:
         - Users
-      operationId: GetUserById
       parameters:
         - name: user
           in: path
           required: true
-          description: id пользователя
+          description: user id
           schema:
             type: integer
-          
+
       responses:
         '200':
-          description: Пользователь найден
+          description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-                
+
         '404':
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-  
+          description: Not Found
+        '401':
+          description: Unauthorized
+
     delete:
-      summary: Удаление пользователя по id
+      summary: Delete user by id
       tags:
         - Users
-      operationId: DeleteUserById
       parameters:
         - name: user
           in: path
           required: true
-          description: id пользователя
+          description: user id
           schema:
             type: integer
-            
+
       responses:
         '200':
-          description: Пользователь удален
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-                  
+          description: OK
         '404':
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-  
+          description: Not found
+        '403':
+          description: Forbidden
+        '401':
+          description: Unauthorized
+
   /api/auth/register:
-    post: 
-      summary: Регистрация пользователя
+    post:
+      summary: Registration user
       tags:
         - Auth
-      operationId: RegisterUser
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: "#/components/schemas/User"
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                avatar:
+                  format: binary
+                  type: string
               
       responses:
         '201':
-          description: Пользователь создан
+          description: Created
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        
         '422':
-          description: Некорректный email/password или пользователь с таким email существует
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
-  
+          description: Unprocessable entity
+
   /api/auth/login:
-    post: 
-      summary: Авторизация пользователя
+    post:
+      summary: login
       tags:
         - Auth
-      operationId: LoginUser
+      requestBody:
+        required: true
+        description: login user
+        content:
+          application/json:
+            schema:
+              properties:
+                email: 
+                  type: string
+                password:
+                  type: string
+                
       responses:
-        '201':
-          description: Пользователь успешно авторизован
+        '200':
+          description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccessLogin"
-        
         '422':
-          description: Некорректный email/password
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
-  
+          description: Unprocessable entity
+
   /api/password/forgot:
     post:
-      summary: Восстановление пароля пользователя
+      summary: Forgot user password
       tags:
         - Password
-      operationId: ForgotPassword
-      responses:
-        '200':
-          description: Ссылка для сброса пароля отправлена на почту
-        
-        '422':
-          description: Некорректный email
-  
-  /api/password/reset:
-    post:
-      summary: Сброс пароля пользователя
-      tags:
-        - Password
-      operationId: ResetPassword
       requestBody:
         required: true
+        description: User email
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ResetPassword"
+              properties:
+                email: 
+                  type: string
+                
       responses:
         '200':
-          description: Пароль успешно сброшен
+          description: OK
         '422':
-          description: Некорректные данные
-          
+          description: Unprocessable entity
+
+  /api/password/reset:
+    post:
+      summary: Reset user password
+      tags:
+        - Password
+      requestBody:
+        required: true
+        description: request to reset user password
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                token:
+                  type: string
+                password:
+                  type: string
+                password_confirm:
+                  type: string
+      responses:
+        '200':
+          description: OK
+        '422':
+          description: Unprocessable entity
+
   /api/organizations:
     get:
-      summary: Получение организаций
-      operationId: GetAllOrganizations
-      tags: 
+      summary: Get All organizations
+      tags:
         - Organizations
         
       parameters:
         - name: limit
           in: query
           required: true
-          description: Количество организаций
+          description: limit
           schema:
             type: integer
             example: 1
-            
+
         - name: offset
           in: query
           required: true
-          description: Игнорирование организаций
+          description: offset
           schema:
             type: integer
             example: 1
-            
+
       responses:
         '200':
-          description: Успешный вывод всех организаций
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organizations"
-        '403':
-          description: Пользователь не имеет конкретных ролей
+          description: OK
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Forbidden"
-          
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organizations"
+        '403':
+          description: Forbidden
+        '401':
+          description: Unauthorized
+
     post:
-      summary: Создание организации
+      summary: Create organization
       tags:
         - Organizations
-      operationId: CreateOrganization
+        
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Organization"
-    
+              properties:
+                name:
+                  type: string
+                
       responses:
         '201':
-          description: Организация создана
+          description: Created
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-        
         '403':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-                
+          description: Forbidden
         '422':
-          description: Некорректное название
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
-                  
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+          
   /api/organizations/{organization}:
     get:
-      summary: Поиск организации по id
-      tags: 
+      summary: get organization by id
+      tags:
         - Organizations
-      
-      operationId: GetOrganizationbyId
-      
+
+      parameters:
+        - name: organization
+          in: path
+          required: true
+          description: organization id
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organization"
+
+        '404':
+          description: Not found
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+          
+    patch:
+      summary: Update organization by id
+      tags:
+        - Organizations
+        
       parameters:
         - name: organization
           in: path
@@ -289,121 +340,56 @@ paths:
           schema:
             type: integer
             
-      responses:
-        '200':
-          description: Получение организации
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organization"
-                
-        '404':
-          description: Организация не найдена
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-        '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-    patch:
-      summary: Изменение названия организации
-      tags:
-        - Organizations
-      operationId: UpdateNameOrganization
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Organization"
-      
-      parameters:
-        - name: organization
-          in: path
-          required: true
-          description: id организации
-          schema:
-            type: integer
-            
+              properties:
+                name: 
+                  type: string
+
       responses:
         '200':
-          description: Название организации изменено
+          description: OK
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-        
+
         '403':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-                
-        '422':
-          description: Некорректное название
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
-    
-    delete:
-      summary: Удаление организации по id
-      tags: 
-        - Organizations
-      
-      operationId: DeleteOrganizationbyId
-      
-      parameters:
-        - name: organization
-          in: path
-          required: true
-          description: id организации
-          schema:
-            type: integer
-            
-      responses:
-        '200':
-          description: Организация удалена
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Organization"
-                
-        '404':
-          description: Организация не найдена
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
+          description: Forbidden
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-                
-  /api/invites/send/organization: 
+          description: Unauthorized
+        '422':
+          description: Unprocessable entity
+
+    delete:
+      summary: Delete organization by id
+      tags:
+        - Organizations
+
+      parameters:
+        - name: organization
+          in: path
+          required: true
+          description: organization id
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+        '403':
+          description: Forbidden
+        '401':
+          description: Unauthorized
+
+  /api/invites/send/organization:
     post:
-      summary: Отправить приглашение в организацию
+      summary: Send organization invite
       tags:
         - Invites
       operationId: SendInvite
@@ -412,19 +398,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Invite"
-      
+              properties:
+                email:
+                  type: string
+                organization_id:
+                  type: integer
+                  
       responses:
         '200':
-          description: Приглашение отправлено
+          description: OK
         '422':
-          description: Ошибка валидации
+          description: Unprocessable entity
         '403':
-          description: Недостаточно прав
-          
+          description: Forbidden
+
   /api/invites/accept/organization/{token}:
-    get:  
-      summary: Принять приглашение в организацию
+    get:
+      summary: Accept organization invite
       tags:
       - Invites
       operationId: AcceptInvite
@@ -432,285 +422,232 @@ paths:
         - name: token
           in: path
           required: true
-          description: Токен который находится в ссылке для приглашения
           schema:
             type: string
+            
       responses:
         '200':
-          description: Пользователь вступил в организацию
+          description: OK
         '403':
-          description: Недостаточно прав
-  
+          description: Forbidden
+        '401':
+          description: Unauthorized
+
   /api/projects:
-    get: 
-      summary: Получение проектов
-      operationId: GetAllProjects
+    get:
+      summary: Get projects
+      tags:
+        - Projects      
       parameters:
         - name: limit
           in: query
           required: true
-          description: Количество проектов
+          description: limit
           schema:
             type: integer
             example: 1
-            
         - name: offset
           in: query
           required: true
-          description: Игнорирование проектов
+          description: offset
           schema:
             type: integer
             example: 1
-            
-      tags: 
-        - Projects
+
       responses:
         '200':
-          description: Успешный вывод всех проектов
-          content: 
+          description: OK
+          content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Projects"
-                
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/Projects"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
     post:
-      summary: Создание проекта
-      operationId: CreateProject
-      
+      summary: Create project
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Project"
-    
-      tags: 
+              properties:
+                name:
+                  type: string
+                organization_id:
+                  type: integer
+                  
+      tags:
         - Projects
       responses:
         '201':
-          description: Проект создан
-          content: 
+          description: Created
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Project"
-        
         '422':
-          description: Некорректное название или попытка сменить организацию
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UnprocessableEntity"
+          description: Unprocessable entity
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-                
+          description: Unauthorized
         '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-                
-  /api/projects/findByOrganization/{organization}:
+          description: Forbidden
+
+  /api/projects/find-by-organization/{organization}:
     get:
-      summary: Поиск проекта по id организации
-      tags: 
+      summary: find project by organization id
+      tags:
         - Projects
-      
+
       operationId: GetProjectsbyOrganizationId
       
       parameters:
         - name: organization
           in: path
           required: true
-          description: id организации
+          description: organization id
           schema:
             type: integer
-            
+      
       responses:
         '200':
-          description: Получение проектов
-          content: 
+          description: OK
+          content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Organization"
-                
+
         '404':
-          description: Проекты не найдены
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
+          description: Not found
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-                
+          description: Unauthorized
         '403':
-          description: Пользователь не имеет конкретных ролей или смотрит проекты чужой организации
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-  
+          description: Forbidden
+          
   /api/projects/{project}:
     get:
-      summary: Поиск проекта по id
-      tags: 
-        - Projects
-      
-      operationId: GetProjectbyId
-      
-      parameters:
-        - name: project
-          in: path
-          required: true
-          description: id проекта
-          schema:
-            type: integer
-            
-      responses:
-        '200':
-          description: Получение проекта
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Project"
-                
-        '404':
-          description: Проект не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-        '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-                
-    patch:
-      summary: Изменение названия проекта
-      tags: 
-        - Projects
-      
-      operationId: UpdateProjectbyId
-      
-      parameters:
-        - name: project
-          in: path
-          required: true
-          description: id проекта
-          schema:
-            type: integer
-            
-      responses:
-        '200':
-          description: Проект изменен
-          content: 
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Project"
-                
-        '404':
-          description: Проект не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-        '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-    
-    delete: 
-      summary: Удаление проекта
-      tags: 
-        - Projects
-      
-      operationId: DeleteProjectbyId
-      
-      parameters:
-        - name: project
-          in: path
-          required: true
-          description: id проекта
-          schema:
-            type: integer
-            
-      responses:
-        '200':
-          description: Проект удален
-                
-        '404':
-          description: Проект не найден
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/NotFound"
-                
-        '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Authorize"
-        '403':
-          description: Пользователь не имеет конкретных ролей
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Forbidden"
-                
-  /api/invites/send/project: 
-    post:
-      summary: Отправить приглашение в проект
+      summary: get project by id
       tags:
-        - Invites
-      operationId: SendInviteProject
+        - Projects
+        
+      parameters:
+        - name: project
+          in: path
+          required: true
+          description: project id
+          schema:
+            type: integer
+            
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+          
+    patch:
+      summary: Update project
+      tags:
+        - Projects
+
+      parameters:
+        - name: project
+          in: path
+          required: true
+          description: project id
+          schema:
+            type: integer
+            
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/InviteProject"
-      
+              properties:
+                name:
+                  type: string
+            
       responses:
         '200':
-          description: Приглашение отправлено
-        '422':
-          description: Ошибка валидации
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        '404':
+          description: Not found
+        '401':
+          description: Unauthorized
         '403':
-          description: Недостаточно прав
+          description: Forbidden
+
+    delete:
+      summary: Delete project by id
+      tags:
+        - Projects
+
+      parameters:
+        - name: project
+          in: path
+          required: true
+          description: project id
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
           
+  /api/invites/send/project:
+    post:
+      summary: Send project invite
+      tags:
+        - Invites
+        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                project_id:
+                  type: integer
+                
+      responses:
+        '200':
+          description: OK
+        '422':
+          description: Unprocessable entity
+        '403':
+          description: Forbidden
+        '401':
+          description: Unauthorized
+
   /api/invites/accept/project/{token}:
-    get:  
-      summary: Принять приглашение в проект
+    get:
+      summary: Accept invite project
       tags:
       - Invites
-      operationId: AcceptInviteProject
+      
       parameters:
         - name: token
           in: path
@@ -718,245 +655,719 @@ paths:
           description: Токен который находится в ссылке для приглашения
           schema:
             type: string
+            
       responses:
         '200':
-          description: Пользователь вступил в проект
+          description: OK
         '403':
-          description: Недостаточно прав
-     
-components: 
+          description: Forbidden
+        '401':
+          description: Unauthorized
+  
+  /api/board-templates:
+    get:
+      summary: Get board templates
+      tags:
+        - BoardTemplates
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: limit
+          schema:
+            type: integer
+            example: 1
+
+        - name: offset
+          in: query
+          required: true
+          description: offset
+          schema:
+            type: integer
+            example: 1
+            
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/BoardTemplates"
+        '401':
+          description: Unauthorized
+
+    post:
+      summary: Create board template
+      requestBody:
+        required: true
+        description: request to add new board template
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                organization_id:
+                  type: integer
+
+      tags:
+        - BoardTemplates
+      responses:
+        '201':
+          description: Creatd
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+        '422':
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/board-templates/{boardTemplate}:
+    get:
+      summary: get board template by id
+      tags:
+        - BoardTemplates
+      
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: board template id
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        
+    put:
+      summary: Update board template by id
+      tags:
+        - BoardTemplates
+
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: board template id
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        description: request to update board template
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+              
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BoardTemplate"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '422':
+          description: Unprocessable entity
+
+    delete:
+      summary: Delete board template
+      tags:
+        - BoardTemplates
+        
+      parameters:
+        - name: boardTemplate
+          in: path
+          required: true
+          description: board template id
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/task-templates/:
+    get:
+      summary: Get task templates
+      tags:
+        - TaskTemplates  
+        
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: limit
+          schema:
+            type: integer
+
+        - name: offset
+          in: query
+          required: true
+          description: offset
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/TaskTemplates"
+        '401':
+          description: Unauthorized
+        
+    post:
+      summary: Create task template
+      tags:
+        - TaskTemplates
+      requestBody:
+        required: true
+        description: request to update board template
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                board_template_id:
+                  type: integer
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+        '422':
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/task-templates/{taskTemplate}:
+    get:
+      summary: Find task template by id
+      tags:
+        - TaskTemplates
+
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: task template id
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        
+    put:
+      summary: Update task template
+      tags:
+        - TaskTemplates
+
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: task template id
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        description: request for update task template
+        content:
+          application/json:
+            schema:
+              properties:
+                name: 
+                  type: string
+              
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskTemplate"
+
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+    delete:
+      summary: Delete task template by id
+      tags:
+        - TaskTemplates
+      parameters:
+        - name: taskTemplate
+          in: path
+          required: true
+          description: task template id
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/subtask-templates:
+    post:
+      summary: Create subtask template
+      
+      requestBody:
+        required: true
+        description: request for update task template
+        content:
+          application/json:
+            schema:
+              properties:
+                name: 
+                  type: string
+                task_template_id:
+                  type: integer
+                  
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+
+        '422':
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/subtask-templates/{subtaskTemplate}:
+    get:
+      summary: get subtask template by id
+      tags:
+        - SubtaskTemplates
+
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+        '401':
+          description: Unauthorized
+
+    put:
+      summary: Update subtask template
+      tags:
+        - SubtaskTemplates
+
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+      
+      requestBody:
+        required: false
+        description: request for update subtask template
+        content:
+          application/json:
+            schema:
+              properties:
+                name: 
+                  type: string
+                task_template_id: 
+                  type: integer
+                  
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskTemplate"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+    delete:
+      summary: Delete subtask template by id
+      tags:
+        - SubtaskTemplates
+        
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+  
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/subtask-templates/{subtaskTemplate}/attribute:
+    post:
+      summary: Add attribute to subtask template
+      tags:
+        - SubtaskTemplates      
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+            
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_template_id:
+                  type: integer
+                attribute_id:
+                  type: integer
+                value:
+                  type: string
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskAttributeTemplate"
+
+        '422':
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  /api/subtask-templates/{subtaskTemplate}/attribute/{attribute}:
+    put:
+      summary: Update subtask attrubute 
+      tags:
+        - SubtaskTemplates
+
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+        - name: attribute
+          in: path
+          required: true
+          description: attribute id
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_template_id:
+                  type: integer
+                attribute_id:
+                  type: integer
+                value:
+                  type: string
+              
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubtaskAttributeTemplate"
+                
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+    delete:
+      summary: Delete subtask attribute
+      tags:
+        - SubtaskTemplates
+        
+      parameters:
+        - name: subtaskTemplate
+          in: path
+          required: true
+          description: subtask template id
+          schema:
+            type: integer
+        - name: attribute
+          in: path
+          required: true
+          description: attribute id
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  
+  
+components:
   schemas:
+  
     User:
       type: object
       required:
         - name
         - email
-        
+
       properties:
         id:
           type: integer
-          example: 1
         name:
           type: string
-          example: denis
         email:
           type: string
-          example: denis.le2001@mail.ru
         avatar:
           type: string
-          example: public/avatars/zgskmYPxeL5CE0SF9d3AxNkOPjy2KW3lMyJqBENy.png
-          
+
     Users:
       type: array
       items:
         $ref: "#/components/schemas/User"
-      example:
-        - id: 1,
-          name: denis
-          email: denis123@mail.ru
-          avatar: public/avatars/zgskmYPxeL5CE0SF9d3AxNkOPjy2KW3lMyJqBENy.png
-          
-        - id: 2
-          name: sergey
-          email: sergey123@gmail.com
-          avatar: null
-        
-        - id: 3
-          name: alina
-          email: alina123@yandex.ru
-          avatar: null
-       
+
     Organization:
       type: object
       required:
         - id
-        
+
       properties:
         id:
           type: integer
-          example: 1
         name:
           type: string
-          example: Nokia
-       
+
     Organizations:
       type: array
       items:
         $ref: "#/components/schemas/Organization"
-      example:
-        - id: 1
-          name: Nokia
-        
-        - id: 2
-          name: Microsoft
-    
+      
     Project:
       type: object
       required:
         - id
         - organization_id
-        
+
       properties:
         id:
           type: integer
-          example: 1
         name:
           type: string
-          example: first project
         organization_id:
           type: integer
-          example: 1
-    
+
     Projects:
       type: array
       items:
         $ref: "#/components/schemas/Project"
-      example:
-        - id: 1
-          name: first project
-          organization_id: 1
-        
-        - id: 2
-          name: second project
-          organization_id: 2
-      
-    Invite:
-      type: object
-      required:
-        - email
-        - organizationId
-      
-      properties:
-        
-        email:
-          type: string
-          example: invitedUser@example.com
-        organizationId:
-          type: integer
-          example: 4
     
-    InviteProject:
+    BoardTemplate:
       type: object
       required:
-        - email
-        - projectId
-      
+        - name
+
       properties:
         
-        email:
-          type: string
-          example: invitedUser@example.com
-        projectId:
+        id:
           type: integer
-          example: 4
+        name:
+          type: string
           
-    NotFound:    
+    BoardTemplates:
+      type: array
+      items:
+        $ref: "#/components/schemas/BoardTemplate"
+        
+    TaskTemplate:
       type: object
-      
+      required:
+        - name
+        - board_template_id
+        
       properties:
-        message: 
+        
+        id:
+          type: integer
+        name:
           type: string
-          example: Не найдено
-      
-    UnprocessableEntity:
-      type: object
-      
-      properties:
-        message: 
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-          example:
-          - name: [The name field is required, The name must be at least 2 characters]
+        board_template_id:
+          type: integer
+          
+    TaskTemplates:
+      type: array
+      items:
+        $ref: "#/components/schemas/BoardTemplate"
     
+    SubtaskTemplate:
+      type: object
+      required:
+        - name
+        - task_template_id
+        
+      properties:
+        
+        id:
+          type: integer
+        name:
+          type: string
+        task_template_id:
+          type: integer
+    
+    SubtaskAttributeTemplate:
+      type: object
+      required:
+        - task_template_id
+        - attribute_template_id
+        - value
+        
+      properties:
+        id:
+          type: integer
+        task_template_id:
+          type: integer
+        attribute_id:
+          type: integer
+        value:
+          type: string
+     
     AccessLogin:
       type: object
-      
+
       properties:
         message:
           type: string
-          example: Пользователь успешно авторизован
-        id: 
+        id:
           type: integer
-          example: 7
         token:
           type: string
-          example: 1|1gdsEDmjcD6n6FH9vMV7aVhDDtn8nGFJKk8qjQJI
-        
-    ResetPassword:
-      type: object
-      required:
-            - email
-            - token
-            - password
-            - confirm_password
-      properties:
-        email:
-          type: string
-          example: denisle@mail.ru
-        token:
-          type: string
-          example: 86b7f816662e58966581091c52e92d5f88afd45bf268386a20c53eb92646a237
-        password:
-          type: string
-          example: hard_pass
-        confirm_password:
-          type: string
-          example: hard_pass
-    
-    Authorize:
-      properties:
-        message:
-          type: string
-          example: Пользователь не авторизован
-          
-    Forbidden:
-      properties:
-        message:
-          type: string
-          example: Недостаточно прав
-          
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
