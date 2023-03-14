@@ -11,10 +11,15 @@ class Invite extends Model
     use HasFactory;
 
     protected $fillable = [
-        'email',
+        'user_id',
         'invitable_id',
         'invitable_type',
         'token'
+    ];
+
+    const types = [
+        'PROJECT' => 'project',
+        'ORGANIZATION' => 'organization'
     ];
 
     public function invitable(): MorphTo
