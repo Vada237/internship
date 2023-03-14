@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\Permission;
 use App\Models\Project;
 use App\Models\Role;
+use function PHPUnit\Framework\returnArgument;
 
 trait HasRoles
 {
@@ -35,26 +36,17 @@ trait HasRoles
         return false;
     }
 
-    public
-    function hasRole(string $role)
+    public function hasRole(string $role)
     {
-        if ($this->roles()->where('name', $role)->first()) {
-            return true;
-        }
-        return false;
+        return ($this->roles()->where('name', $role)->exists());
     }
 
-    public
-    function hasProjectRole(string $role)
+    public function hasProjectRole(string $role)
     {
-        if ($this->projectRoles()->where('name', $role)->first()) {
-            return true;
-        }
-        return false;
+        return $this->projectRoles()->where('name', $role)->exists();
     }
 
-    public
-    function hasAnyProjectRole(Project $project, ...$projectRoles)
+    public function hasAnyProjectRole(Project $project, ...$projectRoles)
     {
 
         foreach ($projectRoles as $role) {
@@ -67,22 +59,19 @@ trait HasRoles
         return false;
     }
 
-    public
-    function getRole(string $role)
+    public function getRole(string $role)
     {
         return Role::where('name', $role)->first();
     }
 
-    public
-    function giveRole(string $role, int $organization_id)
+    public function giveRole(string $role, int $organization_id)
     {
         $role = $this->getRole($role);
         $this->roles()->attach($role->id, ['organization_id' => $organization_id]);
         return $this;
     }
 
-    public
-    function deleteRole(string $role, int $organization_id)
+    public function deleteRole(string $role, int $organization_id)
     {
         $role = $this->getRole($role);
         $this->roles()->detach($role->id, ['organization_id' => $organization_id]);

@@ -14,17 +14,17 @@ class ProjectInviteSendAction
     {
         $token = Str::random(60);
 
-        $project = Project::find($params['projectId']);
+        $project = Project::find($params['project_id']);
 
         $project->invites()->create([
-            'email' => $params['email'],
+            'user_id' => $params['user_id'],
             'token' => $token
         ]);
 
         $invite = $project->invites()->where('invitable_type', 'project')
-            ->where('email', $params['email'])->first();
+            ->where('user_id', $params['user_id'])->first();
 
-        Mail::to($params['email'])->send(new ProjectInvite($invite, $sender->name));
+        Mail::to(User::find($params['user_id'])->email)->send(new ProjectInvite($invite, $sender->name));
         return __('messages.mail.send.success');
     }
 }

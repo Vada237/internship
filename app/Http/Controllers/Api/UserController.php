@@ -36,7 +36,7 @@ class UserController extends Controller
 
     public function destroy(UserDeleteByIdAction $action, User $user)
     {
-        $this->authorize('update', $user);
+        $this->authorize('delete', [User::class, $user]);
         return $action->handle($user);
     }
 }

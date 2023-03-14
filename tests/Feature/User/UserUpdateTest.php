@@ -13,16 +13,15 @@ class UserUpdateTest extends TestCase
 {
     public function testUpdateYourselfNameWithValidation()
     {
-        $this->seed();
-        $user = User::first();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->patch("api/users/$user->id", ["name" => "denis"]);
         $response->assertOk();
         $response->assertExactJson([
             "data" => [
-                "id" => $user->id,
-                "name" => $user->name,
-                "email" => $user->email,
-                "avatar" => $user->avatar
+                "id" => User::find($user->id)->id,
+                "name" => User::find($user->id)->name,
+                "email" => User::find($user->id)->email,
+                "avatar" => User::find($user->id)->avatar
             ]
         ]);
     }
@@ -77,9 +76,8 @@ class UserUpdateTest extends TestCase
 
     public function testUpdateUserWithoutPermission()
     {
-        $this->seed();
         $user = User::factory()->create();
-        $deleted_user = User::skip(1)->first();
+        $deleted_user = User::factory()->create();
 
         $response = $this->actingAs($user)->patch("api/users/$deleted_user->id", [
             'name' => 'crushed'

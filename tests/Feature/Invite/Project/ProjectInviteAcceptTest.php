@@ -14,21 +14,20 @@ class ProjectInviteAcceptTest extends TestCase
 {
     public function testProjectInviteAcceptSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $organization = Organization::factory()->create();
+
         $project = Project::create([
             'name' => 'invite project',
             'organization_id' => $organization->id
         ]);
 
         $invite = Invite::create([
-            'email' => $user->email,
+            'user_id' => $user->id,
             'token' => Str::random(60),
             'invitable_id' => $project->id,
-            'invitable_type' => 'project'
+            'invitable_type' => Invite::types['PROJECT']
         ]);
 
         $response = $this->actingAs($user)->getJson("api/invites/accept/project/$invite->token");
@@ -44,8 +43,6 @@ class ProjectInviteAcceptTest extends TestCase
 
     public function testProjectInviteAcceptFromAnotherUserForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $anotherUser = User::factory()->create();
 
@@ -56,10 +53,10 @@ class ProjectInviteAcceptTest extends TestCase
         ]);
 
         $invite = Invite::create([
-            'email' => $user->email,
+            'user_id' => $user->id,
             'token' => Str::random(60),
             'invitable_id' => $project->id,
-            'invitable_type' => 'project'
+            'invitable_type' => Invite::types['PROJECT']
         ]);
 
         $response = $this->actingAs($anotherUser)->getJson("api/invites/accept/project/$invite->token");

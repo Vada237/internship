@@ -35,9 +35,9 @@ class UserDeleteTest extends TestCase
 
     public function testDeleteUserWithoutPermission()
     {
-        $this->seed();
         $user = User::factory()->create();
-        $deleted_user = User::skip(1)->first();
+        $deleted_user = User::factory()->create();
+
         $response = $this->actingAs($user)->delete("api/users/$deleted_user->id");
         $response->assertForbidden();
     }

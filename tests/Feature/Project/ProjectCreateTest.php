@@ -11,8 +11,6 @@ class ProjectCreateTest extends TestCase
 {
     public function testCreateProjectSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
@@ -21,7 +19,7 @@ class ProjectCreateTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('api/projects', [
             'name' => 'Manhattan',
-            'organizationId' => $organization->id
+            'organization_id' => $organization->id
         ]);
 
         $this->assertDatabaseHas('projects', [
@@ -45,7 +43,6 @@ class ProjectCreateTest extends TestCase
 
     public function testCreateProjectByUserWithoutPermission()
     {
-        $this->seed();
         $notEmployee = User::factory()->create();
         $organization = Organization::factory()->create();
 
@@ -53,15 +50,15 @@ class ProjectCreateTest extends TestCase
 
         $response = $this->actingAs($notEmployee)->postJson('api/projects', [
             'name' => 'Autochess',
-            'organizationId' => $organization->id
+            'organization_id' => $organization->id
         ]);
 
         $response->assertForbidden();
     }
 
-    public function testCreateProjectWithoutAuth()
+    public function testCreateProjectUnauthorized()
     {
-        $this->seed();
+        Organization::factory()->create();
 
         $response = $this->postJson('api/projects', [
             'name' => 'fake project',

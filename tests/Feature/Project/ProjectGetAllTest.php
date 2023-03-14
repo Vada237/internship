@@ -15,9 +15,15 @@ class ProjectGetAllTest extends TestCase
 {
     public function testGetAllProjectsSuccess()
     {
-        $this->seed();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
 
-        $response = $this->actingAs(User::first())->getJson('api/projects?limit=2&offset=0');
+        Project::factory()->count(5)->create();
+
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+
+        $response = $this->actingAs($user)->getJson('api/projects?limit=2&offset=0');
 
         $response->assertOk();
         $response->assertExactJson([
@@ -38,16 +44,19 @@ class ProjectGetAllTest extends TestCase
 
     public function testGetAllProjectsWithoutAdminRoleForbidden()
     {
-        $this->seed();
         $user = User::factory()->create();
+
+        Organization::factory()->create();
+        Project::factory()->count(2)->create();
 
         $response = $this->actingAs($user)->getJson('api/projects?limit=2&offset=0');
         $response->assertForbidden();
     }
 
-    public function testGetAllProjectsNoauthorized()
+    public function testGetAllProjectsUnauthorized()
     {
-        $this->seed();
+        Organization::factory()->create();
+        Project::factory()->count(2)->create();
 
         $response = $this->getJson('api/projects?limit=2&offset=0');
         $response->assertUnauthorized();
@@ -55,9 +64,14 @@ class ProjectGetAllTest extends TestCase
 
     public function testGetAllProjectsWithoutValidation()
     {
-        $this->seed();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        Project::factory()->count(2)->create();
 
-        $response = $this->actingAs(User::first())->getJson('api/projects?limit=infinity&offset=zero');
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+
+        $response = $this->actingAs($user)->getJson('api/projects?limit=infinity&offset=zero');
         $response->assertUnprocessable();
     }
 }

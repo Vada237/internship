@@ -3,6 +3,7 @@
 namespace Tests\Feature\Invite\Project;
 
 use App\Mail\ProjectInvite;
+use App\Models\Invite;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\Role;
@@ -16,8 +17,6 @@ class ProjectInviteSendTest extends TestCase
 {
     public function testProjectSendInviteSuccess()
     {
-        $this->seed();
-
         Mail::fake();
 
         $user = User::factory()->create();
@@ -34,16 +33,16 @@ class ProjectInviteSendTest extends TestCase
         $user->projects()->attach($project->id,
             ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
 
-        $response = $this->actingAs($user)->postJson('api/invites/send/project', [
-            'email' => $invitedUser->email,
-            'projectId' => $project->id
+        $this->actingAs($user)->postJson('api/invites/send/project', [
+            'user_id' => $invitedUser->id,
+            'project_id' => $project->id
         ]);
 
         Mail::assertSent(ProjectInvite::class);
 
         $this->assertDatabaseHas('invites', [
-            'email' => $invitedUser->email,
-            'invitable_type' => 'project',
+            'user_id' => $invitedUser->id,
+            'invitable_type' => Invite::types['PROJECT'],
             'invitable_id' => $project->id
         ]);
 
@@ -51,8 +50,6 @@ class ProjectInviteSendTest extends TestCase
 
     public function testProjectSendInviteUnprocessableEntity()
     {
-        $this->seed();
-
         Mail::fake();
 
         $user = User::first();
@@ -63,7 +60,7 @@ class ProjectInviteSendTest extends TestCase
             ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/invites/send/project', [
-            'email' => $invitedUser->email
+            'user_id' => $invitedUser->id
         ]);
 
         $response->assertUnprocessable();
@@ -71,8 +68,6 @@ class ProjectInviteSendTest extends TestCase
 
     public function testProjectSendInviteForbidden()
     {
-        $this->seed();
-
         Mail::fake();
 
         $user = User::factory()->create();
@@ -90,8 +85,8 @@ class ProjectInviteSendTest extends TestCase
             ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/invites/send/project', [
-            'email' => $invitedUser->email,
-            'projectId' => $project->id
+            'user_id' => $invitedUser->id,
+            'project_id' => $project->id
         ]);
 
         $response->assertForbidden();
@@ -99,17 +94,14 @@ class ProjectInviteSendTest extends TestCase
 
     public function testProjectSendInviteUnauthorized()
     {
-        $this->seed();
-
         $invitedUser = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::create([
             'name' => 'project for invite',
             'organization_id' => $organization->id
         ]);
-
         $response = $this->postJson('api/invites/send/project', [
-            'email' => $invitedUser->email,
+            'user_id' => $invitedUser->id,
             'projectId' => $project->id
         ]);
 

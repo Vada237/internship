@@ -14,8 +14,6 @@ class ProjectGetByOrganizationTest extends TestCase
 {
     public function testGetProjectsByOrganizationSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
@@ -52,9 +50,11 @@ class ProjectGetByOrganizationTest extends TestCase
 
     public function testGetProjectByOrganizationNotFound()
     {
-        $this->seed();
-
-        $user = User::first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()->attach($organization->id, [
+            'role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id
+        ]);
         $notExistOrganizationId = Organization::OrderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->getJson("api/projects/find-by-organization/$notExistOrganizationId");
@@ -64,8 +64,6 @@ class ProjectGetByOrganizationTest extends TestCase
 
     public function testGetProjectByOrganizationFromAnotherCompanySupervisorOrEmployeeForbidden()
     {
-        $this->seed();
-
         $users = User::factory()->count(2)->create();
         $organizations = Organization::factory()->count(2)->create();
 
@@ -79,8 +77,6 @@ class ProjectGetByOrganizationTest extends TestCase
 
     public function testGetProjectByOrganizationUnauthorized()
     {
-        $this->seed();
-
         $organization = Organization::factory()->create();
         Project::create([
             'name' => 'project',

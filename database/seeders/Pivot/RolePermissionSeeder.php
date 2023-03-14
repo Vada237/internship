@@ -38,28 +38,28 @@ class RolePermissionSeeder extends Seeder
         $admin->permissions()->saveMany(Permission::all());
 
         $user->permissions()->saveMany([
-           $findUser,$editUser,$deleteUser,$findCompany,$createCompany
+            $findUser, $editUser, $deleteUser, $findCompany, $createCompany
         ]);
 
         $organizationSupervisor->permissions()->saveMany([
-            $findUser,$editUser,$deleteUser,$findCompany,$createCompany,$editCompany,$deleteCompany,
-            $createProject,$editProject,$findProject,$deleteProject
+            $findUser, $editUser, $deleteUser, $findCompany, $createCompany, $editCompany, $deleteCompany,
+            $createProject, $editProject, $findProject, $deleteProject
         ]);
 
         $employee->permissions()->saveMany([
-            $findUser,$editUser,$deleteUser,$findCompany,$createCompany,$createProject
+            $findUser, $editUser, $deleteUser, $findCompany, $createCompany, $createProject
         ]);
 
         $projectSupervisor->permissions()->saveMany([
-            $findUser,$editUser,$deleteUser,$findCompany,$editProject,$deleteProject,$findProject
+            $findUser, $editUser, $deleteUser, $findCompany, $editProject, $deleteProject, $findProject
         ]);
 
         $projectExecutor->permissions()->saveMany([
-            $findUser,$editUser,$deleteUser,$findCompany,$findProject
+            $findUser, $editUser, $deleteUser, $findCompany, $findProject
         ]);
 
         $projectParticipant->permissions()->saveMany([
-            $findUser,$editUser,$deleteUser,$findCompany,$findProject
+            $findUser, $editUser, $deleteUser, $findCompany, $findProject
         ]);
     }
 }

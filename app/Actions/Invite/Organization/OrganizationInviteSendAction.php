@@ -14,17 +14,17 @@ class OrganizationInviteSendAction
     {
         $token = Str::random(60);
 
-        $organization = Organization::find($params['organizationId']);
+        $organization = Organization::find($params['organization_id']);
 
         $organization->invites()->create([
-            'email' => $params['email'],
+            'user_id' => $params['user_id'],
             'token' => $token
         ]);
 
         $invite = $organization->invites()->where('invitable_type', 'organization')
-            ->where('email', $params['email'])->first();
+            ->where('user_id', $params['user_id'])->first();
 
-        Mail::to($params['email'])->send(new OrganizationInvite($invite, $organization->name, $sender->name));
+        Mail::to(User::find($params['user_id'])->email)->send(new OrganizationInvite($invite, $organization->name, $sender->name));
         return __('messages.mail.send.success');
     }
 }

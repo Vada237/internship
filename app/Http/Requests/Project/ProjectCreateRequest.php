@@ -25,7 +25,7 @@ class ProjectCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:2',
-            'organizationId' => 'required|integer'
+            'organization_id' => 'required|integer|exists:organizations,id',
         ];
     }
 }
