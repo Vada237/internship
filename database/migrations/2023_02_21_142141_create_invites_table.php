@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
+            $table->integer('user_id');
             $table->string('token')->unique();
 
             $table->morphs('invitable');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
