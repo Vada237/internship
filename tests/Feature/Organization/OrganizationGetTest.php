@@ -3,6 +3,7 @@
 namespace Tests\Feature\Organization;
 
 use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,11 +11,16 @@ use Tests\TestCase;
 
 class OrganizationGetTest extends TestCase
 {
-    public function testGetOrganization()
+    public function testGetOrganizationSuccess()
     {
-        $this->seed();
+        Organization::factory()->count(5)->create();
 
-        $response = $this->actingAs(User::first())->getJson('api/organizations?limit=2&offset=0');
+        $user = User::factory()->create();
+        $organization = Organization::first();
+
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+
+        $response = $this->actingAs($user)->getJson('api/organizations?limit=2&offset=0');
 
         $response->assertOk();
         $response->assertExactJson([
@@ -31,7 +37,7 @@ class OrganizationGetTest extends TestCase
         ]);
     }
 
-    public function testGetAnotherOrganizationById()
+    public function testGetAnotherOrganizationByIdForbidden()
     {
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
@@ -41,12 +47,14 @@ class OrganizationGetTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function testGetOrganizationById()
+    public function testGetOrganizationByIdSuccess()
     {
-        $this->seed();
-        $organization = Organization::first();
+        $organization = Organization::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->actingAs(User::first())->getJson("/api/organizations/{$organization->id}");
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+
+        $response = $this->actingAs($user)->getJson("/api/organizations/{$organization->id}");
 
         $response->assertOk();
         $response->assertExactJson([

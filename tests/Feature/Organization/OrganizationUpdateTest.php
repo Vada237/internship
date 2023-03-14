@@ -13,9 +13,10 @@ class OrganizationUpdateTest extends TestCase
 {
     public function testUpdateYourselfOrganizationWithValidation()
     {
-        $this->seed();
-        $user = User::first();
-        $organization = $user->organizations()->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
         $response = $this->actingAs($user)->patch("api/organizations/$organization->id", [
             'name' => 'test'
@@ -31,9 +32,8 @@ class OrganizationUpdateTest extends TestCase
 
     public function testUpdateYourselfOrganizationWithoutValidation()
     {
-        $this->seed();
-        $user = User::first();
-        $organization = $user->organizations()->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
 
         $this->assertDatabaseHas('organizations', [
             'id' => $organization->id
@@ -48,8 +48,7 @@ class OrganizationUpdateTest extends TestCase
 
     public function testUpdateAnotherOrganizationWithoutPermissionForbidden()
     {
-        $this->seed();
-        $user = User::offset(1)->first();
+        $user = User::factory()->create();
         $organizations = Organization::factory()->count(2)->create();
 
         $user->organizations()->attach($organizations[0]->id,

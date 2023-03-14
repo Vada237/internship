@@ -2,6 +2,8 @@
 
 namespace Tests\Feature\User;
 
+use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -11,9 +13,14 @@ class UserGetTest extends TestCase
 {
     public function testGetAllUsers()
     {
-        $this->seed();
+        User::factory()->count(5)->create();
+        $user = User::first();
+        $organizations = Organization::factory()->create();
 
-        $response = $this->actingAs(User::first())->get('api/users?limit=2&offset=0');
+        $user->organizations()->attach($organizations->id,
+            ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+
+        $response = $this->actingAs($user)->get('api/users?limit=2&offset=0');
 
         $response->assertOk();
         $response->assertExactJson([
@@ -36,7 +43,6 @@ class UserGetTest extends TestCase
 
     public function testGetUserById()
     {
-
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get("api/users/$user->id");

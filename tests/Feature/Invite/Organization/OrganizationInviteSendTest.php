@@ -12,23 +12,26 @@ use Tests\TestCase;
 
 class OrganizationInviteSendTest extends TestCase
 {
-    public function testSendInvite()
+    public function testSendInviteSuccess()
     {
-        $this->seed();
         Mail::fake();
 
-        $user = User::first();
-        $invitedUser = User::offset(1)->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
-        $response = $this->actingAs($user)->post('api/invites/send/organization', [
-            'email' => $invitedUser->email,
-            'organizationId' => $user->organizations()->first()->id
+        $invitedUser = User::factory()->create();
+
+        $this->actingAs($user)->postJson('api/invites/send/organization', [
+            'user_id' => $invitedUser->id,
+            'organization_id' => $organization->id
         ]);
 
         $this->assertDatabaseHas('invites', [
-            'email' => $invitedUser->email,
-            'invitable_type' => 'organization',
-            'invitable_id' => $user->organizations()->first()->id
+            'user_id' => $invitedUser->id,
+            'invitable_type' => Invite::types['ORGANIZATION'],
+            'invitable_id' => $organization->id
         ]);
 
         Mail::assertSent(OrganizationInvite::class);
@@ -36,14 +39,17 @@ class OrganizationInviteSendTest extends TestCase
 
     public function testSendInviteWithoutValidation()
     {
-        $this->seed();
         Mail::fake();
 
-        $user = User::first();
-        $invitedUser = User::offset(1)->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+
+        $invitedUser = User::factory()->create();
 
         $response = $this->actingAs($user)->postJson('api/invites/send/organization', [
-            'email' => $invitedUser->email
+            'user_id' => $invitedUser->id
         ]);
 
         Mail::assertNotSent(OrganizationInvite::class);
@@ -52,19 +58,18 @@ class OrganizationInviteSendTest extends TestCase
 
     public function testSendInviteWithoutPermission()
     {
-        $this->seed();
-
         Mail::fake();
 
         $organization = Organization::factory()->create();
         $fakeSupervisor = User::factory()->create();
-        $invitedUser = User::offset(1)->first();
+        $invitedUser = User::factory()->create();
 
-        $fakeSupervisor->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+        $fakeSupervisor->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
 
         $response = $this->actingAs($fakeSupervisor)->postJson('api/invites/send/organization', [
-            'email' => $invitedUser->email,
-            'organizationId' => $fakeSupervisor->organizations()->first()->id
+            'user_id' => $invitedUser->id,
+            'organization_id' => $organization->id
         ]);
 
         Mail::assertNotSent(OrganizationInvite::class);

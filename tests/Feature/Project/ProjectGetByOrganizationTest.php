@@ -14,8 +14,6 @@ class ProjectGetByOrganizationTest extends TestCase
 {
     public function testGetProjectsByOrganizationSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
@@ -31,7 +29,7 @@ class ProjectGetByOrganizationTest extends TestCase
             'organization_id' => $organization->id
         ]);
 
-        $response = $this->actingAs($user)->getJson("api/projects/findByOrganization/$organization->id");
+        $response = $this->actingAs($user)->getJson("api/projects/find-by-organization/$organization->id");
 
         $response->assertOk();
         $response->assertExactJson([
@@ -52,42 +50,40 @@ class ProjectGetByOrganizationTest extends TestCase
 
     public function testGetProjectByOrganizationNotFound()
     {
-        $this->seed();
-
-        $user = User::first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()->attach($organization->id, [
+            'role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id
+        ]);
         $notExistOrganizationId = Organization::OrderBy('id', 'DESC')->first()->id + 1;
 
-        $response = $this->actingAs($user)->getJson("api/projects/findByOrganization/$notExistOrganizationId");
+        $response = $this->actingAs($user)->getJson("api/projects/find-by-organization/$notExistOrganizationId");
 
         $response->assertNotFound();
     }
 
     public function testGetProjectByOrganizationFromAnotherCompanySupervisorOrEmployeeForbidden()
     {
-        $this->seed();
-
         $users = User::factory()->count(2)->create();
         $organizations = Organization::factory()->count(2)->create();
 
         $users[0]->organizations()->attach($organizations[0]->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
         $users[1]->organizations()->attach($organizations[1]->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
-        $response = $this->actingAs($users[0])->getJson("api/projects/findByOrganization/{$organizations[1]->id}");
+        $response = $this->actingAs($users[0])->getJson("api/projects/find-by-organization/{$organizations[1]->id}");
 
         $response->assertForbidden();
     }
 
     public function testGetProjectByOrganizationUnauthorized()
     {
-        $this->seed();
-
         $organization = Organization::factory()->create();
         Project::create([
             'name' => 'project',
             'organization_id' => $organization->id
         ]);
 
-        $response = $this->getJson("api/projects/findByOrganization/$organization->id");
+        $response = $this->getJson("api/projects/find-by-organization/$organization->id");
 
         $response->assertUnauthorized();
     }
