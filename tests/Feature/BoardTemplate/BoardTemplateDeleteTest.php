@@ -13,30 +13,33 @@ class BoardTemplateDeleteTest extends TestCase
 {
     public function testBoardTemplateDeleteSuccess()
     {
-        $this->seed();
-
-        $boardTemplate = BoardTemplate::first();
+        $user = User::factory()->create();
+        $boardTemplate = BoardTemplate::create([
+            'name' => 'board template',
+            'user_id' => $user->id
+        ]);
 
         $this->assertDatabaseHas('board_templates', [
             'id' => $boardTemplate->id,
-            'name' => $boardTemplate->name
+            'name' => $boardTemplate->name,
+            'user_id' => $boardTemplate->user_id
         ]);
 
-        $response = $this->actingAs(User::first())->deleteJson("api/board-templates/$boardTemplate->id");
-
+        $response = $this->actingAs($user)->deleteJson("api/board-templates/$boardTemplate->id");
 
         $this->assertDatabaseMissing('board_templates', [
             'id' => $boardTemplate->id,
-            'name' => $boardTemplate->name
+            'name' => $boardTemplate->name,
+            'user_id' => $boardTemplate->user_id
         ]);
         $response->assertOk();
     }
 
     public function testBoardTemplateDeleteNotFound()
     {
-        $this->seed();
+        $user = User::factory()->create();
+        BoardTemplate::factory()->create();
 
-        $user = User::first();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->deleteJson("api/board-templates/$notExistBoardTemplateId");
@@ -44,13 +47,12 @@ class BoardTemplateDeleteTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testBoardTemplateDeleteUnathorized()
+    public function testBoardTemplateDeleteUnauthorized()
     {
-        $this->seed();
+        User::factory()->create();
+        $boardTemplate = BoardTemplate::factory()->create();
 
-        $boardTemplate = BoardTemplate::first();
-
-        $response = $this->deleteJson("api/board-templates/$boardTemplate");
+        $response = $this->deleteJson("api/board-templates/$boardTemplate->id");
 
         $response->assertUnauthorized();
     }

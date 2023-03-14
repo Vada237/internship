@@ -52,7 +52,7 @@ class ProjectInviteSendTest extends TestCase
     {
         Mail::fake();
 
-        $user = User::first();
+        $user = User::factory()->create();
         $invitedUser = User::factory()->create();
         $organization = Organization::factory()->create();
 

@@ -13,8 +13,6 @@ class TaskTemplateDeleteTest extends TestCase
 {
     public function testTaskTemplateDeleteSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $boardTemplate = BoardTemplate::create([
@@ -40,8 +38,6 @@ class TaskTemplateDeleteTest extends TestCase
 
     public function testTaskTemplateDeleteForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $anotherUser = User::factory()->create();
 
@@ -62,8 +58,8 @@ class TaskTemplateDeleteTest extends TestCase
 
     public function testTaskTemplateDeleteUnauthorized()
     {
-        $this->seed();
-
+        User::factory()->create();
+        BoardTemplate::factory()->create();
         $taskTemplate = TaskTemplate::factory()->create();
 
         $response = $this->deleteJson("api/task-templates/$taskTemplate->id");

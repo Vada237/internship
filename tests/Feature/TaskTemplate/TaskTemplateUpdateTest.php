@@ -11,8 +11,6 @@ class TaskTemplateUpdateTest extends TestCase
 {
     public function testTaskTemplateUpdateSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $boardTemplate = BoardTemplate::create([
@@ -40,10 +38,13 @@ class TaskTemplateUpdateTest extends TestCase
 
     public function testTaskTemplateUpdateForbidden()
     {
-        $this->seed();
-
-        $user = User::factory()->create();
+        $creater = User::factory()->create();
         $anotherUser = User::factory()->create();
+
+        BoardTemplate::create([
+            'name' => 'board template',
+            'user_id' => $creater->id
+        ]);
         $taskTemplate = TaskTemplate::factory()->create();
 
         $response = $this->actingAs($anotherUser)->patchJson('api/task-templates/'.$taskTemplate->id, [
@@ -55,8 +56,8 @@ class TaskTemplateUpdateTest extends TestCase
 
     public function testTaskTemplateUpdateUnauthorized()
     {
-        $this->seed();
-
+        User::factory()->create();
+        BoardTemplate::factory()->create();
         $taskTemplate = TaskTemplate::factory()->create();
 
         $response = $this->patchJson('api/task-templates/'.$taskTemplate->id, [

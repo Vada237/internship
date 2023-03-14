@@ -11,8 +11,6 @@ class TaskTemplateCreateTest extends TestCase
 {
     public function testCreateTaskTemplateSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $board = BoardTemplate::factory()->create();
 
@@ -32,10 +30,8 @@ class TaskTemplateCreateTest extends TestCase
 
     public function testCreateTaskTemplateUnprocessableEntity()
     {
-        $this->seed();
         $user = User::factory()->create();
-
-        $board = BoardTemplate::factory()->create();
+        BoardTemplate::factory()->create();
 
         $response = $this->actingAs($user)->postJson('api/task-templates', [
             'name' => 'first task template'
@@ -46,8 +42,7 @@ class TaskTemplateCreateTest extends TestCase
 
     public function testCreateTaskTemplateUnauthorized()
     {
-        $this->seed();
-
+        User::factory()->create();
         $board = BoardTemplate::factory()->create();
 
         $response = $this->postJson('api/task-templates', [

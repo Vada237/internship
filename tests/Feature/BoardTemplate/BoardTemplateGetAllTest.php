@@ -3,6 +3,8 @@
 namespace Tests\Feature\BoardTemplate;
 
 use App\Models\BoardTemplate;
+use App\Models\Organization;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,9 +14,14 @@ class BoardTemplateGetAllTest extends TestCase
 {
     public function testBoardTemplateGetAllSuccess()
     {
-        $this->seed();
+        $user = User::factory()->create();
+        BoardTemplate::factory()->count(5)->create();
+        $organization = Organization::factory()->create();
 
-        $user = User::first();
+        $user->organizations()->attach($organization->id, [
+            'role_id' => Role::byName(Role::list['ADMIN'])->first()->id
+        ]);
+
         $limit = 2;
         $offset = 1;
 
@@ -39,8 +46,8 @@ class BoardTemplateGetAllTest extends TestCase
 
     public function testBoardTemplateGetAllUnauthorized()
     {
-        $this->seed();
-
+        User::factory()->create();
+        BoardTemplate::factory()->count(5)->create();
         $limit = 2;
         $offset = 1;
 

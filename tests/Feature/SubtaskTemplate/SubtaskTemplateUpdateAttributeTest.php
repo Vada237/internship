@@ -16,8 +16,6 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
 {
     public function testSubtaskTemplateUpdateAttributeSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $boardTemplate = BoardTemplate::create([
@@ -58,8 +56,6 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
 
     public function testSubtaskTemplateUpdateAttributeForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $anotherUser = User::factory()->create();
 
@@ -95,8 +91,6 @@ class SubtaskTemplateUpdateAttributeTest extends TestCase
 
     public function testSubtaskTemplateUpdateAttributeUnprocessableEntity()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $boardTemplate = BoardTemplate::create([

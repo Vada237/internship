@@ -14,7 +14,11 @@ class SubtaskTemplateGetTest extends TestCase
 {
     public function testSubtaskTemplateGetTestSuccess()
     {
-        $this->seed();
+        User::factory()->create();
+        BoardTemplate::factory()->create();
+        TaskTemplate::factory()->create();
+        SubtaskTemplate::factory()->create();
+
         $response = $this->actingAs(User::first())->getJson('api/subtask-templates/' . SubtaskTemplate::first()->id);
 
         $response->assertExactJson([
@@ -30,7 +34,10 @@ class SubtaskTemplateGetTest extends TestCase
 
     public function testSubtaskTemplateGetTestUnauthorized()
     {
-        $this->seed();
+        User::factory()->create();
+        BoardTemplate::factory()->create();
+        TaskTemplate::factory()->create();
+        SubtaskTemplate::factory()->create();
 
         $response = $this->getJson('api/subtask-templates/' . SubtaskTemplate::first()->id);
 

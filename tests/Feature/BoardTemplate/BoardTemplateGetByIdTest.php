@@ -12,10 +12,8 @@ class BoardTemplateGetByIdTest extends TestCase
 {
     public function testBoardTemplateGetByIdSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
-        $boardTemplate = BoardTemplate::first();
+        $boardTemplate = BoardTemplate::factory()->create();
 
         $response = $this->actingAs($user)->getJson("api/board-templates/$boardTemplate->id");
 
@@ -31,9 +29,8 @@ class BoardTemplateGetByIdTest extends TestCase
 
     public function testBoardTemplateGetByIdNotFound()
     {
-        $this->seed();
-
         $user = User::factory()->create();
+        BoardTemplate::factory()->create();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->getJson("api/board-templates/$notExistBoardTemplateId");
@@ -43,9 +40,8 @@ class BoardTemplateGetByIdTest extends TestCase
 
     public function testBoardTemplateGetByIdUnauthorized()
     {
-        $this->seed();
-
-        $boardTemplate = BoardTemplate::first();
+        User::factory()->create();
+        $boardTemplate = BoardTemplate::factory()->create();
 
         $response = $this->getJson("api/board-templates/$boardTemplate->id");
 

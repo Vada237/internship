@@ -12,10 +12,11 @@ class BoardTemplateUpdateTest extends TestCase
 {
     public function testBoardTemplateUpdateSuccess()
     {
-        $this->seed();
-
-        $user = User::first();
-        $boardTemplate = BoardTemplate::first();
+        $user = User::factory()->create();
+        $boardTemplate = BoardTemplate::create([
+            'name' => 'board template',
+            'user_id' => $user->id
+        ]);
 
         $response = $this->actingAs($user)->patchJson("api/board-templates/$boardTemplate->id", [
             'name' => 'renamed board'
@@ -34,9 +35,9 @@ class BoardTemplateUpdateTest extends TestCase
 
     public function testBoardTemplateUpdateNotFound()
     {
-        $this->seed();
+        $user = User::factory()->create();
+        BoardTemplate::factory()->create();
 
-        $user = User::first();
         $notExistBoardTemplateId = BoardTemplate::orderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->patchJson("api/board-templates/$notExistBoardTemplateId", [
@@ -48,9 +49,8 @@ class BoardTemplateUpdateTest extends TestCase
 
     public function testBoardTemplateUpdateUnauthorized()
     {
-        $this->seed();
-
-        $boardTemplate = BoardTemplate::first();
+        User::factory()->create();
+        $boardTemplate = BoardTemplate::factory()->create();
 
         $response = $this->patchJson("api/board-templates/$boardTemplate->id", [
             'name' => 'renamed board'
@@ -61,10 +61,8 @@ class BoardTemplateUpdateTest extends TestCase
 
     public function testBoardTemplateUpdateUnprocessableEntity()
     {
-        $this->seed();
-
-        $user = User::first();
-        $boardTemplate = BoardTemplate::first();
+        $user = User::factory()->create();
+        $boardTemplate = BoardTemplate::factory()->create();
 
         $response = $this->actingAs($user)->patchJson("api/board-templates/$boardTemplate->id");
 

@@ -15,8 +15,6 @@ class TaskTemplateGetAllTest extends TestCase
 {
     public function testTaskTemplateGetAllSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         BoardTemplate::create([

@@ -14,8 +14,6 @@ class SubtaskTemplateUpdateTest extends TestCase
 {
     public function testSubtaskTemplateUpdateSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
 
         $boardTemplate = BoardTemplate::create([
@@ -54,8 +52,6 @@ class SubtaskTemplateUpdateTest extends TestCase
 
     public function testSubtaskTemplateUpdateForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $anotherUser = User::factory()->create();
 
@@ -89,8 +85,8 @@ class SubtaskTemplateUpdateTest extends TestCase
 
     public function testSubtaskTemplateUpdateUnauthorized()
     {
-        $this->seed();
-
+        User::factory()->create();
+        BoardTemplate::factory()->create();
         $TaskTemplate = TaskTemplate::factory()->create();
         $subtaskTemplate = SubtaskTemplate::factory()->create();
 
