@@ -37,7 +37,7 @@ class BoardCreateTest extends TestCase
             'id' => Board::where('name', $boardTemplate->name)->first()->id,
             'name' => Board::where('name', $boardTemplate->name)->first()->name,
             'project_id' => Board::where('name', $boardTemplate->name)->first()->project_id
-         ]);
+        ]);
     }
 
     public function testBoardCreateForbidden()

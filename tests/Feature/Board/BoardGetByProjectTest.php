@@ -29,7 +29,7 @@ class BoardGetByProjectTest extends TestCase
         BoardTemplate::factory()->create();
         Board::factory()->count(2)->create();
 
-        $response = $this->actingAs($user)->getJson('api/boards/find-by-project/'.$project->id);
+        $response = $this->actingAs($user)->getJson('api/boards/find-by-project/' . $project->id);
 
         $response->assertOk();
         $response->assertExactJson([
@@ -73,7 +73,7 @@ class BoardGetByProjectTest extends TestCase
             'status' => 'edited'
         ]);
 
-        $response = $this->actingAs($user)->getJson('api/boards/find-by-project/'.$project->id);
+        $response = $this->actingAs($user)->getJson('api/boards/find-by-project/' . $project->id);
         $response->assertForbidden();
     }
 
@@ -87,7 +87,7 @@ class BoardGetByProjectTest extends TestCase
         BoardTemplate::factory()->create();
         Board::factory()->create();
 
-        $response = $this->getJson('api/boards/find-by-project/'.$project->id);
+        $response = $this->getJson('api/boards/find-by-project/' . $project->id);
         $response->assertUnauthorized();
     }
 }

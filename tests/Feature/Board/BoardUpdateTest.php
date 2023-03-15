@@ -34,7 +34,7 @@ class BoardUpdateTest extends TestCase
             'status' => Board::statuses['EDITED']
         ]);
 
-        $response = $this->actingAs($user)->putJson('api/boards/'.$board->id, [
+        $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
             'board_template_id' => $updatedTemplate->id
         ]);
 
@@ -70,7 +70,7 @@ class BoardUpdateTest extends TestCase
             'status' => Board::statuses['EDITED']
         ]);
 
-        $response = $this->actingAs($user)->putJson('api/boards/'.$board->id, [
+        $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
             'board_template_id' => $updatedTemplate->id
         ]);
 
@@ -100,7 +100,7 @@ class BoardUpdateTest extends TestCase
             'status' => Board::statuses['ACTIVE']
         ]);
 
-        $response = $this->actingAs($user)->putJson('api/boards/'.$board->id, [
+        $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
             'board_template_id' => $updatedTemplate->id
         ]);
 
@@ -125,7 +125,7 @@ class BoardUpdateTest extends TestCase
             'status' => Board::statuses['EDITED']
         ]);
 
-        $response = $this->putJson('api/boards/'.$board->id, [
+        $response = $this->putJson('api/boards/' . $board->id, [
             'board_template_id' => $updatedTemplate->id
         ]);
 
