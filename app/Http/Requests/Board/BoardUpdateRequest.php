@@ -24,8 +24,7 @@ class BoardUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'board_template_id' => 'exists:board_templates,id|integer',
-            'status' => 'string'
+            'board_template_id' => 'exists:board_templates,id|integer'
         ];
     }
 }
