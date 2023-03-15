@@ -16,8 +16,7 @@ class ProjectInviteAcceptAction
         $user = User::FindOrFail($invite->user_id);
         $project = Project::find($invite->invitable_id);
 
-        if ($user->organizations()->find($project->organization_id) == null)
-        {
+        if ($user->organizations()->find($project->organization_id) == null) {
             $user->organizations()->attach($project->organization_id,
                 ['role_id' => Role::byName(Role::list['USER'])->firstOrFail()->id]);
         }

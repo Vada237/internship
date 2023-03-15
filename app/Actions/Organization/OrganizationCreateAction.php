@@ -15,7 +15,8 @@ class OrganizationCreateAction
     public function handle($params, User $user)
     {
         $organization = Organization::create($params);
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+        $user->organizations()->attach($organization->id,
+            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
         return $organization;
     }

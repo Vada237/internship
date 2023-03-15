@@ -4,7 +4,8 @@ namespace App\Actions\Task\Template;
 
 use App\Models\TaskTemplate;
 
-class TaskTemplateCreateAction {
+class TaskTemplateCreateAction
+{
     public function handle($params)
     {
         return TaskTemplate::create($params);
