@@ -53,6 +53,9 @@ return [
             'delete' => [
                 'success' => 'Board template has been deleted'
             ]
+        ],
+        'delete' => [
+            'success' => 'Board has been deleted'
         ]
     ],
     'task' => [
