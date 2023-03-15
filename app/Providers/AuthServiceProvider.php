@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Board;
 use App\Models\BoardTemplate;
 use App\Models\Invite;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\User;
+use App\Policies\BoardPolicy;
 use App\Policies\BoardTemplatePolicy;
 use App\Policies\InvitePolicy;
 use App\Policies\OrganizationPolicy;
@@ -29,7 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         Organization::class => OrganizationPolicy::class,
         Invite::class => InvitePolicy::class,
         Project::class => ProjectPolicy::class,
-        BoardTemplate::class => TemplatePolicy::class
+        BoardTemplate::class => TemplatePolicy::class,
+        Board::class => BoardPolicy::class
     ];
 
     /**
