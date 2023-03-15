@@ -966,7 +966,9 @@ paths:
   /api/subtask-templates:
     post:
       summary: Create subtask template
-      
+      tags: 
+        - SubtaskTemplates
+        
       requestBody:
         required: true
         description: request for update task template
@@ -1192,7 +1194,184 @@ paths:
         '403':
           description: Forbidden
   
+  /api/boards:
+    get:
+      summary: Get boards
+      tags:
+        - Boards
+        
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          description: limit
+          schema:
+            type: integer
+
+        - name: offset
+          in: query
+          required: true
+          description: offset
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items: 
+                      $ref: "#/components/schemas/Boards"
+        '401':
+          description: Unauthorized
+        
+    post:
+      summary: Create board
+      tags:
+        - Boards
+      requestBody:
+        required: true
+        description: request to create board
+        content:
+          application/json:
+            schema:
+              properties:
+                project_id:
+                  type: integer
+                board_template_id:
+                  type: integer
+
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+        '422':
+          description: Unprocessable entity
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+          
+  /api/boards/{board}:
+    get:
+      summary: Find board by id
+      tags:
+        - Boards
+
+      parameters:
+        - name: board
+          in: path
+          required: true
+          description: board id
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        
+    put:
+      summary: Update board
+      tags:
+        - Boards
+
+      parameters:
+        - name: board
+          in: path
+          required: true
+          description: board id
+          schema:
+            type: integer
+      
+      requestBody:
+        required: true
+        description: request for update board
+        content:
+          application/json:
+            schema:
+              properties:
+                board_template_id: 
+                  type: integer
+              
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Board"
+
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+
+    delete:
+      summary: Delete board by id
+      tags:
+        - Boards
+      parameters:
+        - name: board
+          in: path
+          required: true
+          description: board id
+          schema:
+            type: integer
+    
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
   
+  /api/boards/find-by-project/{project}:
+    get:
+      summary: Find boards by project id
+      tags:
+        - Boards
+
+      parameters:
+        - name: project
+          in: path
+          required: true
+          description: project id
+          schema:
+            type: integer
+      
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Boards"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
 components:
   schemas:
   
@@ -1258,7 +1437,6 @@ components:
         - name
 
       properties:
-        
         id:
           type: integer
         name:
@@ -1320,7 +1498,28 @@ components:
           type: integer
         value:
           type: string
-     
+          
+    Board: 
+      type: object
+      required:
+        - board_template_id
+        - project_id
+        
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        project_id:
+          type: integer
+        status:
+          type: string
+    
+    Boards:
+      type: array
+      items:
+        $ref: "#/components/schemas/Board"
+        
     AccessLogin:
       type: object
 
