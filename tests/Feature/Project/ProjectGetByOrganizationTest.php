@@ -84,7 +84,7 @@ class ProjectGetByOrganizationTest extends TestCase
         ]);
 
         $response = $this->getJson("api/projects/find-by-organization/$organization->id");
-
+        
         $response->assertUnauthorized();
     }
 }
