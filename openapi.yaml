@@ -161,6 +161,7 @@ paths:
       summary: login
       tags:
         - Auth
+        
       requestBody:
         required: true
         description: login user
@@ -188,6 +189,7 @@ paths:
       summary: Forgot user password
       tags:
         - Password
+
       requestBody:
         required: true
         description: User email
@@ -197,7 +199,6 @@ paths:
               properties:
                 email:
                   type: string
-
       responses:
         '200':
           description: OK
@@ -894,7 +895,6 @@ paths:
           description: task template id
           schema:
             type: integer
-
       responses:
         '200':
           description: OK
