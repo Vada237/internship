@@ -14,8 +14,6 @@ class ProjectDeleteTest extends TestCase
 {
     public function testDeleteProjectSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
@@ -49,8 +47,6 @@ class ProjectDeleteTest extends TestCase
 
     public function testDeleteProjectFromOrganizationSupervisorWithoutProjectPermissionSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::create([
@@ -77,8 +73,6 @@ class ProjectDeleteTest extends TestCase
 
     public function testDeleteProjectWithoutPermissionForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::factory()->create();
@@ -97,8 +91,6 @@ class ProjectDeleteTest extends TestCase
 
     public function testDeleteAnotherProjectWithoutPermissionForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::factory()->create();
@@ -120,8 +112,6 @@ class ProjectDeleteTest extends TestCase
 
     public function testDeleteAnotherProjectUnauthorized()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::factory()->create();

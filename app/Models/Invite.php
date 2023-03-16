@@ -4,14 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Invite extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'email',
-        'organization_id',
+        'user_id',
+        'invitable_id',
+        'invitable_type',
         'token'
     ];
+
+    const types = [
+        'PROJECT' => 'project',
+        'ORGANIZATION' => 'organization'
+    ];
+
+    public function invitable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

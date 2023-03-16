@@ -11,23 +11,20 @@ use Tests\TestCase;
 
 class OrganizationDeleteTest extends TestCase
 {
-    public function testDeleteYourselfOrganization()
+    public function testDeleteYourselfOrganizationSuccess()
     {
-        $this->seed();
-        $user = User::first();
-        $organization = $user->organizations()->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()
+            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
 
-        $response = $this->actingAs($user)->delete("api/organizations/$organization->id", [
-            'name' => 'test'
-        ]);
+        $response = $this->actingAs($user)->delete("api/organizations/$organization->id");
 
         $response->assertOk();
     }
 
     public function testDeleteOrganizationWithoutPermission()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 

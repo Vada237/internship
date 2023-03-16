@@ -14,8 +14,6 @@ class ProjectUpdateTest extends TestCase
 {
     public function testProjectUpdateSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::factory()->create();
@@ -42,8 +40,13 @@ class ProjectUpdateTest extends TestCase
 
     public function testNotEqualProjectUpdateNotFound()
     {
-        $this->seed();
-        $user = User::first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        Project::factory()->create();
+
+        $user->organizations()->attach($organization->id,
+            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+
         $notExistProjectId = Project::orderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->patchJson("api/projects/$notExistProjectId", [
@@ -55,8 +58,6 @@ class ProjectUpdateTest extends TestCase
 
     public function testUpdateProjectWithoutPermissionForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $project = Project::factory()->create();
@@ -76,8 +77,10 @@ class ProjectUpdateTest extends TestCase
 
     public function testUpdateAnotherProjectWithAdminRoleSuccess()
     {
-        $this->seed();
-        $user = User::first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+        $user->organizations()->attach($organization->id,
+            ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
 
         $project = Project::factory()->create();
 
@@ -95,11 +98,11 @@ class ProjectUpdateTest extends TestCase
         ]);
     }
 
-    public function testUpdateAnotherProjectWithoutPermissionForbidden()
+    public function testUpdateAnotherProjectForbidden()
     {
-        $this->seed();
-
         $user = User::factory()->create();
+
+        Organization::factory()->create();
         $projects = Project::factory()->count(2)->create();
 
         $user->projects()->attach($projects[0]->id,
@@ -117,10 +120,13 @@ class ProjectUpdateTest extends TestCase
 
     public function testUpdateProjectWithoutValidationUnprocessable()
     {
-        $this->seed();
-        $user = User::first();
+        $user = User::factory()->create();
+        Organization::factory()->create();
 
         $project = Project::factory()->create();
+
+        $user->projects()->attach($project->id,
+            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
 
         $response = $this->actingAs($user)->patchJson("api/projects/$project->id", [
             'name' => '1'
@@ -131,7 +137,7 @@ class ProjectUpdateTest extends TestCase
 
     public function testUpdateProjectUnauthorized()
     {
-        $this->seed();
+        Organization::factory()->create();
         $project = Project::factory()->create();
 
         $response = $this->patchJson("api/projects/$project->id", [

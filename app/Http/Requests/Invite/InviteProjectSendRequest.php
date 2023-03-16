@@ -4,7 +4,7 @@ namespace App\Http\Requests\Invite;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class InviteSendRequest extends FormRequest
+class InviteProjectSendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class InviteSendRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id',
-            'organization_id' => 'required|exists:organizations,id'
+            'user_id' => 'required|integer|exists:users,id',
+            'project_id' => 'required|integer|exists:projects,id'
         ];
     }
 }

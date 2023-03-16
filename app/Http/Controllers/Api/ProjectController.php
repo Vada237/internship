@@ -37,7 +37,8 @@ class ProjectController extends Controller
 
     public function store(ProjectCreateAction $action, ProjectCreateRequest $request)
     {
-        $this->authorize('create', [Project::class, Organization::findOrFail($request->only('organizationId'))->first()]);
+        $this->authorize('create', [Project::class,
+            Organization::findOrFail($request->validated('organization_id'))]);
         return new ProjectResource($action->handle($request->validated(), Auth::user()));
     }
 

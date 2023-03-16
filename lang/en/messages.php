@@ -43,6 +43,9 @@ return [
     'projects' => [
         'delete' => [
             'success' => 'Project has been deleted'
+        ],
+        'join' => [
+            'success' => 'You joined an project'
         ]
     ]
 ];

@@ -13,7 +13,7 @@ class ProjectCreateAction
     {
         $project = Project::create([
             'name' => $params['name'],
-            'organization_id' => $params['organizationId']
+            'organization_id' => $params['organization_id']
         ]);
 
         $user->projects()->attach($project->id, ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);

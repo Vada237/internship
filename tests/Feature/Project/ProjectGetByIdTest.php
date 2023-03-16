@@ -14,11 +14,20 @@ class ProjectGetByIdTest extends TestCase
 {
     public function testGetProjectByIdSuccess()
     {
-        $this->seed();
-        $user = User::offset(1)->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+
         $project = Project::create([
             'name' => 'project',
-            'organization_id' => $user->organizations()->first()->id
+            'organization_id' => $organization->id
+        ]);
+
+        $user->organizations()->attach($organization->id, [
+            'role_id' => Role::byName(Role::list['USER'])->first()->id
+        ]);
+
+        $user->projects()->attach($project->id, [
+            'role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id
         ]);
 
         $response = $this->actingAs($user)->getJson("api/projects/$project->id");
@@ -35,8 +44,15 @@ class ProjectGetByIdTest extends TestCase
 
     public function testGetProjectByIdNotFound()
     {
-        $this->seed();
-        $user = User::offset(1)->first();
+        $user = User::factory()->create();
+        $organization = Organization::factory()->create();
+
+        Project::factory()->count(5)->create();
+
+        $user->organizations()->attach($organization->id, [
+            'role_id' => Role::byName(Role::list['ADMIN'])->first()->id
+        ]);
+
         $notExistProjectId = Project::OrderBy('id', 'DESC')->first()->id + 1;
 
         $response = $this->actingAs($user)->getJson("api/projects/$notExistProjectId");
@@ -46,8 +62,6 @@ class ProjectGetByIdTest extends TestCase
 
     public function testGetProjectByIdWithAdminRoleSuccess()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $anotherOrganization = Organization::factory()->create();
@@ -73,8 +87,6 @@ class ProjectGetByIdTest extends TestCase
 
     public function testGetProjectByIdPermission()
     {
-        $this->seed();
-
         $user = User::factory()->create();
         $anotherOrganization = Organization::factory()->create();
         $project = Project::create([
@@ -89,7 +101,7 @@ class ProjectGetByIdTest extends TestCase
 
     public function testGetProjectByIdUnauthorized()
     {
-        $organization = Organization::factory()->create();
+        Organization::factory()->create();
         $project = Project::factory()->create();
 
         $response = $this->getJson("api/projects/$project->id");

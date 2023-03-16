@@ -15,13 +15,7 @@ class UserPolicy
 
     public function viewAny(User $user)
     {
-        if ($user->hasRole(Role::list['ADMIN'])) return true;
-        return false;
-    }
-
-    public function view(User $user)
-    {
-
+        return ($user->hasRole(Role::list['ADMIN']));
     }
 
     public function update(User $user, User $editedUser)

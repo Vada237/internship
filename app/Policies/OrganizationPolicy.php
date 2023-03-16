@@ -14,14 +14,13 @@ class OrganizationPolicy
 
     public function viewAny(User $user)
     {
-        if ($user->hasRole(Role::list['ADMIN'])) return true;
-        return false;
+        return ($user->hasRole(Role::list['ADMIN']));
+
     }
 
     public function view(User $user, Organization $organization)
     {
-        if ($user->organizations()->find($organization->id) != null || $user->hasRole(Role::list['ADMIN'])) return true;
-        return false;
+        return ($user->organizations()->find($organization->id) != null || $user->hasRole(Role::list['ADMIN']));
     }
 
     public function update(User $user, Organization $organization)
