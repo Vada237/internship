@@ -197,7 +197,6 @@ paths:
               properties:
                 email:
                   type: string
-
       responses:
         '200':
           description: OK
@@ -1438,10 +1437,6 @@ components:
         - name
 
       properties:
-<<<<<<< HEAD
-=======
-
->>>>>>> 942775594a41928d9c79afbaea69945c1e49e842
         id:
           type: integer
         name:
@@ -1503,32 +1498,7 @@ components:
           type: integer
         value:
           type: string
-<<<<<<< HEAD
 
-    Board:
-      type: object
-      required:
-        - board_template_id
-        - project_id
-
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        project_id:
-          type: integer
-        status:
-          type: string
-
-    Boards:
-      type: array
-      items:
-        $ref: "#/components/schemas/Board"
-
-=======
-
->>>>>>> 942775594a41928d9c79afbaea69945c1e49e842
     AccessLogin:
       type: object
 
