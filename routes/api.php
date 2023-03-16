@@ -70,28 +70,31 @@ Route::controller(Api\InviteController::class)->prefix('invites')
     Route::get('accept/project/{token}', [Api\InviteController::class, 'acceptProject'])->name('project.accept');
 });
 
-Route::controller(Api\BoardTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-    Route::post('board-templates', [Api\BoardTemplateController::class, 'store']);
-    Route::get('board-templates', [Api\BoardTemplateController::class, 'index']);
-    Route::get('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
-    Route::patch('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
-    Route::delete('board-templates/{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
+Route::controller(Api\BoardTemplateController::class)->prefix('board-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\BoardTemplateController::class, 'store']);
+    Route::get('', [Api\BoardTemplateController::class, 'index']);
+    Route::get('{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
+    Route::patch('{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
+    Route::delete('{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
 });
 
-Route::controller(Api\TaskTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-   Route::post('task-templates', [Api\TaskTemplateController::class, 'store']);
-   Route::get('task-templates', [Api\TaskTemplateController::class, 'index']);
-   Route::get('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
-   Route::patch('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
-   Route::delete('task-templates/{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
+Route::controller(Api\TaskTemplateController::class)->prefix('task-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\TaskTemplateController::class, 'store']);
+    Route::get('', [Api\TaskTemplateController::class, 'index']);
+    Route::get('{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
+    Route::patch('{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
+    Route::delete('{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
 });
 
-Route::controller(Api\SubtaskTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
-   Route::post('subtask-templates', [Api\SubtaskTemplateController::class, 'store']);
-   Route::put('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'update']);
-   Route::get('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'show']);
-   Route::delete('subtask-templates/{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'destroy']);
-   Route::post('subtask-templates/{subtaskTemplate}/attributes', [Api\SubtaskTemplateController::class, 'addAttribute']);
-   Route::put('subtask-templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
-   Route::delete('subtask-templates/{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
+Route::controller(Api\SubtaskTemplateController::class)->prefix('subtask-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\SubtaskTemplateController::class, 'store']);
+    Route::put('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'update']);
+    Route::get('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'show']);
+    Route::delete('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'destroy']);
+    Route::post('{subtaskTemplate}/attributes', [Api\SubtaskTemplateController::class, 'addAttribute']);
+    Route::put('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
+    Route::delete('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
 });
