@@ -18,7 +18,7 @@ class OrganizationGetTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::first();
 
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->getJson('api/organizations?limit=2&offset=0');
 
@@ -52,7 +52,7 @@ class OrganizationGetTest extends TestCase
         $organization = Organization::factory()->create();
         $user = User::factory()->create();
 
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->getJson("/api/organizations/{$organization->id}");
 

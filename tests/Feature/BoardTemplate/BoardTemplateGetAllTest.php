@@ -19,7 +19,7 @@ class BoardTemplateGetAllTest extends TestCase
         $organization = Organization::factory()->create();
 
         $user->organizations()->attach($organization->id, [
-            'role_id' => Role::byName(Role::list['ADMIN'])->first()->id
+            'role_id' => Role::byName(Role::ADMIN)->first()->id
         ]);
 
         $limit = 2;

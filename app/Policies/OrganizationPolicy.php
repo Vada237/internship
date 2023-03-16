@@ -14,24 +14,24 @@ class OrganizationPolicy
 
     public function viewAny(User $user)
     {
-        return ($user->hasRole(Role::list['ADMIN']));
+        return ($user->hasRole(Role::ADMIN));
 
     }
 
     public function view(User $user, Organization $organization)
     {
-        return ($user->organizations()->find($organization->id) != null || $user->hasRole(Role::list['ADMIN']));
+        return ($user->organizations()->find($organization->id) != null || $user->hasRole(Role::ADMIN));
     }
 
     public function update(User $user, Organization $organization)
     {
-        return (($user->hasAnyOrganizationRole($organization, Role::list['ORGANIZATION_SUPERVISOR'])
-            || $user->hasRole(Role::list['ADMIN'])));
+        return (($user->hasAnyOrganizationRole($organization, Role::ORGANIZATION_SUPERVISOR)
+            || $user->hasRole(Role::ADMIN)));
     }
 
     public function delete(User $user, Organization $organization)
     {
-        return ($user->hasAnyOrganizationRole($organization, Role::list['ORGANIZATION_SUPERVISOR'])
-            || $user->hasRole(Role::list['ADMIN']));
+        return ($user->hasAnyOrganizationRole($organization, Role::ORGANIZATION_SUPERVISOR)
+            || $user->hasRole(Role::ADMIN));
     }
 }

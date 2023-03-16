@@ -16,7 +16,7 @@ class ProjectCreateAction
             'organization_id' => $params['organization_id']
         ]);
 
-        $user->projects()->attach($project->id, ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+        $user->projects()->attach($project->id, ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         return $project;
     }
