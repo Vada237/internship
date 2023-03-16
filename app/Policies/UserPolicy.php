@@ -15,16 +15,16 @@ class UserPolicy
 
     public function viewAny(User $user)
     {
-        return ($user->hasRole(Role::list['ADMIN']));
+        return ($user->hasRole(Role::ADMIN));
     }
 
     public function update(User $user, User $editedUser)
     {
-        return ($user->id == $editedUser->id || $user->hasRole(Role::list['ADMIN']));
+        return ($user->id == $editedUser->id || $user->hasRole(Role::ADMIN));
     }
 
     public function delete(User $user, User $deletedUser)
     {
-        return ($user->id == $deletedUser->id || $user->hasRole(Role::list['ADMIN']));
+        return ($user->id == $deletedUser->id || $user->hasRole(Role::ADMIN));
     }
 }

@@ -42,7 +42,7 @@ class OrganizationInvite extends Mailable
 
     public function build()
     {
-        return $this->from(config('MAIL.FROM'))->view('invite.send')->with([
+        return $this->from(config('mail.from'))->view('invite.send')->with([
             'invite' => $this->invite,
             'organization' => $this->organization,
             'sender' => $this->sender

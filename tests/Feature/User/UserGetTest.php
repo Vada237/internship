@@ -18,7 +18,7 @@ class UserGetTest extends TestCase
         $organizations = Organization::factory()->create();
 
         $user->organizations()->attach($organizations->id,
-            ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+            ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->get('api/users?limit=2&offset=0');
 

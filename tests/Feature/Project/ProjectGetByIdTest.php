@@ -23,11 +23,11 @@ class ProjectGetByIdTest extends TestCase
         ]);
 
         $user->organizations()->attach($organization->id, [
-            'role_id' => Role::byName(Role::list['USER'])->first()->id
+            'role_id' => Role::byName(Role::USER)->first()->id
         ]);
 
         $user->projects()->attach($project->id, [
-            'role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id
+            'role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id
         ]);
 
         $response = $this->actingAs($user)->getJson("api/projects/$project->id");
@@ -50,7 +50,7 @@ class ProjectGetByIdTest extends TestCase
         Project::factory()->count(5)->create();
 
         $user->organizations()->attach($organization->id, [
-            'role_id' => Role::byName(Role::list['ADMIN'])->first()->id
+            'role_id' => Role::byName(Role::ADMIN)->first()->id
         ]);
 
         $notExistProjectId = Project::OrderBy('id', 'DESC')->first()->id + 1;
@@ -70,7 +70,7 @@ class ProjectGetByIdTest extends TestCase
             'organization_id' => $anotherOrganization->id
         ]);
 
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->getJson("api/projects/$project->id");
 

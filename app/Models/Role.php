@@ -9,15 +9,14 @@ class Role extends Model
 {
     use HasFactory;
 
-    const list = [
-        'ADMIN' => 'Admin',
-        'USER' => 'User',
-        'ORGANIZATION_SUPERVISOR' => 'OrganizationSupervisor',
-        'EMPLOYEE' => 'Employee',
-        'PROJECT_SUPERVISOR' => 'ProjectSupervisor',
-        'PROJECT_EXECUTOR' => 'ProjectExecutor',
-        'PROJECT_PARTICIPANT' => 'ProjectParticipant'
-    ];
+    const ADMIN = 'Admin';
+    const USER = 'User';
+    const ORGANIZATION_SUPERVISOR = 'OrganizationSupervisor';
+    const EMPLOYEE = 'Employee';
+    const PROJECT_SUPERVISOR = 'ProjectSupervisor';
+    const PROJECT_EXECUTOR = 'ProjectExecutor';
+    const PROJECT_PARTICIPANT = 'ProjectParticipant';
+
 
     public function organizations()
     {

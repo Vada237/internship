@@ -37,7 +37,7 @@ class ProjectInvite extends Mailable
 
     public function build()
     {
-        return $this->from(config('MAIL.FROM'))->view('invite.projectSend')->with([
+        return $this->from(config('mail.from'))->view('invite.projectSend')->with([
             'invite' => $this->invite,
             'project' => Project::find($this->invite->invitable_id),
             'sender' => $this->sender

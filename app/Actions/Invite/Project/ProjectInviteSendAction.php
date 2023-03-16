@@ -3,6 +3,7 @@
 namespace App\Actions\Invite\Project;
 
 use App\Mail\ProjectInvite;
+use App\Models\Invite;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +22,7 @@ class ProjectInviteSendAction
             'token' => $token
         ]);
 
-        $invite = $project->invites()->where('invitable_type', 'project')
+        $invite = $project->invites()->where('invitable_type', Invite::PROJECT)
             ->where('user_id', $params['user_id'])->first();
 
         Mail::to(User::find($params['user_id'])->email)->send(new ProjectInvite($invite, $sender->name));

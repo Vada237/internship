@@ -18,11 +18,11 @@ class ProjectInviteAcceptAction
 
         if ($user->organizations()->find($project->organization_id) == null) {
             $user->organizations()->attach($project->organization_id,
-                ['role_id' => Role::byName(Role::list['USER'])->firstOrFail()->id]);
+                ['role_id' => Role::byName(Role::USER)->firstOrFail()->id]);
         }
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->firstOrFail()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->firstOrFail()->id]);
         $invite->delete();
 
         return __('messages.projects.join.success');
