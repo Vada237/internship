@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('task_template_id')->references('id')
-                ->on('task_templates')->onDelete('cascade');
+                ->on('task_templates')->cascadeOnDelete();
         });
     }
 
