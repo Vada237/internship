@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('subtask_id');
             $table->integer('attribute_id');
             $table->string('value');
+            $table->timestamps();
 
             $table->foreign('subtask_id')->references('id')->on('subtasks')->cascadeOnDelete();
             $table->foreign('attribute_id')->references('id')->on('attributes')->cascadeOnDelete();
