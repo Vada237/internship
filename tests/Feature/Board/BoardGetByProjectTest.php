@@ -32,6 +32,7 @@ class BoardGetByProjectTest extends TestCase
         $response = $this->actingAs($user)->getJson('api/boards/find-by-project/' . $project->id);
 
         $response->assertOk();
+
         $response->assertExactJson([
             'data' => [
                 [
