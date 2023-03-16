@@ -39,7 +39,7 @@ class SubtaskTemplateController extends Controller
                            SubtaskTemplateRequest $request, SubtaskTemplate $subtaskTemplate)
     {
         $this->authorize('create', [BoardTemplate::class,
-            TaskTemplate::find($request->task_template_id)->boardTemplate()->first()]);
+            $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
 
         return new SubtaskTemplateResource($action->handle($subtaskTemplate, $request->validated()));
     }
@@ -47,7 +47,7 @@ class SubtaskTemplateController extends Controller
     public function destroy(SubtaskTemplateDeleteAction $action, SubtaskTemplate $subtaskTemplate)
     {
         $this->authorize('create', [BoardTemplate::class,
-            TaskTemplate::find($subtaskTemplate->task_template_id)->boardTemplate()->first()]);
+            $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
         return $action->handle($subtaskTemplate);
     }
 
@@ -55,7 +55,7 @@ class SubtaskTemplateController extends Controller
                                  SubtaskAttributeRequest $request, SubtaskTemplate $subtaskTemplate)
     {
         $this->authorize('create', [BoardTemplate::class,
-            TaskTemplate::find($subtaskTemplate->task_template_id)->boardTemplate()->first()]);
+            $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
         return $action->handle($request->validated(), $subtaskTemplate);
     }
 
@@ -63,7 +63,7 @@ class SubtaskTemplateController extends Controller
                                     SubtaskTemplate $subtaskTemplate, SubtaskAttributeRequest $request)
     {
         $this->authorize('update', [BoardTemplate::class,
-            TaskTemplate::find($subtaskTemplate->task_template_id)->boardTemplate()->first()]);
+            $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
         return $action->handle($subtaskTemplate, $request->validated());
     }
 
@@ -71,7 +71,7 @@ class SubtaskTemplateController extends Controller
                                     SubtaskTemplate $subtaskTemplate, Attribute $attribute)
     {
         $this->authorize('delete', [BoardTemplate::class,
-            TaskTemplate::find($subtaskTemplate->task_template_id)->boardTemplate()->first()]);
+            $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
         return $action->handle($subtaskTemplate, $attribute);
     }
 }
