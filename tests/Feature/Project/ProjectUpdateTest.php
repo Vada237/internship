@@ -19,10 +19,10 @@ class ProjectUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->patchJson("api/projects/$project->id", [
             'name' => 'edited project'
@@ -45,7 +45,7 @@ class ProjectUpdateTest extends TestCase
         Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $notExistProjectId = Project::orderBy('id', 'DESC')->first()->id + 1;
 
@@ -63,10 +63,10 @@ class ProjectUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+            ['role_id' => Role::byName(Role::EMPLOYEE)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         $response = $this->actingAs($user)->patchJson("api/projects/$project->id", [
             'name' => 'edited project'
@@ -80,7 +80,7 @@ class ProjectUpdateTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+            ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $project = Project::factory()->create();
 
@@ -106,10 +106,10 @@ class ProjectUpdateTest extends TestCase
         $projects = Project::factory()->count(2)->create();
 
         $user->projects()->attach($projects[0]->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $user->projects()->attach($projects[1]->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         $response = $this->actingAs($user)->patchJson("api/projects/{$projects[1]->id}", [
             'name' => 'miraculously edited project'
@@ -126,7 +126,7 @@ class ProjectUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->patchJson("api/projects/$project->id", [
             'name' => '1'

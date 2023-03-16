@@ -9,11 +9,9 @@ class TaskTemplate extends Model
 {
     use HasFactory;
 
-    const ATTRIBUTES = [
-        'DESCRIPTION' => 'Description',
-        'DEADLINE' => 'Deadline',
-        'IMAGE' => 'Image'
-    ];
+    const DESCRIPTION = 'Description';
+    const DEADLINE = 'Deadline';
+    const IMAGE = 'Image';
 
     protected $fillable = [
         'name',

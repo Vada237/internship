@@ -16,9 +16,9 @@ class InvitePolicy
     public function send(User $user, Organization $organization)
     {
         return ($user->hasAnyOrganizationRole($organization,
-                Role::list['EMPLOYEE'],
-                Role::list['ORGANIZATION_SUPERVISOR'],
-                Role::list['ADMIN']
+                Role::EMPLOYEE,
+                Role::ORGANIZATION_SUPERVISOR,
+                Role::ADMIN
             ) && ($user->organizations()->find($organization) != null));
     }
 
@@ -30,7 +30,7 @@ class InvitePolicy
     public function sendProject(User $user, Project $project)
     {
         return $user->hasAnyOrganizationRole(Organization::find($project->organization_id),
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
-            $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR'], Role::list['PROJECT_EXECUTOR']);
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
+            $user->hasAnyProjectRole($project, Role::PROJECT_SUPERVISOR, Role::PROJECT_EXECUTOR);
     }
 }

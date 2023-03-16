@@ -28,10 +28,10 @@ class ProjectInviteSendTest extends TestCase
         ]);
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $this->actingAs($user)->postJson('api/invites/send/project', [
             'user_id' => $invitedUser->id,
@@ -42,7 +42,7 @@ class ProjectInviteSendTest extends TestCase
 
         $this->assertDatabaseHas('invites', [
             'user_id' => $invitedUser->id,
-            'invitable_type' => Invite::types['PROJECT'],
+            'invitable_type' => Invite::PROJECT,
             'invitable_id' => $project->id
         ]);
 
@@ -57,7 +57,7 @@ class ProjectInviteSendTest extends TestCase
         $organization = Organization::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/invites/send/project', [
             'user_id' => $invitedUser->id
@@ -79,10 +79,10 @@ class ProjectInviteSendTest extends TestCase
         ]);
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/invites/send/project', [
             'user_id' => $invitedUser->id,

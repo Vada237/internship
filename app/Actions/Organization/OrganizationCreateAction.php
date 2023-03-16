@@ -17,7 +17,7 @@ class OrganizationCreateAction
         $organization = Organization::create($params);
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         return $organization;
     }

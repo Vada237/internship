@@ -17,10 +17,8 @@ class Invite extends Model
         'token'
     ];
 
-    const types = [
-        'PROJECT' => 'project',
-        'ORGANIZATION' => 'organization'
-    ];
+    const PROJECT = 'project';
+    const ORGANIZATION = 'organization';
 
     public function invitable(): MorphTo
     {

@@ -16,16 +16,16 @@ class TemplatePolicy
 
     public function create(User $user,BoardTemplate $boardTemplate)
     {
-        return ($user->hasRole(Role::list['ADMIN']) || $user->id == $boardTemplate->user_id);
+        return ($user->hasRole(Role::ADMIN) || $user->id == $boardTemplate->user_id);
     }
 
     public function update(User $user, BoardTemplate $boardTemplate)
     {
-        return ($user->hasRole(Role::list['ADMIN']) || $user->id == $boardTemplate->user_id);
+        return ($user->hasRole(Role::ADMIN) || $user->id == $boardTemplate->user_id);
     }
 
     public function delete(User $user, BoardTemplate $boardTemplate)
     {
-        return ($user->hasRole(Role::list['ADMIN']) || $user->id == $boardTemplate->user_id);
+        return ($user->hasRole(Role::ADMIN) || $user->id == $boardTemplate->user_id);
     }
 }
