@@ -19,29 +19,32 @@ use App\Models;
 |
 */
 
-Route::controller(Api\UserController::class)->middleware(['auth:sanctum'])->group(function () {
-    Route::get('users/', [Api\UserController::class, 'index']);
-    Route::get('users/{user}', [Api\UserController::class, 'show']);
-    Route::patch('users/{user}', [Api\UserController::class, 'update']);
-    Route::delete('users/{user}', [Api\UserController::class, 'destroy']);
+Route::controller(Api\UserController::class)
+    ->prefix('users')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('', [Api\UserController::class, 'index']);
+    Route::get('{user}', [Api\UserController::class, 'show']);
+    Route::patch('{user}', [Api\UserController::class, 'update']);
+    Route::delete('{user}', [Api\UserController::class, 'destroy']);
 });
 
-Route::controller(Api\AuthController::class)->group(function () {
-    Route::post('auth/login', [Api\AuthController::class, 'login']);
-    Route::post('auth/register', [Api\AuthController::class, 'register']);
+Route::controller(Api\AuthController::class)->prefix('auth')->group(function () {
+    Route::post('login', [Api\AuthController::class, 'login']);
+    Route::post('register', [Api\AuthController::class, 'register']);
 });
 
-Route::controller(Api\PasswordController::class)->middleware('guest')->group(function () {
-    Route::post('password/forgot', [Api\PasswordController::class, 'forgot'])->name('password.email');
-    Route::post('password/reset', [Api\PasswordController::class, 'reset'])->name('password.reset');
+Route::controller(Api\PasswordController::class)->prefix('password')
+    ->middleware('guest')->group(function () {
+    Route::post('forgot', [Api\PasswordController::class, 'forgot'])->name('password.email');
+    Route::post('reset', [Api\PasswordController::class, 'reset'])->name('password.reset');
 });
 
-Route::controller(Api\OrganizationController::class)->middleware('auth:sanctum')->group(function () {
-    Route::get('organizations/', [Api\OrganizationController::class, 'index']);
-    Route::get('organizations/{organization}', [Api\OrganizationController::class, 'show']);
-    Route::post('organizations', [Api\OrganizationController::class, 'store']);
-    Route::patch('organizations/{organization}', [Api\OrganizationController::class, 'update']);
-    Route::delete('organizations/{organization}', [Api\OrganizationController::class, 'destroy']);
+Route::controller(Api\OrganizationController::class)->prefix('organizations')
+    ->middleware('auth:sanctum')->group(function () {
+    Route::get('', [Api\OrganizationController::class, 'index']);
+    Route::get('{organization}', [Api\OrganizationController::class, 'show']);
+    Route::post('', [Api\OrganizationController::class, 'store']);
+    Route::patch('{organization}', [Api\OrganizationController::class, 'update']);
+    Route::delete('{organization}', [Api\OrganizationController::class, 'destroy']);
 });
 
 Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->group(function () {
@@ -49,20 +52,22 @@ Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->grou
     Route::get('invites/accept/{token}', [Api\InviteController::class, 'accept'])->name('accept');
 });
 
-Route::controller(Api\ProjectController::class)->middleware('auth:sanctum')->group(function () {
-    Route::get('projects', [Api\ProjectController::class, 'index']);
-    Route::get('projects/find-by-organization/{organization}', [Api\ProjectController::class, 'getByOrganization']);
-    Route::get('projects/{project}', [Api\ProjectController::class, 'show']);
-    Route::post('projects', [Api\ProjectController::class, 'store']);
-    Route::patch('projects/{project}', [Api\ProjectController::class, 'update']);
-    Route::delete('projects/{project}', [Api\ProjectController::class, 'destroy']);
+Route::controller(Api\ProjectController::class)->prefix('projects')
+    ->middleware('auth:sanctum')->group(function () {
+    Route::get('', [Api\ProjectController::class, 'index']);
+    Route::get('find-by-organization/{organization}', [Api\ProjectController::class, 'getByOrganization']);
+    Route::get('{project}', [Api\ProjectController::class, 'show']);
+    Route::post('', [Api\ProjectController::class, 'store']);
+    Route::patch('{project}', [Api\ProjectController::class, 'update']);
+    Route::delete('{project}', [Api\ProjectController::class, 'destroy']);
 });
 
-Route::controller(Api\InviteController::class)->middleware('auth:sanctum')->group(function () {
-    Route::post('invites/send/organization', [Api\InviteController::class, 'send']);
-    Route::get('invites/accept/organization/{token}', [Api\InviteController::class, 'accept'])->name('organization.accept');
-    Route::post('invites/send/project', [Api\InviteController::class, 'sendProject']);
-    Route::get('invites/accept/project/{token}', [Api\InviteController::class, 'acceptProject'])->name('project.accept');
+Route::controller(Api\InviteController::class)->prefix('invites')
+    ->middleware('auth:sanctum')->group(function () {
+    Route::post('send/organization', [Api\InviteController::class, 'send']);
+    Route::get('accept/organization/{token}', [Api\InviteController::class, 'accept'])->name('organization.accept');
+    Route::post('send/project', [Api\InviteController::class, 'sendProject']);
+    Route::get('accept/project/{token}', [Api\InviteController::class, 'acceptProject'])->name('project.accept');
 });
 
 Route::controller(Api\BoardTemplateController::class)->middleware(['auth:sanctum'])->group(function () {
