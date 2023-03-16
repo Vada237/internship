@@ -25,8 +25,8 @@ class TaskTemplate extends Model
         return $this->belongsTo(BoardTemplate::class);
     }
 
-    public function subtasks()
+    public function subtaskTemplates()
     {
-        return $this->belongsToMany(SubtaskTemplate::class, 'subtasks');
+        return $this->hasMany(SubtaskTemplate::class);
     }
 }

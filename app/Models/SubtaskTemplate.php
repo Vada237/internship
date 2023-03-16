@@ -22,6 +22,7 @@ class SubtaskTemplate extends Model
     public function attributes()
     {
         return $this->belongsToMany(Attribute::class, 'subtask_template_attributes',
-            'subtask_template_id', 'attribute_id');
+            'subtask_template_id', 'attribute_id')
+            ->withPivot('value');
     }
 }
