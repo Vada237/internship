@@ -108,3 +108,12 @@ Route::controller(Api\BoardController::class)->prefix('boards')
         Route::put('{board}', [Api\BoardController::class, 'update']);
         Route::delete('{board}', [Api\BoardController::class, 'destroy']);
     });
+
+Route::controller(Api\TaskController::class)->prefix('tasks')
+    ->middleware(['auth:sanctum'])->group(function () {
+        Route::post('', [Api\TaskController::class, 'store']);
+        Route::get('find-by-board/{board}', [Api\TaskController::class, 'findByBoard']);
+        Route::get('{task}', [Api\TaskController::class, 'show']);
+        Route::put('{task}', [Api\TaskController::class, 'update']);
+        Route::delete('{task}', [Api\TaskController::class, 'destroy']);
+    });
