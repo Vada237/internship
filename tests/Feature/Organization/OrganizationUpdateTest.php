@@ -16,7 +16,7 @@ class OrganizationUpdateTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->patch("api/organizations/$organization->id", [
             'name' => 'test'
@@ -52,10 +52,10 @@ class OrganizationUpdateTest extends TestCase
         $organizations = Organization::factory()->count(2)->create();
 
         $user->organizations()->attach($organizations[0]->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $user->organizations()->attach($organizations[1]->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $responce = $this->actingAs($user)->patchJson("api/organizations/{$organizations[1]->id}", [
             'name' => 'updated organization'

@@ -1,13 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Pivot;
 
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -18,13 +15,13 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        $admin = Role::byName(Role::list["ADMIN"])->first();
-        $user = Role::byName(Role::list["USER"])->first();
-        $organizationSupervisor = Role::byName(Role::list["ORGANIZATION_SUPERVISOR"])->first();
-        $employee = Role::byName(Role::list["EMPLOYEE"])->first();
-        $projectSupervisor = Role::byName(Role::list['PROJECT_SUPERVISOR'])->first();
-        $projectExecutor = Role::byName(Role::list['PROJECT_EXECUTOR'])->first();
-        $projectParticipant = Role::byName(Role::list['PROJECT_PARTICIPANT'])->first();
+        $admin = Role::byName(Role::ADMIN)->first();
+        $user = Role::byName(Role::USER)->first();
+        $organizationSupervisor = Role::byName(Role::ORGANIZATION_SUPERVISOR)->first();
+        $employee = Role::byName(Role::EMPLOYEE)->first();
+        $projectSupervisor = Role::byName(Role::PROJECT_SUPERVISOR)->first();
+        $projectExecutor = Role::byName(Role::PROJECT_EXECUTOR)->first();
+        $projectParticipant = Role::byName(Role::PROJECT_PARTICIPANT)->first();
 
         $findUser = Permission::byName('FindUsers')->first();
         $editUser = Permission::byName('EditUser')->first();

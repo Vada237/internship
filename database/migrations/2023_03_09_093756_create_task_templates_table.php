@@ -12,16 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('user_boards', function (Blueprint $table) {
+        Schema::create('task_templates', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('board_id');
+            $table->string('name');
+            $table->integer('board_template_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreign('board_id')->references('id')->on('boards')->cascadeOnDelete();
-
-            $table->unique(['user_id', 'board_id']);
+            $table->foreign('board_template_id')->references('id')
+                ->on('board_templates')->cascadeOnDelete();
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('user_boards');
+        Schema::dropIfExists('task_templates');
     }
 };

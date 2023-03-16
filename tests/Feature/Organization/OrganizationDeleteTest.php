@@ -16,7 +16,7 @@ class OrganizationDeleteTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->delete("api/organizations/$organization->id");
 
@@ -28,7 +28,7 @@ class OrganizationDeleteTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
 
-        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+        $user->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $response = $this->actingAs($user)->deleteJson("api/organizations/$organization->id");
 

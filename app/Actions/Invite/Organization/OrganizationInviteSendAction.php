@@ -3,6 +3,7 @@
 namespace App\Actions\Invite\Organization;
 
 use App\Mail\OrganizationInvite;
+use App\Models\Invite;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +22,7 @@ class OrganizationInviteSendAction
             'token' => $token
         ]);
 
-        $invite = $organization->invites()->where('invitable_type', 'organization')
+        $invite = $organization->invites()->where('invitable_type', Invite::ORGANIZATION)
             ->where('user_id', $params['user_id'])->first();
 
         Mail::to(User::find($params['user_id'])->email)->send(new OrganizationInvite($invite, $organization->name, $sender->name));

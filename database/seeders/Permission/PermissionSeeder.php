@@ -1,10 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Permission;
 
 use App\Models\Permission;
-use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder

@@ -49,6 +49,10 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function boardTemplates() {
+        return $this->belongsToMany(BoardTemplate::class);
+    }
+
     public function scopeByEmail($query, string $email)
     {
         return $query->where('email', $email);

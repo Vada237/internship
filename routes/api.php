@@ -69,3 +69,32 @@ Route::controller(Api\InviteController::class)->prefix('invites')
     Route::post('send/project', [Api\InviteController::class, 'sendProject']);
     Route::get('accept/project/{token}', [Api\InviteController::class, 'acceptProject'])->name('project.accept');
 });
+
+Route::controller(Api\BoardTemplateController::class)->prefix('board-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\BoardTemplateController::class, 'store']);
+    Route::get('', [Api\BoardTemplateController::class, 'index']);
+    Route::get('{boardTemplate}', [Api\BoardTemplateController::class, 'show']);
+    Route::patch('{boardTemplate}', [Api\BoardTemplateController::class, 'update']);
+    Route::delete('{boardTemplate}', [Api\BoardTemplateController::class, 'destroy']);
+});
+
+Route::controller(Api\TaskTemplateController::class)->prefix('task-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\TaskTemplateController::class, 'store']);
+    Route::get('', [Api\TaskTemplateController::class, 'index']);
+    Route::get('{taskTemplate}', [Api\TaskTemplateController::class, 'show']);
+    Route::patch('{taskTemplate}', [Api\TaskTemplateController::class, 'update']);
+    Route::delete('{taskTemplate}', [Api\TaskTemplateController::class, 'destroy']);
+});
+
+Route::controller(Api\SubtaskTemplateController::class)->prefix('subtask-templates')
+    ->middleware(['auth:sanctum'])->group(function () {
+    Route::post('', [Api\SubtaskTemplateController::class, 'store']);
+    Route::put('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'update']);
+    Route::get('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'show']);
+    Route::delete('{subtaskTemplate}', [Api\SubtaskTemplateController::class, 'destroy']);
+    Route::post('{subtaskTemplate}/attributes', [Api\SubtaskTemplateController::class, 'addAttribute']);
+    Route::put('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
+    Route::delete('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
+});
