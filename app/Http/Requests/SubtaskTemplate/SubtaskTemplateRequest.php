@@ -25,7 +25,7 @@ class SubtaskTemplateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'task_template_id' => 'required|integer'
+            'task_template_id' => 'required|integer|exists:task_templates,id'
         ];
     }
 }

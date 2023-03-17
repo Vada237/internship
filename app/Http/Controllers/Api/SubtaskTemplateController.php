@@ -12,6 +12,7 @@ use App\Actions\SubtaskTemplate\SubtaskTemplateUpdateAttributeAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubtaskTemplate\SubtaskAttributeRequest;
 use App\Http\Requests\SubtaskTemplate\SubtaskTemplateRequest;
+use App\Http\Requests\SubtaskTemplate\SubtaskTemplateUpdateRequest;
 use App\Http\Resources\SubtaskTemplateResource;
 use App\Models\Attribute;
 use App\Models\BoardTemplate;
@@ -36,7 +37,7 @@ class SubtaskTemplateController extends Controller
     }
 
     public function update(SubtaskTemplateUpdateAction $action,
-                           SubtaskTemplateRequest $request, SubtaskTemplate $subtaskTemplate)
+                           SubtaskTemplateUpdateRequest $request, SubtaskTemplate $subtaskTemplate)
     {
         $this->authorize('create', [BoardTemplate::class,
             $subtaskTemplate->taskTemplate->boardTemplate()->first()]);
