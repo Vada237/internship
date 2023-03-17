@@ -21,7 +21,7 @@ class ProjectGetAllTest extends TestCase
         Project::factory()->count(5)->create();
 
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->getJson('api/projects?limit=2&offset=0');
 
@@ -69,7 +69,7 @@ class ProjectGetAllTest extends TestCase
         Project::factory()->count(2)->create();
 
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         $response = $this->actingAs($user)->getJson('api/projects?limit=infinity&offset=zero');
         $response->assertUnprocessable();

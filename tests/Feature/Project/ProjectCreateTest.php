@@ -15,7 +15,7 @@ class ProjectCreateTest extends TestCase
         $organization = Organization::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $response = $this->actingAs($user)->postJson('api/projects', [
             'name' => 'Manhattan',
@@ -46,7 +46,7 @@ class ProjectCreateTest extends TestCase
         $notEmployee = User::factory()->create();
         $organization = Organization::factory()->create();
 
-        $notEmployee->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+        $notEmployee->organizations()->attach($organization->id, ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $response = $this->actingAs($notEmployee)->postJson('api/projects', [
             'name' => 'Autochess',

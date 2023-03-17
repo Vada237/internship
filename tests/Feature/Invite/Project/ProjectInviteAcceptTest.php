@@ -27,7 +27,7 @@ class ProjectInviteAcceptTest extends TestCase
             'user_id' => $user->id,
             'token' => Str::random(60),
             'invitable_id' => $project->id,
-            'invitable_type' => Invite::types['PROJECT']
+            'invitable_type' => Invite::PROJECT
         ]);
 
         $response = $this->actingAs($user)->getJson("api/invites/accept/project/$invite->token");
@@ -35,7 +35,7 @@ class ProjectInviteAcceptTest extends TestCase
         $this->assertDatabaseHas('user_project_roles', [
             'user_id' => $user->id,
             'project_id' => $project->id,
-            'role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id
+            'role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id
         ]);
 
         $response->assertOk();
@@ -56,7 +56,7 @@ class ProjectInviteAcceptTest extends TestCase
             'user_id' => $user->id,
             'token' => Str::random(60),
             'invitable_id' => $project->id,
-            'invitable_type' => Invite::types['PROJECT']
+            'invitable_type' => Invite::PROJECT
         ]);
 
         $response = $this->actingAs($anotherUser)->getJson("api/invites/accept/project/$invite->token");

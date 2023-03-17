@@ -32,6 +32,11 @@ class Project extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    public function boards()
+    {
+        return $this->hasMany(Board::class);
+    }
+
     public function invites(): MorphMany
     {
         return $this->morphMany(Invite::class, 'invitable');
