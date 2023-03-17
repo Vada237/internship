@@ -52,7 +52,7 @@ class BoardController extends Controller
 
     public function destroy(BoardDeleteAction $action, Board $board)
     {
-        $this->authorize('update', [Board::class, $board]);
+        $this->authorize('delete', [Board::class, $board]);
         return $action->handle($board);
     }
 }

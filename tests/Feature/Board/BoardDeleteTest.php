@@ -19,10 +19,10 @@ class BoardDeleteTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         BoardTemplate::factory()->create();
         $board = Board::factory()->create();
@@ -45,13 +45,12 @@ class BoardDeleteTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_EXECUTOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_EXECUTOR)->first()->id]);
 
-        BoardTemplate::factory()->create();
-        $board = Board::factory()->create();
+        BoardTemplate::factory()->create();$board = Board::factory()->create();
 
         $response = $this->actingAs($user)->deleteJson("api/boards/$board->id");
         $response->assertForbidden();

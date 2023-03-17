@@ -21,7 +21,7 @@ class BoardGetAllTest extends TestCase
         Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ADMIN'])->first()->id]);
+            ['role_id' => Role::byName(Role::ADMIN)->first()->id]);
 
         BoardTemplate::factory()->create();
         Board::factory()->count(2)->create();
@@ -57,10 +57,10 @@ class BoardGetAllTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         BoardTemplate::factory()->create();
         Board::factory()->count(5)->create();

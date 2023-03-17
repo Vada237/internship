@@ -15,43 +15,43 @@ class BoardPolicy
 
     public function viewAny(User $user)
     {
-        return ($user->hasRole(Role::list['ADMIN']));
+        return ($user->hasRole(Role::ADMIN));
     }
 
     public function viewByProject(User $user, Project $project)
     {
         return ($user->hasAnyOrganizationRole(Organization::find($project->organization_id),
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
-            $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR']));
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
+            $user->hasAnyProjectRole($project, Role::PROJECT_SUPERVISOR));
     }
 
     public function view(User $user, Project $project)
     {
         return $user->hasAnyOrganizationRole(Organization::find($project->organization_id),
-                Role::list['ORGANIZATION_SUPERVISOR'], Role::list['ADMIN']) ||
-            $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR'],
-                Role::list['PROJECT_EXECUTOR'], Role::list['PROJECT_PARTICIPANT']);
+                Role::ORGANIZATION_SUPERVISOR, Role::ADMIN) ||
+            $user->hasAnyProjectRole($project, Role::PROJECT_SUPERVISOR,
+                Role::PROJECT_EXECUTOR, Role::PROJECT_PARTICIPANT);
     }
 
     public function create(User $user, Project $project)
     {
         return ($user->hasAnyOrganizationRole(Organization::find($project->organization_id),
-                Role::list['ORGANIZATION_SUPERVISOR'], Role::list['ADMIN']) ||
-            $user->hasAnyProjectRole($project, Role::list['PROJECT_SUPERVISOR']));
+                Role::ORGANIZATION_SUPERVISOR, Role::ADMIN) ||
+            $user->hasAnyProjectRole($project, Role::PROJECT_SUPERVISOR));
     }
 
     public function update(User $user, Board $board)
     {
         return ($user->hasAnyOrganizationRole(Organization::find($board->project()->first()->organization_id),
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
             $user->hasAnyProjectRole(Project::find($board->project_id),
-                Role::list['PROJECT_SUPERVISOR']) && $board->status == Board::statuses['EDITED']);
+                Role::PROJECT_SUPERVISOR) && $board->status == Board::EDITED);
     }
 
     public function delete(User $user, Board $board)
     {
         return ($user->hasAnyOrganizationRole(Organization::find($board->project()->first()->organization_id),
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
-            $user->hasAnyProjectRole(Project::find($board->project_id), Role::list['PROJECT_SUPERVISOR']));
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
+            $user->hasAnyProjectRole(Project::find($board->project_id), Role::PROJECT_SUPERVISOR));
     }
 }

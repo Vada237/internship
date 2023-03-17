@@ -15,12 +15,10 @@ class Board extends Model
         'status'
     ];
 
-    const statuses = [
-        'EDITED' => 'edited',
-        'ACTIVE' => 'active',
-        'COMPLETED' => 'completed',
-        'CLOSED' => 'closed'
-    ];
+    const EDITED = 'edited';
+    const ACTIVE = 'active';
+    const COMPLETED = 'completed';
+    const CLOSED = 'closed';
 
     public function project()
     {
