@@ -19,7 +19,7 @@ class OrganizationInviteAcceptTest extends TestCase
         $organization = Organization::factory()->create();
 
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $this->actingAs($user)->post('api/invites/send/organization', [
             'user_id' => $invitedUser->id,
@@ -28,14 +28,14 @@ class OrganizationInviteAcceptTest extends TestCase
 
         $invite = Invite::where('user_id', $invitedUser->id)
             ->where('invitable_id', $user->organizations()->first()->id)
-            ->where('invitable_type', Invite::types['ORGANIZATION'])->first();
+            ->where('invitable_type', Invite::ORGANIZATION)->first();
 
         $response = $this->actingAs($invitedUser)->get("api/invites/accept/$invite->token");
 
         $this->assertDatabaseHas('user_organization_roles', [
             'user_id' => $invitedUser->id,
             'organization_id' => $invite->invitable_id,
-            'role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id
+            'role_id' => Role::byName(Role::EMPLOYEE)->first()->id
         ]);
         $response->assertOk();
     }
@@ -47,18 +47,18 @@ class OrganizationInviteAcceptTest extends TestCase
         $organization = Organization::factory()->create();
 
         $users[0]->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         Invite::create([
             'user_id' => $users[1]->id,
             'invitable_id' => $organization->id,
-            'invitable_type' => Invite::types['ORGANIZATION'],
+            'invitable_type' => Invite::ORGANIZATION,
             'token' => Str::random(60)
         ]);
 
         $invite = Invite::where('user_id', $users[1]->id)
             ->where('invitable_id', $organization->id)
-            ->where('invitable_type', Invite::types['ORGANIZATION'])->first();
+            ->where('invitable_type', Invite::ORGANIZATION)->first();
 
         $response = $this->actingAs($users[2])->get("api/invites/accept/$invite->token");
         $response->assertForbidden();

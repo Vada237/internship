@@ -49,6 +49,18 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function tasks()
+    {
+        return $this
+            ->belongsToMany(Task::class, 'user_tasks', 'user_id', 'task_id')
+            ->withTimestamps();
+    }
+
+    public function boardTemplates()
+    {
+        return $this->belongsToMany(BoardTemplate::class);
+    }
+
     public function scopeByEmail($query, string $email)
     {
         return $query->where('email', $email);

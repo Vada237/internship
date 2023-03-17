@@ -47,5 +47,48 @@ return [
         'join' => [
             'success' => 'You joined an project'
         ]
+    ],
+    'board' => [
+        'templates' => [
+            'delete' => [
+                'success' => 'Board template has been deleted'
+            ]
+        ],
+        'delete' => [
+            'success' => 'Board has been deleted'
+        ]
+    ],
+    'task' => [
+        'templates' => [
+            'delete' => [
+                'success' => 'Task template has been deleted'
+            ]
+        ],
+        'users' => [
+            'add' => [
+                'success' => 'User has been added'
+            ],
+            'delete' => [
+                'success' => 'User has been deleted'
+            ]
+        ]
+    ],
+    'subtask' => [
+        'templates' => [
+            'delete' => [
+                'success' => 'Subtask template has been deleted'
+            ]
+        ],
+        'attributes' => [
+            'add' => [
+                'success' => 'Attribute has been added'
+            ],
+            'delete' => [
+                'success' => 'Attribute has been deleted'
+            ],
+            'edit' => [
+                'success' => 'Attribute has been updated'
+            ]
+        ]
     ]
 ];

@@ -19,7 +19,7 @@ class OrganizationInviteSendTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $invitedUser = User::factory()->create();
 
@@ -30,7 +30,7 @@ class OrganizationInviteSendTest extends TestCase
 
         $this->assertDatabaseHas('invites', [
             'user_id' => $invitedUser->id,
-            'invitable_type' => Invite::types['ORGANIZATION'],
+            'invitable_type' => Invite::ORGANIZATION,
             'invitable_id' => $organization->id
         ]);
 
@@ -44,7 +44,7 @@ class OrganizationInviteSendTest extends TestCase
         $user = User::factory()->create();
         $organization = Organization::factory()->create();
         $user->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $invitedUser = User::factory()->create();
 
@@ -65,7 +65,7 @@ class OrganizationInviteSendTest extends TestCase
         $invitedUser = User::factory()->create();
 
         $fakeSupervisor->organizations()
-            ->attach($organization->id, ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ->attach($organization->id, ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $response = $this->actingAs($fakeSupervisor)->postJson('api/invites/send/organization', [
             'user_id' => $invitedUser->id,

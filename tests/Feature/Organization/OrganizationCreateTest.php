@@ -11,7 +11,7 @@ class OrganizationCreateTest extends TestCase
 {
     public function testCreateOrganizationWithoutValidation()
     {
-        $responce = $this->actingAs(User::first())->postJson('api/organizations', [
+        $responce = $this->actingAs(User::factory()->create())->postJson('api/organizations', [
             'name' => 'n'
         ]);
 
