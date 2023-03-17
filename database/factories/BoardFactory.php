@@ -22,7 +22,7 @@ class BoardFactory extends Factory
         return [
             'name' => BoardTemplate::inRandomOrder()->first()->name,
             'project_id' => Project::inRandomOrder()->first()->id,
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ];
     }
 }

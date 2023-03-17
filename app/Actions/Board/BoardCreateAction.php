@@ -12,7 +12,7 @@ class BoardCreateAction
         $board = Board::create([
             'name' => BoardTemplate::find($params['board_template_id'])->name,
             'project_id' => $params['project_id'],
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ]);
         return $board;
     }

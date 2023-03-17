@@ -19,10 +19,10 @@ class BoardGetByIdTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         BoardTemplate::factory()->create();
         $board = Board::factory()->create();
@@ -51,10 +51,10 @@ class BoardGetByIdTest extends TestCase
         $anotherProject = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['USER'])->first()->id]);
+            ['role_id' => Role::byName(Role::USER)->first()->id]);
 
         $user->projects()->attach($anotherProject->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         BoardTemplate::factory()->create();
         $board = Board::create([

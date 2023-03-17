@@ -21,17 +21,17 @@ class BoardUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+            ['role_id' => Role::byName(Role::EMPLOYEE)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $updatedTemplate = BoardTemplate::factory()->create();
 
         $board = Board::create([
             'name' => 'board 1',
             'project_id' => $project->id,
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ]);
 
         $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
@@ -54,10 +54,10 @@ class BoardUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+            ['role_id' => Role::byName(Role::EMPLOYEE)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         $updatedTemplate = BoardTemplate::create([
             'name' => 'board 2',
@@ -67,7 +67,7 @@ class BoardUpdateTest extends TestCase
         $board = Board::create([
             'name' => 'board 1',
             'project_id' => $project->id,
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ]);
 
         $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
@@ -84,10 +84,10 @@ class BoardUpdateTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+            ['role_id' => Role::byName(Role::EMPLOYEE)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         $updatedTemplate = BoardTemplate::create([
             'name' => 'board 2',
@@ -97,7 +97,7 @@ class BoardUpdateTest extends TestCase
         $board = Board::create([
             'name' => 'board 1',
             'project_id' => $project->id,
-            'status' => Board::statuses['ACTIVE']
+            'status' => Board::ACTIVE
         ]);
 
         $response = $this->actingAs($user)->putJson('api/boards/' . $board->id, [
@@ -122,7 +122,7 @@ class BoardUpdateTest extends TestCase
         $board = Board::create([
             'name' => 'board 1',
             'project_id' => $project->id,
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ]);
 
         $response = $this->putJson('api/boards/' . $board->id, [
