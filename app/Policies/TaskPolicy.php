@@ -30,7 +30,7 @@ class TaskPolicy
 
     public function view(User $user, Task $task)
     {
-       return ($user->hasAnyOrganizationRole($task->board->project->organization,
+        return ($user->hasAnyOrganizationRole($task->board->project->organization,
                 Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
             $user->hasAnyProjectRole($task->board->project,
                 Role::PROJECT_SUPERVISOR, Role::PROJECT_EXECUTOR, Role::PROJECT_PARTICIPANT));
@@ -40,5 +40,22 @@ class TaskPolicy
     {
         return ($user->hasAnyOrganizationRole($task->board->project->organization, Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
             $user->hasAnyProjectRole($task->board->project, Role::PROJECT_SUPERVISOR));
+    }
+
+    public function addUser(User $user, Task $task, User $invitedUser)
+    {
+
+        return (($user->hasAnyOrganizationRole(
+            $task->board->project->organization, Role::ORGANIZATION_SUPERVISOR, Role::ADMIN)||
+                $user->hasAnyProjectRole($task->board->project, Role::PROJECT_SUPERVISOR)) &&
+            $invitedUser->projects()->find($task->board->project->id));
+    }
+
+    public function deleteUser(User $user, Task $task, User $deletedUser)
+    {
+        return (($user->hasAnyOrganizationRole($task->board->project->organization, Role::ORGANIZATION_SUPERVISOR, Role::ADMIN) ||
+                $user->hasAnyProjectRole($task->board->project, Role::PROJECT_SUPERVISOR)) &&
+            ($deletedUser->projects()->find($task->board->project->id) &&
+                !($deletedUser->hasAnyProjectRole($task->board->project, Role::PROJECT_SUPERVISOR))));
     }
 }
