@@ -8,6 +8,6 @@ class TaskGetByIdAction
 {
     public function handle(Task $task)
     {
-        return $task->with('subtasks.attributes')->first();
+        return Task::with('subtasks.attributes')->get()->find($task);
     }
 }
