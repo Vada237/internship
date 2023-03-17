@@ -42,7 +42,8 @@ class AddUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $response = $this->actingAs($user)->postJson('api/tasks/users', [
@@ -83,7 +84,8 @@ class AddUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $response = $this->actingAs($user)->postJson('api/tasks/users', [
@@ -114,7 +116,8 @@ class AddUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $response = $this->postJson('api/tasks/users', [

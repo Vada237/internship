@@ -41,7 +41,8 @@ class DeleteUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $task->users()->attach($invitedUser->id);
@@ -82,7 +83,8 @@ class DeleteUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $task->users()->attach($invitedUser->id);
@@ -112,7 +114,8 @@ class DeleteUserTaskTest extends TestCase
 
         $task = Task::create([
             'name' => 'task',
-            'board_id' => $board->id
+            'board_id' => $board->id,
+            'status' => Task::EDITED
         ]);
 
         $task->users()->attach($invitedUser->id);
