@@ -63,6 +63,14 @@ return [
             'delete' => [
                 'success' => 'Task template has been deleted'
             ]
+        ],
+        'users' => [
+            'add' => [
+                'success' => 'User has been added'
+            ],
+            'delete' => [
+                'success' => 'User has been deleted'
+            ]
         ]
     ],
     'subtask' => [
