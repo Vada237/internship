@@ -23,4 +23,11 @@ class Task extends Model
     {
         return $this->belongsTo(Board::class);
     }
+
+    public function users()
+    {
+        return $this
+            ->belongsToMany(User::class, 'user_tasks', 'task_id', 'user_id')
+            ->withTimestamps();
+    }
 }
