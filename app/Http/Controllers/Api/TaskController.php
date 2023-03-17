@@ -7,11 +7,15 @@ use App\Actions\Task\TaskDeleteAction;
 use App\Actions\Task\TaskGetByBoardIdAction;
 use App\Actions\Task\TaskGetByIdAction;
 use App\Actions\Task\TaskUpdateAction;
+use App\Actions\Task\User\AddUserTaskAction;
+use App\Actions\Task\User\DeleteUserTaskAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\TaskCreateRequest;
+use App\Http\Requests\Task\User\UserTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Board;
 use App\Models\Task;
+use App\Models\User;
 
 class TaskController extends Controller
 {
@@ -37,5 +41,18 @@ class TaskController extends Controller
     {
         $this->authorize('delete', [Task::class, $task]);
         return $action->handle($task);
+    }
+
+    public function addUser(AddUserTaskAction $action, UserTaskRequest $request)
+    {
+        $this->authorize('addUser', [Task::class,
+            Task::find($request->validated('task_id')), User::find($request->validated('user_id'))]);
+        return $action->handle($request->validated());
+    }
+
+    public function deleteUser(DeleteUserTaskAction $action, Task $task, User $user)
+    {
+        $this->authorize('addUser', [Task::class, $task, $user]);
+        return $action->handle($task, $user);
     }
 }
