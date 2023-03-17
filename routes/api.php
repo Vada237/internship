@@ -99,6 +99,7 @@ Route::controller(Api\SubtaskTemplateController::class)->prefix('subtask-templat
         Route::put('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'updateAttribute']);
         Route::delete('{subtaskTemplate}/attributes/{attribute}', [Api\SubtaskTemplateController::class, 'deleteAttribute']);
     });
+
 Route::controller(Api\BoardController::class)->prefix('boards')
     ->middleware(['auth:sanctum'])->group(function () {
         Route::post('', [Api\BoardController::class, 'store']);
@@ -114,6 +115,5 @@ Route::controller(Api\TaskController::class)->prefix('tasks')
         Route::post('', [Api\TaskController::class, 'store']);
         Route::get('find-by-board/{board}', [Api\TaskController::class, 'findByBoard']);
         Route::get('{task}', [Api\TaskController::class, 'show']);
-        Route::put('{task}', [Api\TaskController::class, 'update']);
         Route::delete('{task}', [Api\TaskController::class, 'destroy']);
     });
