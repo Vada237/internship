@@ -11,8 +11,16 @@ class Task extends Model
 
     protected $fillable = [
         'name',
-        'board_id'
+        'board_id',
+        'status',
+        'started_at'
     ];
+
+    const EDITED = 'edited';
+    const ACTIVE = 'active';
+    const UNACTIVE = 'unactive';
+    const COMPLETED = 'completed';
+    const CLOSED = 'closed';
 
     public function subtasks()
     {

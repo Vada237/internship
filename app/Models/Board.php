@@ -12,7 +12,8 @@ class Board extends Model
     protected $fillable = [
         'name',
         'project_id',
-        'status'
+        'status',
+        'started_at'
     ];
 
     const EDITED = 'edited';
