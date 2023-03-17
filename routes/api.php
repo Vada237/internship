@@ -108,6 +108,8 @@ Route::controller(Api\BoardController::class)->prefix('boards')
         Route::get('{board}', [Api\BoardController::class, 'show']);
         Route::put('{board}', [Api\BoardController::class, 'update']);
         Route::delete('{board}', [Api\BoardController::class, 'destroy']);
+        Route::patch('start/{board}', [Api\BoardController::class, 'start']);
+        Route::patch('finish/{board}', [Api\BoardController::class, 'finish']);
     });
 
 Route::controller(Api\TaskController::class)->prefix('tasks')
@@ -118,4 +120,6 @@ Route::controller(Api\TaskController::class)->prefix('tasks')
         Route::delete('{task}', [Api\TaskController::class, 'destroy']);
         Route::post('users', [Api\TaskController::class, 'addUser']);
         Route::delete('users/{task}/{user}', [Api\TaskController::class, 'deleteUser']);
+        Route::patch('start/{task}', [Api\TaskController::class, 'start']);
+        Route::patch('finish/{task}', [Api\TaskController::class, 'finish']);
     });
