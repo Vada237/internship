@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Actions\Task\TaskCreateAction;
+use App\Actions\Task\TaskDeleteAction;
 use App\Actions\Task\TaskGetByBoardIdAction;
 use App\Actions\Task\TaskGetByIdAction;
+use App\Actions\Task\TaskUpdateAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Task\TaskCreateRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Board;
 use App\Models\Task;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -32,13 +33,9 @@ class TaskController extends Controller
         return new TaskResource($action->handle($task));
     }
 
-    public function update(Request $request, Task $task)
+    public function destroy(TaskDeleteAction $action, Task $task)
     {
-        //
-    }
-
-    public function destroy(Task $task)
-    {
-        //
+        $this->authorize('delete', [Task::class, $task]);
+        return $action->handle($task);
     }
 }

@@ -36,18 +36,9 @@ class TaskPolicy
                 Role::PROJECT_SUPERVISOR, Role::PROJECT_EXECUTOR, Role::PROJECT_PARTICIPANT));
     }
 
-    public function update(User $user, Task $task)
-    {
-        //
-    }
-
     public function delete(User $user, Task $task)
     {
-        //
-    }
-
-    public function restore(User $user, Task $task)
-    {
-        //
+        return ($user->hasAnyOrganizationRole($task->board->project->organization, Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
+            $user->hasAnyProjectRole($task->board->project, Role::PROJECT_SUPERVISOR));
     }
 }
