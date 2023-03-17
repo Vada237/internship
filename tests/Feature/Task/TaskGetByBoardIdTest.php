@@ -23,10 +23,10 @@ class TaskGetByBoardIdTest extends TestCase
         $project = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['ORGANIZATION_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::ORGANIZATION_SUPERVISOR)->first()->id]);
 
         $user->projects()->attach($project->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_SUPERVISOR'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_SUPERVISOR)->first()->id]);
 
         BoardTemplate::factory()->create();
 
@@ -53,16 +53,16 @@ class TaskGetByBoardIdTest extends TestCase
             'task_id' => $tasks[1]->id
         ]);
 
-        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
-        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
         $response = $this->actingAs($user)->getJson('api/tasks/find-by-board/' . $board->id);
@@ -81,9 +81,9 @@ class TaskGetByBoardIdTest extends TestCase
                             'attributes' => [
                                 [
                                     'name' => $firstSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->name,
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->name,
                                     'value' => $firstSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->pivot->value
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->pivot->value
                                 ]
                             ]
                         ],
@@ -94,9 +94,9 @@ class TaskGetByBoardIdTest extends TestCase
                             'attributes' => [
                                 [
                                     'name' => $secondSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->name,
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->name,
                                     'value' => $secondSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->pivot->value
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->pivot->value
                                 ]
                             ]
                         ]
@@ -114,9 +114,9 @@ class TaskGetByBoardIdTest extends TestCase
                             'attributes' => [
                                 [
                                     'name' => $thirdSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->name,
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->name,
                                     'value' => $thirdSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->pivot->value
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->pivot->value
                                 ]
                             ]
                         ],
@@ -127,9 +127,9 @@ class TaskGetByBoardIdTest extends TestCase
                             'attributes' => [
                                 [
                                     'name' => $fourSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->name,
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->name,
                                     'value' => $fourSubtask->attributes()
-                                        ->where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])->first()->pivot->value
+                                        ->where('name', TaskTemplate::DESCRIPTION)->first()->pivot->value
                                 ]
                             ]
                         ]
@@ -148,10 +148,10 @@ class TaskGetByBoardIdTest extends TestCase
         $anotherProject = Project::factory()->create();
 
         $user->organizations()->attach($organization->id,
-            ['role_id' => Role::byName(Role::list['EMPLOYEE'])->first()->id]);
+            ['role_id' => Role::byName(Role::EMPLOYEE)->first()->id]);
 
         $user->projects()->attach($anotherProject->id,
-            ['role_id' => Role::byName(Role::list['PROJECT_PARTICIPANT'])->first()->id]);
+            ['role_id' => Role::byName(Role::PROJECT_PARTICIPANT)->first()->id]);
 
         BoardTemplate::create([
             'name' => 'board',
@@ -162,7 +162,7 @@ class TaskGetByBoardIdTest extends TestCase
         $board = Board::create([
             'name' => 'board',
             'project_id' => $project->id,
-            'status' => Board::statuses['EDITED']
+            'status' => Board::EDITED
         ]);
 
         $tasks = Task::factory()->count(2)->create();
@@ -187,16 +187,16 @@ class TaskGetByBoardIdTest extends TestCase
             'task_id' => $tasks[1]->id
         ]);
 
-        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
-        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
         $response = $this->actingAs($user)->getJson('api/tasks/find-by-board/' . $board->id);
@@ -238,16 +238,16 @@ class TaskGetByBoardIdTest extends TestCase
             'task_id' => $tasks[1]->id
         ]);
 
-        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $firstSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $secondSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
-        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $thirdSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 1']);
 
-        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::ATTRIBUTES['DESCRIPTION'])
+        $fourSubtask->attributes()->attach(Attribute::where('name', TaskTemplate::DESCRIPTION)
             ->first()->id, ['value' => 'description for subtask 2']);
 
         $response = $this->getJson('api/tasks/find-by-board/' . $board->id);

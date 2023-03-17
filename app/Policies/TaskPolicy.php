@@ -15,25 +15,25 @@ class TaskPolicy
     public function viewByBoard(User $user, Board $board)
     {
         return ($user->hasAnyOrganizationRole($board->project->organization,
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
             $user->hasAnyProjectRole($board->project,
-                Role::list['PROJECT_SUPERVISOR'], Role::list['PROJECT_EXECUTOR'], Role::list['PROJECT_PARTICIPANT']));
+                Role::PROJECT_SUPERVISOR, Role::PROJECT_EXECUTOR, Role::PROJECT_PARTICIPANT));
     }
 
     public function create(User $user, Board $board)
     {
         return ($user->hasAnyOrganizationRole($board->project->organization,
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
-            $user->hasAnyProjectRole($board->project, Role::list['PROJECT_SUPERVISOR']) &&
-            $board->status == Board::statuses['EDITED']);
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
+            $user->hasAnyProjectRole($board->project, Role::PROJECT_SUPERVISOR) &&
+            $board->status == Board::EDITED);
     }
 
     public function view(User $user, Task $task)
     {
        return ($user->hasAnyOrganizationRole($task->board->project->organization,
-                Role::list['ADMIN'], Role::list['ORGANIZATION_SUPERVISOR']) ||
+                Role::ADMIN, Role::ORGANIZATION_SUPERVISOR) ||
             $user->hasAnyProjectRole($task->board->project,
-                Role::list['PROJECT_SUPERVISOR'], Role::list['PROJECT_EXECUTOR'], Role::list['PROJECT_PARTICIPANT']));
+                Role::PROJECT_SUPERVISOR, Role::PROJECT_EXECUTOR, Role::PROJECT_PARTICIPANT));
     }
 
     public function update(User $user, Task $task)
