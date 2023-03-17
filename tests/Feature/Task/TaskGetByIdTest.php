@@ -87,7 +87,7 @@ class TaskGetByIdTest extends TestCase
                         ]
                     ]
                 ]
-            ],
+            ]
         ]);
         $response->assertOk();
     }
