@@ -116,4 +116,6 @@ Route::controller(Api\TaskController::class)->prefix('tasks')
         Route::get('find-by-board/{board}', [Api\TaskController::class, 'findByBoard']);
         Route::get('{task}', [Api\TaskController::class, 'show']);
         Route::delete('{task}', [Api\TaskController::class, 'destroy']);
+        Route::post('users', [Api\TaskController::class, 'addUser']);
+        Route::delete('users/{task}/{user}', [Api\TaskController::class, 'deleteUser']);
     });
