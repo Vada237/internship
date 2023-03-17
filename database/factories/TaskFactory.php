@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Board;
+use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,8 @@ class TaskFactory extends Factory
     {
         return [
             'name' => fake()->word,
-            'board_id' => Board::inRandomOrder()->first()->id
+            'board_id' => Board::inRandomOrder()->first()->id,
+            'status' => Task::EDITED
         ];
     }
 }
