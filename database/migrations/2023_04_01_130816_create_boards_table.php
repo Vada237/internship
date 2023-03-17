@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('project_id');
+            $table->dateTime('started_at')->nullable();
             $table->string('status');
             $table->timestamps();
 

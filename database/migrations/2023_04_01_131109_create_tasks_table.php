@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('board_id');
+            $table->dateTime('started_at')->nullable();
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('board_id')->references('id')->on('boards')->cascadeOnDelete();
