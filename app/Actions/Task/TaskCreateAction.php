@@ -14,7 +14,8 @@ class TaskCreateAction
 
         $task = Task::create([
             'name' => $taskTemplate->name,
-            'board_id' => $params['board_id']
+            'board_id' => $params['board_id'],
+            'status' => Task::EDITED
         ]);
 
         foreach ($taskTemplate->subtaskTemplates()->get() as $subtaskTemplate) {
